@@ -18,7 +18,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
 
     public class LoginWith2faModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<LoginWith2faModel> _logger;
 
@@ -27,7 +27,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
             UserManager<ApplicationUser> userManager,
             ILogger<LoginWith2faModel> logger)
         {
-            this._signInManager = signInManager;
+            this.signInManager = signInManager;
             this._userManager = userManager;
             this._logger = logger;
         }
@@ -78,7 +78,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnGetAsync(bool rememberMe, string returnUrl = null)
         {
             // Ensure the user has gone through the username & password screen first
-            var user = await this._signInManager.GetTwoFactorAuthenticationUserAsync();
+            var user = await this.signInManager.GetTwoFactorAuthenticationUserAsync();
 
             if (user == null)
             {
@@ -100,7 +100,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
 
             returnUrl = returnUrl ?? this.Url.Content("~/");
 
-            var user = await this._signInManager.GetTwoFactorAuthenticationUserAsync();
+            var user = await this.signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
                 throw new InvalidOperationException($"Unable to load two-factor authentication user.");
@@ -108,7 +108,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
 
             var authenticatorCode = this.Input.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
 
-            var result = await this._signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, this.Input.RememberMachine);
+            var result = await this.signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, this.Input.RememberMachine);
 
             var userId = await this._userManager.GetUserIdAsync(user);
 

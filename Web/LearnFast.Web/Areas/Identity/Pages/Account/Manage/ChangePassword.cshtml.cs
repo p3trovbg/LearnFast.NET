@@ -15,7 +15,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
@@ -24,7 +24,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
             SignInManager<ApplicationUser> signInManager,
             ILogger<ChangePasswordModel> logger)
         {
-            this._userManager = userManager;
+            this.userManager = userManager;
             this._signInManager = signInManager;
             this._logger = logger;
         }
@@ -80,13 +80,13 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await this._userManager.GetUserAsync(this.User);
+            var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{this._userManager.GetUserId(this.User)}'.");
+                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
             }
 
-            var hasPassword = await this._userManager.HasPasswordAsync(user);
+            var hasPassword = await this.userManager.HasPasswordAsync(user);
             if (!hasPassword)
             {
                 return this.RedirectToPage("./SetPassword");
@@ -102,13 +102,13 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
                 return this.Page();
             }
 
-            var user = await this._userManager.GetUserAsync(this.User);
+            var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{this._userManager.GetUserId(this.User)}'.");
+                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
             }
 
-            var changePasswordResult = await this._userManager.ChangePasswordAsync(user, this.Input.OldPassword, this.Input.NewPassword);
+            var changePasswordResult = await this.userManager.ChangePasswordAsync(user, this.Input.OldPassword, this.Input.NewPassword);
             if (!changePasswordResult.Succeeded)
             {
                 foreach (var error in changePasswordResult.Errors)

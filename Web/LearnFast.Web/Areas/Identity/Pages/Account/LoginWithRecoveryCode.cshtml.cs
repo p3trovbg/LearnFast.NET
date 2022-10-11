@@ -15,7 +15,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
 {
     public class LoginWithRecoveryCodeModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
 
@@ -24,7 +24,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
             UserManager<ApplicationUser> userManager,
             ILogger<LoginWithRecoveryCodeModel> logger)
         {
-            this._signInManager = signInManager;
+            this.signInManager = signInManager;
             this._userManager = userManager;
             this._logger = logger;
         }
@@ -62,7 +62,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
             // Ensure the user has gone through the username & password screen first
-            var user = await this._signInManager.GetTwoFactorAuthenticationUserAsync();
+            var user = await this.signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
                 throw new InvalidOperationException($"Unable to load two-factor authentication user.");
@@ -80,7 +80,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
                 return this.Page();
             }
 
-            var user = await this._signInManager.GetTwoFactorAuthenticationUserAsync();
+            var user = await this.signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null)
             {
                 throw new InvalidOperationException($"Unable to load two-factor authentication user.");
@@ -88,7 +88,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
 
             var recoveryCode = this.Input.RecoveryCode.Replace(" ", string.Empty);
 
-            var result = await this._signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
+            var result = await this.signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
 
             var userId = await this._userManager.GetUserIdAsync(user);
 

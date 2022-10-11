@@ -19,13 +19,13 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
 {
     public class ForgotPasswordModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IEmailSender emailSender;
 
         public ForgotPasswordModel(UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
-            this._userManager = userManager;
-            this._emailSender = emailSender;
+            this.userManager = userManager;
+            this.emailSender = emailSender;
         }
 
         /// <summary>
@@ -54,8 +54,8 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
         {
             if (this.ModelState.IsValid)
             {
-                var user = await this._userManager.FindByEmailAsync(this.Input.Email);
-                if (user == null || !(await this._userManager.IsEmailConfirmedAsync(user)))
+                var user = await this.userManager.FindByEmailAsync(this.Input.Email);
+                if (user == null || !(await this.userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return this.RedirectToPage("./ForgotPasswordConfirmation");
@@ -63,7 +63,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
 
                 // For more information on how to enable account confirmation and password reset please
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await this._userManager.GeneratePasswordResetTokenAsync(user);
+                var code = await this.userManager.GeneratePasswordResetTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = this.Url.Page(
                     "/Account/ResetPassword",
@@ -71,7 +71,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: this.Request.Scheme);
 
-                await this._emailSender.SendEmailAsync(
+                await this.emailSender.SendEmailAsync(
                     this.Input.Email,
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

@@ -19,7 +19,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserStore<ApplicationUser> userStore;
 
         public ExternalLoginsModel(
             UserManager<ApplicationUser> userManager,
@@ -28,7 +28,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
         {
             this._userManager = userManager;
             this._signInManager = signInManager;
-            this._userStore = userStore;
+            this.userStore = userStore;
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
                 .ToList();
 
             string passwordHash = null;
-            if (this._userStore is IUserPasswordStore<ApplicationUser> userPasswordStore)
+            if (this.userStore is IUserPasswordStore<ApplicationUser> userPasswordStore)
             {
                 passwordHash = await userPasswordStore.GetPasswordHashAsync(user, this.HttpContext.RequestAborted);
             }

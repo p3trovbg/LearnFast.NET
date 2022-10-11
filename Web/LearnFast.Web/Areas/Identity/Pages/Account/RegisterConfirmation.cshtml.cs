@@ -18,13 +18,13 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterConfirmationModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IEmailSender _sender;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IEmailSender sender;
 
         public RegisterConfirmationModel(UserManager<ApplicationUser> userManager, IEmailSender sender)
         {
-            this._userManager = userManager;
-            this._sender = sender;
+            this.userManager = userManager;
+            this.sender = sender;
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
             }
             returnUrl = returnUrl ?? this.Url.Content("~/");
 
-            var user = await this._userManager.FindByEmailAsync(email);
+            var user = await this.userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 return this.NotFound($"Unable to load user with email '{email}'.");
@@ -64,8 +64,8 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
             this.DisplayConfirmAccountLink = true;
             if (this.DisplayConfirmAccountLink)
             {
-                var userId = await this._userManager.GetUserIdAsync(user);
-                var code = await this._userManager.GenerateEmailConfirmationTokenAsync(user);
+                var userId = await this.userManager.GetUserIdAsync(user);
+                var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 this.EmailConfirmationUrl = this.Url.Page(
                     "/Account/ConfirmEmail",

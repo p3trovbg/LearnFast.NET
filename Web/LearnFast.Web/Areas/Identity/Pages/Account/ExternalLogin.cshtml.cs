@@ -24,7 +24,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
@@ -38,7 +38,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
             ILogger<ExternalLoginModel> logger,
             IEmailSender emailSender)
         {
-            this._signInManager = signInManager;
+            this.signInManager = signInManager;
             this._userManager = userManager;
             this._userStore = userStore;
             this._emailStore = this.GetEmailStore();
@@ -93,7 +93,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
         {
             // Request a redirect to the external login provider.
             var redirectUrl = this.Url.Page("./ExternalLogin", pageHandler: "Callback", values: new { returnUrl });
-            var properties = this._signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            var properties = this.signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return new ChallengeResult(provider, properties);
         }
 
@@ -105,7 +105,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
                 this.ErrorMessage = $"Error from external provider: {remoteError}";
                 return this.RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
-            var info = await this._signInManager.GetExternalLoginInfoAsync();
+            var info = await this.signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
                 this.ErrorMessage = "Error loading external login information.";
@@ -113,7 +113,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
             }
 
             // Sign in the user with this external login provider if the user already has a login.
-            var result = await this._signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            var result = await this.signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
                 this._logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
@@ -143,7 +143,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? this.Url.Content("~/");
             // Get the information about the user from the external login provider
-            var info = await this._signInManager.GetExternalLoginInfoAsync();
+            var info = await this.signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
                 this.ErrorMessage = "Error loading external login information during confirmation.";
@@ -183,7 +183,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
                             return this.RedirectToPage("./RegisterConfirmation", new { Email = this.Input.Email });
                         }
 
-                        await this._signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
+                        await this.signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
                         return this.LocalRedirect(returnUrl);
                     }
                 }

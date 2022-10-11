@@ -20,13 +20,13 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ResendEmailConfirmationModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IEmailSender emailSender;
 
         public ResendEmailConfirmationModel(UserManager<ApplicationUser> userManager, IEmailSender emailSender)
         {
-            this._userManager = userManager;
-            this._emailSender = emailSender;
+            this.userManager = userManager;
+            this.emailSender = emailSender;
         }
 
         /// <summary>
@@ -62,22 +62,22 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
                 return this.Page();
             }
 
-            var user = await this._userManager.FindByEmailAsync(this.Input.Email);
+            var user = await this.userManager.FindByEmailAsync(this.Input.Email);
             if (user == null)
             {
                 this.ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
                 return this.Page();
             }
 
-            var userId = await this._userManager.GetUserIdAsync(user);
-            var code = await this._userManager.GenerateEmailConfirmationTokenAsync(user);
+            var userId = await this.userManager.GetUserIdAsync(user);
+            var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var callbackUrl = this.Url.Page(
                 "/Account/ConfirmEmail",
                 pageHandler: null,
                 values: new { userId = userId, code = code },
                 protocol: this.Request.Scheme);
-            await this._emailSender.SendEmailAsync(
+            await this.emailSender.SendEmailAsync(
                 this.Input.Email,
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

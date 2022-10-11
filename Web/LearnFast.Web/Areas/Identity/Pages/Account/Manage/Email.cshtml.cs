@@ -18,7 +18,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
 {
     public class EmailModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
 
@@ -27,7 +27,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender)
         {
-            this._userManager = userManager;
+            this.userManager = userManager;
             this._signInManager = signInManager;
             this._emailSender = emailSender;
         }
@@ -76,7 +76,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync(ApplicationUser user)
         {
-            var email = await this._userManager.GetEmailAsync(user);
+            var email = await this.userManager.GetEmailAsync(user);
             this.Email = email;
 
             this.Input = new InputModel
@@ -84,15 +84,15 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
                 NewEmail = email,
             };
 
-            this.IsEmailConfirmed = await this._userManager.IsEmailConfirmedAsync(user);
+            this.IsEmailConfirmed = await this.userManager.IsEmailConfirmedAsync(user);
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await this._userManager.GetUserAsync(this.User);
+            var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{this._userManager.GetUserId(this.User)}'.");
+                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
             }
 
             await this.LoadAsync(user);
@@ -101,10 +101,10 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostChangeEmailAsync()
         {
-            var user = await this._userManager.GetUserAsync(this.User);
+            var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{this._userManager.GetUserId(this.User)}'.");
+                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
             }
 
             if (!this.ModelState.IsValid)
@@ -113,11 +113,11 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
                 return this.Page();
             }
 
-            var email = await this._userManager.GetEmailAsync(user);
+            var email = await this.userManager.GetEmailAsync(user);
             if (this.Input.NewEmail != email)
             {
-                var userId = await this._userManager.GetUserIdAsync(user);
-                var code = await this._userManager.GenerateChangeEmailTokenAsync(user, this.Input.NewEmail);
+                var userId = await this.userManager.GetUserIdAsync(user);
+                var code = await this.userManager.GenerateChangeEmailTokenAsync(user, this.Input.NewEmail);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = this.Url.Page(
                     "/Account/ConfirmEmailChange",
@@ -139,10 +139,10 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostSendVerificationEmailAsync()
         {
-            var user = await this._userManager.GetUserAsync(this.User);
+            var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{this._userManager.GetUserId(this.User)}'.");
+                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
             }
 
             if (!this.ModelState.IsValid)
@@ -151,9 +151,9 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
                 return this.Page();
             }
 
-            var userId = await this._userManager.GetUserIdAsync(user);
-            var email = await this._userManager.GetEmailAsync(user);
-            var code = await this._userManager.GenerateEmailConfirmationTokenAsync(user);
+            var userId = await this.userManager.GetUserIdAsync(user);
+            var email = await this.userManager.GetEmailAsync(user);
+            var code = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
             var callbackUrl = this.Url.Page(
                 "/Account/ConfirmEmail",

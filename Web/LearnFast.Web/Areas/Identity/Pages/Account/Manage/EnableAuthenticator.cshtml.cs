@@ -19,7 +19,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
 {
     public class EnableAuthenticatorModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<EnableAuthenticatorModel> _logger;
         private readonly UrlEncoder _urlEncoder;
 
@@ -30,7 +30,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
             ILogger<EnableAuthenticatorModel> logger,
             UrlEncoder urlEncoder)
         {
-            this._userManager = userManager;
+            this.userManager = userManager;
             this._logger = logger;
             this._urlEncoder = urlEncoder;
         }
@@ -87,10 +87,10 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await this._userManager.GetUserAsync(this.User);
+            var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{this._userManager.GetUserId(this.User)}'.");
+                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
             }
 
             await this.LoadSharedKeyAndQrCodeUriAsync(user);
@@ -100,10 +100,10 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await this._userManager.GetUserAsync(this.User);
+            var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{this._userManager.GetUserId(this.User)}'.");
+                return this.NotFound($"Unable to load user with ID '{this.userManager.GetUserId(this.User)}'.");
             }
 
             if (!this.ModelState.IsValid)
@@ -115,8 +115,8 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
             // Strip spaces and hyphens
             var verificationCode = this.Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
-            var is2faTokenValid = await this._userManager.VerifyTwoFactorTokenAsync(
-                user, this._userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
+            var is2faTokenValid = await this.userManager.VerifyTwoFactorTokenAsync(
+                user, this.userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
 
             if (!is2faTokenValid)
             {
@@ -125,15 +125,15 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
                 return this.Page();
             }
 
-            await this._userManager.SetTwoFactorEnabledAsync(user, true);
-            var userId = await this._userManager.GetUserIdAsync(user);
+            await this.userManager.SetTwoFactorEnabledAsync(user, true);
+            var userId = await this.userManager.GetUserIdAsync(user);
             this._logger.LogInformation("User with ID '{UserId}' has enabled 2FA with an authenticator app.", userId);
 
             this.StatusMessage = "Your authenticator app has been verified.";
 
-            if (await this._userManager.CountRecoveryCodesAsync(user) == 0)
+            if (await this.userManager.CountRecoveryCodesAsync(user) == 0)
             {
-                var recoveryCodes = await this._userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+                var recoveryCodes = await this.userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
                 this.RecoveryCodes = recoveryCodes.ToArray();
                 return this.RedirectToPage("./ShowRecoveryCodes");
             }
@@ -146,16 +146,16 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
         private async Task LoadSharedKeyAndQrCodeUriAsync(ApplicationUser user)
         {
             // Load the authenticator key & QR code URI to display on the form
-            var unformattedKey = await this._userManager.GetAuthenticatorKeyAsync(user);
+            var unformattedKey = await this.userManager.GetAuthenticatorKeyAsync(user);
             if (string.IsNullOrEmpty(unformattedKey))
             {
-                await this._userManager.ResetAuthenticatorKeyAsync(user);
-                unformattedKey = await this._userManager.GetAuthenticatorKeyAsync(user);
+                await this.userManager.ResetAuthenticatorKeyAsync(user);
+                unformattedKey = await this.userManager.GetAuthenticatorKeyAsync(user);
             }
 
             this.SharedKey = this.FormatKey(unformattedKey);
 
-            var email = await this._userManager.GetEmailAsync(user);
+            var email = await this.userManager.GetEmailAsync(user);
             this.AuthenticatorUri = this.GenerateQrCodeUri(email, unformattedKey);
         }
 

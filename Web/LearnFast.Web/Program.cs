@@ -65,6 +65,7 @@ namespace LearnFast.Web
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<ICountryService, CountryService>();
         }
 
         private static void Configure(WebApplication app)
