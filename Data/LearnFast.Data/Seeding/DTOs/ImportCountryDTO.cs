@@ -1,6 +1,8 @@
 ﻿namespace LearnFast.Data.Seeding.DTOs
 {
     using Newtonsoft.Json;
+    using System.Collections.Generic;
+    using System.Text.Json.Serialization;
 
     [JsonObject]
     public class ImportCountryDTO
@@ -94,8 +96,10 @@
         public string[] suffixes { get; set; }
     }
 
+    [JsonObject("languages")]
     public class Languages
     {
+        [JsonPropertyName(nameof(ImportCountryDTO.cca2))]
         public string bar { get; set; }
     }
 

@@ -9,6 +9,10 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\json\languages.json" />
+  </ItemGroup>
 	<ItemGroup>
 		<AdditionalFiles Include="..\..\stylecop.json" />
 	</ItemGroup>
@@ -45,5 +49,11 @@
     <ProjectReference Include="..\..\Services\LearnFast.Services\LearnFast.Services.csproj" />
     <ProjectReference Include="..\LearnFast.Web.Infrastructure\LearnFast.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\LearnFast.Web.ViewModels\LearnFast.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\json\languages.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
