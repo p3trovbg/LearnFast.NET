@@ -29,6 +29,7 @@
                               new SettingsSeeder(),
                               new CountrySeeder(),
                               new LanguageSeeder(),
+                              new CategorySeeder(),
                           };
 
             foreach (var seeder in seeders)

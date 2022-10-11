@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Net.Http;
-    using System.Net.Http.Json;
     using System.Threading.Tasks;
 
     using LearnFast.Data.Models;
@@ -21,14 +19,14 @@
                 return;
             }
 
-            var languages = await this.GetAllLanguages();
+            var languages = this.GetAllLanguages();
 
-            dbContext.Languages.AddRange(languages);
+            await dbContext.Languages.AddRangeAsync(languages);
 
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Language>> GetAllLanguages()
+        public List<Language> GetAllLanguages()
         {
             using (StreamReader r = new StreamReader("filepath"))
             {
