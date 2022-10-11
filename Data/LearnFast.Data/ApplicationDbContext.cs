@@ -42,6 +42,7 @@
 
         public DbSet<Video> Videos { get; set; }
 
+        public DbSet<Language> Languages { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

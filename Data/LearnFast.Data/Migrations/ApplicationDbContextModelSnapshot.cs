@@ -389,7 +389,7 @@ namespace LearnFast.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Language");
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("LearnFast.Data.Models.Review", b =>
