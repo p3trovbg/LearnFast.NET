@@ -52,9 +52,17 @@
             await this.courseRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateCourseById(BaseCourseViewModel model, string userId)
+        public async Task UpdateCourseById(ImportCourseModel model, string userId)
         {
-            throw new NotImplementedException();
+            var course = this.mapper.Map<Course>(model);
+
+            if (course.Owner.Id != userId)
+            {
+                throw new ArgumentException("This user is not in possession of this course!");
+            }
+
+            this.courseRepository.Update(course);
+            await this.courseRepository.SaveChangesAsync();
         }
     }
 }

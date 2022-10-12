@@ -2,6 +2,7 @@
 {
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
+    using LearnFast.Web.ViewModels.CourseContent;
 
     public class CourseViewModel : BaseCourseViewModel, IMapFrom<Course>
     {
@@ -9,6 +10,6 @@
 
         public string Requirments { get; set; }
 
-        // TODO: Add videos and images model view
+        public CourseContentView Content { get; set; }
     }
 }
