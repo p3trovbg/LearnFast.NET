@@ -6,5 +6,9 @@ namespace LearnFast.Data.Models
     public class Video : BaseDeletableModel<int>
     {
         public string Path { get; set; }
+
+        public int ContentId { get; set; }
+
+        public CourseContent Content { get; set; }
     }
 }

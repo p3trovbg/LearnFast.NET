@@ -14,8 +14,6 @@ namespace LearnFast.Data.Models
         public Course()
         {
             this.Reviews = new HashSet<Review>();
-            this.Images = new HashSet<Image>();
-            this.Videos = new HashSet<Video>();
             this.Students = new HashSet<StudentCourse>();
         }
 
@@ -28,6 +26,8 @@ namespace LearnFast.Data.Models
 
         public string Requirments { get; set; }
 
+        public Image Image { get; set; }
+
         public bool IsFree { get; set; }
 
         public int Grade { get; set; }
@@ -37,6 +37,8 @@ namespace LearnFast.Data.Models
         public DateTime Duration { get; set; }
 
         public int Sells { get; set; }
+
+        public virtual CourseContent Content { get; set; }
 
         public virtual ApplicationUser Owner { get; set; }
 
@@ -51,9 +53,5 @@ namespace LearnFast.Data.Models
         public virtual ICollection<Review> Reviews { get; set; }
 
         public virtual ICollection<StudentCourse> Students { get; set; }
-
-        public virtual ICollection<Video> Videos { get; set; }
-
-        public virtual ICollection<Image> Images { get; set; }
     }
 }

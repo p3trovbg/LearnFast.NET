@@ -9,7 +9,7 @@
     {
         public Name name { get; set; }
 
-        public string[] tld { get; set; }
+        public string[] Tld { get; set; }
 
         public string cca2 { get; set; }
 

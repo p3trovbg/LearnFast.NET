@@ -38,6 +38,8 @@
 
         public DbSet<StudentCourse> StudentCourses { get; set; }
 
+        public DbSet<CourseContent> CourseContents { get; set; }
+
         public DbSet<Video> Videos { get; set; }
 
         public DbSet<Language> Languages { get; set; }
@@ -65,11 +67,6 @@
         {
             // Needed for Identity models configuration
             base.OnModelCreating(builder);
-            builder.Entity<StudentCourse>()
-                .HasKey(x => new { x.CourseId, x.UserId });
-
-            builder.Entity<Course>()
-                .HasOne(x => x.Owner).WithMany(x => x.OwnCourses);
 
             this.ConfigureUserIdentityRelations(builder);
 

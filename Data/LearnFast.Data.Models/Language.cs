@@ -12,7 +12,7 @@ namespace LearnFast.Data.Models
             this.Courses = new HashSet<Course>();
         }
 
-        public string Nationality { get; set; }
+        public string Name { get; set; }
 
         public virtual ICollection<Course> Courses { get; set; }
     }

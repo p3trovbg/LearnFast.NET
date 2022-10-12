@@ -52,24 +52,9 @@
             await this.courseRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateCourseById(int courseId, string userId)
+        public async Task UpdateCourseById(BaseCourseViewModel model, string userId)
         {
-            var course = this.courseRepository.All()
-                .Include(x => x.Owner)
-                .FirstOrDefault(x => x.Id == courseId);
-
-            if (course == null)
-            {
-                throw new InvalidOperationException("No such course exists!");
-            }
-
-            if (course.Owner.Id != userId)
-            {
-                throw new ArgumentException("This user is not in possession of this course!");
-            }
-
-            this.courseRepository.Update(course);
-            await this.courseRepository.SaveChangesAsync();
+            throw new NotImplementedException();
         }
     }
 }

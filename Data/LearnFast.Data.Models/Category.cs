@@ -14,6 +14,8 @@ namespace LearnFast.Data.Models
 
         public string Name { get; set; }
 
+        public Image? Image { get; set; }
+
         #nullable enable
         public string? Description { get; set; }
         #nullable disable

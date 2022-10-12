@@ -56,9 +56,11 @@
         }
 
         [Authorize]
-        public async Task<IActionResult> Update(int id)
+        public async Task<IActionResult> Update(BaseCourseViewModel course)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            await this.courseService.UpdateCourseById(course, userId);
             return this.Redirect("/");
         }
     }

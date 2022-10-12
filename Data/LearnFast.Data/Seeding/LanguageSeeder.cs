@@ -36,7 +36,7 @@
                 return items
                     .Select(x => new Language
                     {
-                        Nationality = x.LanguageName,
+                        Name = x.LanguageName,
                     })
                       .ToList();
             }
