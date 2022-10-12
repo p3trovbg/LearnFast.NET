@@ -1,9 +1,11 @@
-﻿using LearnFast.Data.Models;
-using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace LearnFast.Web.ViewModels.Course
+﻿namespace LearnFast.Web.ViewModels.Course
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
+    using LearnFast.Data.Models;
+    using Microsoft.AspNetCore.Http;
+
     public class ImportCourseModel
     {
         [RegularExpression(@"([A-Za-z]\S+)")]
@@ -19,11 +21,14 @@ namespace LearnFast.Web.ViewModels.Course
         public string Description { get; set; }
 
         [Required]
+        public IFormFile MainImage { get; set; }
+
+        [Required]
         [MaxLength(120)]
         public string Requirments { get; set; }
 
         [Required]
-        [Display(Name = "Is free?")]
+        [Display(Name = "Is free")]
         public bool IsFree { get; set; }
 
         [Required]

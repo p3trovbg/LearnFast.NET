@@ -54,5 +54,12 @@
 
             return this.Redirect("/");
         }
+
+        [Authorize]
+        public async Task<IActionResult> Update(int id)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return this.Redirect("/");
+        }
     }
 }
