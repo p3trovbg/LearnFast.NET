@@ -25,7 +25,7 @@ namespace LearnFast.Data.Models
 
         public string LastName { get; set; }
 
-        public string ProfileImagePath { get; set; }
+        public Image Image { get; set; }
 
         public string WebsitePath { get; set; }
 
