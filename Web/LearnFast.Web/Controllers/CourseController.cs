@@ -1,7 +1,11 @@
 ﻿namespace LearnFast.Web.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Security.Claims;
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using AutoMapper;
     using LearnFast.Data.Models;
     using LearnFast.Services.Data;
     using LearnFast.Web.ViewModels.Course;
@@ -23,9 +27,30 @@
         [Authorize]
         public async Task<IActionResult> Create(ImportCourseModel model)
         {
-            var user = await this.userManager.GetUserAsync(this.HttpContext.User);
-            model.Owner = user;
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
+
+            model.Owner = await this.userManager.GetUserAsync(this.User);
             await this.courseService.AddCourse(model);
+
+            return this.Redirect("/");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            try
+            {
+                await this.courseService.DeleteCourseById(id, userId);
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
 
             return this.Redirect("/");
         }

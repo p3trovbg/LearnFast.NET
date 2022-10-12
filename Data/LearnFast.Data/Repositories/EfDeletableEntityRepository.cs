@@ -1,12 +1,14 @@
 ﻿namespace LearnFast.Data.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using LearnFast.Data.Common.Models;
     using LearnFast.Data.Common.Repositories;
 
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
     public class EfDeletableEntityRepository<TEntity> : EfRepository<TEntity>, IDeletableEntityRepository<TEntity>
         where TEntity : class, IDeletableEntity

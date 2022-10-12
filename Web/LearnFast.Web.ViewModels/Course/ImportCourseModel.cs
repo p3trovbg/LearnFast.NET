@@ -39,7 +39,6 @@ namespace LearnFast.Web.ViewModels.Course
         [Required]
         public int CategoryId { get; set; }
 
-        [Required]
         public ApplicationUser Owner { get; set; }
     }
 }

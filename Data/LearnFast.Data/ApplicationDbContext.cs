@@ -68,6 +68,9 @@
             builder.Entity<StudentCourse>()
                 .HasKey(x => new { x.CourseId, x.UserId });
 
+            builder.Entity<Course>()
+                .HasOne(x => x.Owner).WithMany(x => x.OwnCourses);
+
             this.ConfigureUserIdentityRelations(builder);
 
             EntityIndexesConfiguration.Configure(builder);

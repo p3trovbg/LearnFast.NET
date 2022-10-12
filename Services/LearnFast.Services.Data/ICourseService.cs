@@ -6,6 +6,8 @@
 
     public interface ICourseService
     {
-        Task AddCourse(ImportCourseModel model);
+        Task AddCourse(ImportCourseModel course);
+
+        Task DeleteCourseById(int courseId, string userId);
     }
 }
