@@ -7,6 +7,11 @@ namespace LearnFast.Data.Models
 
     public class Language : BaseDeletableModel<int>
     {
+        public Language()
+        {
+            this.Courses = new HashSet<Course>();
+        }
+
         public string Nationality { get; set; }
 
         public virtual ICollection<Course> Courses { get; set; }

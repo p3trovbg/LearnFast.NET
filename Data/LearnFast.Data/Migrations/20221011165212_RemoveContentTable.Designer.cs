@@ -4,6 +4,7 @@ using LearnFast.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnFast.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221011165212_RemoveContentTable")]
+    partial class RemoveContentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,7 +194,7 @@ namespace LearnFast.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("LearnFast.Data.Models.Country", b =>
@@ -222,7 +224,7 @@ namespace LearnFast.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("LearnFast.Data.Models.Course", b =>
@@ -291,7 +293,7 @@ namespace LearnFast.Data.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("LearnFast.Data.Models.Image", b =>
@@ -326,7 +328,7 @@ namespace LearnFast.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Images", (string)null);
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("LearnFast.Data.Models.Language", b =>
@@ -356,7 +358,7 @@ namespace LearnFast.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Languages", (string)null);
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("LearnFast.Data.Models.Review", b =>
@@ -402,7 +404,7 @@ namespace LearnFast.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("LearnFast.Data.Models.Setting", b =>
@@ -435,7 +437,7 @@ namespace LearnFast.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Settings", (string)null);
+                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("LearnFast.Data.Models.StudentCourse", b =>
@@ -467,7 +469,7 @@ namespace LearnFast.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("StudentCourses", (string)null);
+                    b.ToTable("StudentCourses");
                 });
 
             modelBuilder.Entity("LearnFast.Data.Models.Video", b =>
@@ -502,7 +504,7 @@ namespace LearnFast.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Videos", (string)null);
+                    b.ToTable("Videos");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

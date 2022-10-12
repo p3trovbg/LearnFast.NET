@@ -1,7 +1,7 @@
 namespace LearnFast.Web
 {
     using System.Reflection;
-
+    using AutoMapper;
     using LearnFast.Data;
     using LearnFast.Data.Common;
     using LearnFast.Data.Common.Repositories;
@@ -52,20 +52,32 @@ namespace LearnFast.Web
                 {
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 }).AddRazorRuntimeCompilation();
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddSingleton(mapper);
             services.AddSingleton(configuration);
+            services.AddMvc();
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
+            services.AddHttpContextAccessor();
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICountryService, CountryService>();
+            services.AddTransient<ICourseService, CourseService>();
         }
 
         private static void Configure(WebApplication app)

@@ -11,6 +11,14 @@ namespace LearnFast.Data.Models
 
     public class Course : BaseDeletableModel<int>
     {
+        public Course()
+        {
+            this.Reviews = new HashSet<Review>();
+            this.Images = new HashSet<Image>();
+            this.Videos = new HashSet<Video>();
+            this.Students = new HashSet<StudentCourse>();
+        }
+
         public string Title { get; set; }
 
         [Column(TypeName = "decimal(18,4)")]
@@ -40,12 +48,12 @@ namespace LearnFast.Data.Models
 
         public virtual Category Category { get; set; }
 
-        public int ContentId { get; set; }
-
-        public virtual Content Content { get; set; }
-
         public virtual ICollection<Review> Reviews { get; set; }
 
         public virtual ICollection<StudentCourse> Students { get; set; }
+
+        public virtual ICollection<Video> Videos { get; set; }
+
+        public virtual ICollection<Image> Images { get; set; }
     }
 }

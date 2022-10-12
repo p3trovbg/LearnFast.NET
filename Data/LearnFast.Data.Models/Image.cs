@@ -6,9 +6,5 @@ namespace LearnFast.Data.Models
     public class Image : BaseDeletableModel<int>
     {
         public string Path { get; set; }
-
-        public int ContentId { get; set; }
-
-        public virtual Content Content { get; set; }
     }
 }

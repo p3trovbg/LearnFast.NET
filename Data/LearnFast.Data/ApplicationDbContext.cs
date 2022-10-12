@@ -28,8 +28,6 @@
 
         public DbSet<Category> Categories { get; set; }
 
-        public DbSet<Content> Contents { get; set; }
-
         public DbSet<Country> Countries { get; set; }
 
         public DbSet<Course> Courses { get; set; }
