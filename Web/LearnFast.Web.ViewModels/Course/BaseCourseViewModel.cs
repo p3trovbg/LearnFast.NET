@@ -31,8 +31,6 @@
 
         public CategoryViewModel Category { get; set; }
 
-        public ReviewListViewModel Reviews { get; set; }
-
-        public BaseUserViewModel Author { get; set; }
+        public BaseUserViewModel Owner { get; set; }
     }
 }

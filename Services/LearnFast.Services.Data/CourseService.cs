@@ -13,7 +13,7 @@
     using LearnFast.Web.ViewModels.Course;
     using Microsoft.EntityFrameworkCore;
 
-    public class CourseService : ICourseService, ISorterCourse, ISelectorCourse
+    public class CourseService : ICourseService, ISorterCourse, IFilterCourse
     {
         private readonly IMapper mapper;
         private readonly IDeletableEntityRepository<Course> courseRepository;
@@ -26,7 +26,7 @@
             this.courseRepository = courseRepository;
         }
 
-        public async Task AddCourse(ImportCourseModel model)
+        public async Task AddCourseAsync(ImportCourseModel model)
         {
             var course = this.mapper.Map<Course>(model);
 
@@ -34,12 +34,12 @@
             await this.courseRepository.SaveChangesAsync();
         }
 
-        public async Task<int> Count()
+        public async Task<int> GetCountAsync()
         {
             return await this.courseRepository.AllAsNoTracking().CountAsync();
         }
 
-        public async Task DeleteCourseById(int courseId, string userId)
+        public async Task DeleteCourseByIdAsync(int courseId, string userId)
         {
             var course = await this.courseRepository
                 .All()
@@ -81,15 +81,18 @@
             await this.courseRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAll<T>()
+        public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
             return await this.courseRepository
                 .AllAsNoTracking()
+                .Include(x => x.Language)
+                .Include(x => x.Category)
+                .Include(x => x.Owner)
                 .To<T>()
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllOrderByPrice<T>()
+        public async Task<IEnumerable<T>> GetAllOrderByPriceAsync<T>()
         {
             return await this.courseRepository
                 .AllAsNoTracking()
@@ -98,7 +101,7 @@
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllOrderByDescendingPrice<T>()
+        public async Task<IEnumerable<T>> GetAllOrderByDescendingPriceAsync<T>()
         {
             return await this.courseRepository
                .AllAsNoTracking()
@@ -107,7 +110,7 @@
                .ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllBySells<T>()
+        public async Task<IEnumerable<T>> GetAllBySellsAsync<T>()
         {
             return await this.courseRepository
                .AllAsNoTracking()
@@ -117,7 +120,7 @@
                .ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetFreeCourse<T>()
+        public async Task<IEnumerable<T>> GetFreeCourseAsync<T>()
         {
             return await this.courseRepository
                .AllAsNoTracking()
@@ -126,7 +129,7 @@
                .ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetOwnCourses<T>(string userId)
+        public async Task<IEnumerable<T>> GetOwnCoursesAsync<T>(string userId)
         {
             return await this.courseRepository
                .AllAsNoTracking()
@@ -136,7 +139,7 @@
                .ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetEnrolledCourses<T>(string userId)
+        public async Task<IEnumerable<T>> GetEnrolledCoursesAsync<T>(string userId)
         {
             return await this.courseRepository
              .AllAsNoTracking()
@@ -146,7 +149,7 @@
              .ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetCoursesByLanguage<T>(int languageId)
+        public async Task<IEnumerable<T>> GetCoursesByLanguageAsync<T>(int languageId)
         {
             return await this.courseRepository
                .AllAsNoTracking()
@@ -155,7 +158,7 @@
                .ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetCoursesByCategory<T>(int categoryId)
+        public async Task<IEnumerable<T>> GetCoursesByCategoryAsync<T>(int categoryId)
         {
             return await this.courseRepository
                .AllAsNoTracking()
@@ -164,13 +167,31 @@
                .ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetCoursesByDifficult<T>(int difficulty)
+        public async Task<IEnumerable<T>> GetCoursesByDifficultAsync<T>(int difficulty)
         {
             return await this.courseRepository
                .AllAsNoTracking()
                .Where(x => (int)x.Difficulty == difficulty)
                .To<T>()
                .ToListAsync();
+        }
+
+        public async Task<T> GetByIdAsync<T>(int courseId)
+        {
+            var course = await this.courseRepository
+                .AllAsNoTracking()
+                .Where(x => x.Id == courseId)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
+            if (course == null)
+            {
+                throw new NullReferenceException("Doesn't exist this course!");
+            }
+
+            var model = this.mapper.Map<T>(course);
+
+            return model;
         }
     }
 }

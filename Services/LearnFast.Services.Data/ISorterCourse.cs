@@ -5,10 +5,10 @@
 
     public interface ISorterCourse
     {
-        Task<IEnumerable<T>> GetAllOrderByPrice<T>();
+        Task<IEnumerable<T>> GetAllOrderByPriceAsync<T>();
 
-        Task<IEnumerable<T>> GetAllOrderByDescendingPrice<T>();
+        Task<IEnumerable<T>> GetAllOrderByDescendingPriceAsync<T>();
 
-        Task<IEnumerable<T>> GetAllBySells<T>();
+        Task<IEnumerable<T>> GetAllBySellsAsync<T>();
     }
 }

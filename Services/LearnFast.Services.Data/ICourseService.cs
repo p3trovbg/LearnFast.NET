@@ -7,14 +7,14 @@
 
     public interface ICourseService
     {
-        Task AddCourse(ImportCourseModel course);
+        Task AddCourseAsync(ImportCourseModel course);
 
-        Task DeleteCourseById(int courseId, string userId);
+        Task DeleteCourseByIdAsync(int courseId, string userId);
 
         Task UpdateAsync(ImportCourseModel model, string userId, int courseId);
 
-        Task<IEnumerable<T>> GetAll<T>();
+        Task<IEnumerable<T>> GetAllAsync<T>();
 
-        Task<int> Count();
+        Task<int> GetCountAsync();
     }
 }

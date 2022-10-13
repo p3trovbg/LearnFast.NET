@@ -79,8 +79,11 @@ namespace LearnFast.Web
             services.AddTransient<ICountryService, CountryService>();
 
             services.AddTransient<ICourseService, CourseService>();
-            services.AddTransient<ISelectorCourse, CourseService>();
+            services.AddTransient<IFilterCourse, CourseService>();
             services.AddTransient<ISorterCourse, CourseService>();
+
+            services.AddTransient<ILanguageService, LanguageService>();
+            services.AddTransient<ICategoryService, CategoryService>();
         }
 
         private static void Configure(WebApplication app)

@@ -1,11 +1,9 @@
 ﻿namespace LearnFast.Web.Controllers
 {
     using System;
-    using System.Linq;
     using System.Security.Claims;
-    using System.Security.Principal;
     using System.Threading.Tasks;
-    using AutoMapper;
+
     using LearnFast.Data.Models;
     using LearnFast.Services.Data;
     using LearnFast.Web.ViewModels.Course;
@@ -16,17 +14,32 @@
     public class CourseController : BaseController
     {
         private readonly ICourseService courseService;
+        private readonly ILanguageService languageService;
+        private readonly ICategoryService categoryService;
+        private readonly IFilterCourse filterCourse;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public CourseController(ICourseService courseService, UserManager<ApplicationUser> userManager)
+        public CourseController(
+            ICourseService courseService,
+            UserManager<ApplicationUser> userManager,
+            ILanguageService languageService,
+            ICategoryService categoryService,
+            IFilterCourse filterCourse)
         {
             this.courseService = courseService;
             this.userManager = userManager;
+            this.languageService = languageService;
+            this.categoryService = categoryService;
+            this.filterCourse = filterCourse;
         }
 
         public IActionResult Index()
         {
-            return this.View();
+            var courses = this.courseService.GetAllAsync<BaseCourseViewModel>();
+            // TODO 
+            var model = new BaseCourseListViewModel { Courses = courses.Result };
+
+            return this.View(model);
         }
 
         [Authorize]
@@ -38,7 +51,7 @@
             }
 
             model.Owner = await this.userManager.GetUserAsync(this.User);
-            await this.courseService.AddCourse(model);
+            await this.courseService.AddCourseAsync(model);
 
             return this.Redirect("/");
         }
@@ -50,7 +63,7 @@
 
             try
             {
-                await this.courseService.DeleteCourseById(id, userId);
+                await this.courseService.DeleteCourseByIdAsync(id, userId);
             }
             catch (Exception ex)
             {
@@ -66,6 +79,14 @@
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             await this.courseService.UpdateAsync(course, userId, courseId);
+            return this.Redirect("/");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Current(int id)
+        {
+            var course = await this.filterCourse.GetByIdAsync(id);
+            ;
             return this.Redirect("/");
         }
     }

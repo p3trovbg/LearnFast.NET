@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\LearnFast.Data.Common\LearnFast.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\LearnFast.Data.Models\LearnFast.Data.Models.csproj" />
+    <ProjectReference Include="..\..\LearnFast.Common\LearnFast.Common.csproj" />
     <ProjectReference Include="..\..\Web\LearnFast.Web.ViewModels\LearnFast.Web.ViewModels.csproj" />
     <ProjectReference Include="..\LearnFast.Services.Mapping\LearnFast.Services.Mapping.csproj" />
   </ItemGroup>
