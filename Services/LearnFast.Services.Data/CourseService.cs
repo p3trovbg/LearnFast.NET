@@ -1,14 +1,13 @@
 ﻿namespace LearnFast.Services.Data
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using AutoMapper;
     using LearnFast.Data.Common.Repositories;
     using LearnFast.Data.Models;
+    using LearnFast.Services.Mapping.PropertyMatcher;
     using LearnFast.Web.ViewModels.Course;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
     public class CourseService : ICourseService
@@ -34,9 +33,10 @@
 
         public async Task DeleteCourseById(int courseId, string userId)
         {
-            var course = this.courseRepository.All()
+            var course = await this.courseRepository
+                .All()
                 .Include(x => x.Owner)
-                .FirstOrDefault(x => x.Id == courseId);
+                .FirstOrDefaultAsync(x => x.Id == courseId);
 
             if (course == null)
             {
@@ -52,16 +52,24 @@
             await this.courseRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateCourseById(ImportCourseModel model, string userId)
+        public async Task UpdateAsync(ImportCourseModel model, string userId, int courseId)
         {
-            var course = this.mapper.Map<Course>(model);
+            var course = await this.courseRepository
+                .All()
+                .Include(x => x.Owner)
+                .FirstOrDefaultAsync(x => x.Id == courseId);
 
-            if (course.Owner.Id != userId)
+            if (course == null)
+            {
+                throw new ArgumentException("Don't exist this course.");
+            }
+
+            if (userId != course.Owner.Id)
             {
                 throw new ArgumentException("This user is not in possession of this course!");
             }
 
-            this.courseRepository.Update(course);
+            PropertyCopier<ImportCourseModel, Course>.CopyPropertiesFrom(model, course);
             await this.courseRepository.SaveChangesAsync();
         }
     }

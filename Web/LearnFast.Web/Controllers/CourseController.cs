@@ -24,6 +24,11 @@
             this.userManager = userManager;
         }
 
+        public IActionResult Index()
+        {
+            return this.View();
+        }
+
         [Authorize]
         public async Task<IActionResult> Create(ImportCourseModel model)
         {
@@ -56,11 +61,11 @@
         }
 
         [Authorize]
-        public async Task<IActionResult> Update(BaseCourseViewModel course)
+        public async Task<IActionResult> Update(ImportCourseModel course, int courseId)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            await this.courseService.UpdateCourseById(course, userId);
+            await this.courseService.UpdateAsync(course, userId, courseId);
             return this.Redirect("/");
         }
     }

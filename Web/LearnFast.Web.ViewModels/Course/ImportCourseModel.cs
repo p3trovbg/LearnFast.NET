@@ -20,7 +20,6 @@
         [MaxLength(400)]
         public string Description { get; set; }
 
-        [Required]
         public IFormFile MainImage { get; set; }
 
         [Required]
