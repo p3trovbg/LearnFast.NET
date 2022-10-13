@@ -14,7 +14,7 @@ namespace LearnFast.Data.Models
         public Course()
         {
             this.Reviews = new HashSet<Review>();
-            this.Students = new HashSet<StudentCourse>();
+            this.CourseStudents = new HashSet<StudentCourse>();
         }
 
         public string Title { get; set; }
@@ -52,6 +52,6 @@ namespace LearnFast.Data.Models
 
         public virtual ICollection<Review> Reviews { get; set; }
 
-        public virtual ICollection<StudentCourse> Students { get; set; }
+        public virtual ICollection<StudentCourse> CourseStudents { get; set; }
     }
 }
