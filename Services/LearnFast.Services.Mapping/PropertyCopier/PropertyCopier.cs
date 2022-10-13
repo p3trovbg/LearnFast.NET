@@ -1,6 +1,10 @@
 ﻿namespace LearnFast.Services.Mapping.PropertyMatcher
 {
-    public class Matcher<TParent, TChild>
+    using System.Reflection;
+
+    using LearnFast.Services.Mapping.PropertyCopier;
+
+    public class PropertyCopier<TParent, TChild>
         where TParent : class
         where TChild : class
     {
@@ -11,11 +15,17 @@
 
             foreach (var fromProperty in fromProperties)
             {
+                var isNotCopy = fromProperty.GetCustomAttribute(typeof(NotCopyAttribute)) != null;
+
+                if (isNotCopy)
+                {
+                    continue;
+                }
+
                 foreach (var toProperty in toProperties)
                 {
                     if (fromProperty.Name == toProperty.Name &&
-                        fromProperty.PropertyType == toProperty.PropertyType &&
-                        fromProperty.Name != "Owner")
+                        fromProperty.PropertyType == toProperty.PropertyType)
                     {
                         toProperty.SetValue(child, fromProperty.GetValue(parent));
                         break;

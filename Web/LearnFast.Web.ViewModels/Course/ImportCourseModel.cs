@@ -4,6 +4,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using LearnFast.Data.Models;
+    using LearnFast.Services.Mapping.PropertyCopier;
     using Microsoft.AspNetCore.Http;
 
     public class ImportCourseModel
@@ -43,6 +44,7 @@
         [Required]
         public int CategoryId { get; set; }
 
+        [NotCopy]
         public ApplicationUser Owner { get; set; }
     }
 }
