@@ -5,6 +5,7 @@
     using System.Net;
     using System.Reflection;
     using System.Reflection.Emit;
+    using System.Security.Cryptography.X509Certificates;
     using System.Threading;
     using System.Threading.Tasks;
 

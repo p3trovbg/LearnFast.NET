@@ -31,7 +31,7 @@
 
             if (category == null)
             {
-                throw new NullReferenceException(GlobalExceptions.CategoryNullException);
+                throw new NullReferenceException(GlobalExceptions.CategoryNullExceptionMessage);
             }
 
             return this.mapper.Map<CategoryViewModel>(category);

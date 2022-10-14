@@ -9,6 +9,7 @@ namespace LearnFast.Web
     using LearnFast.Data.Repositories;
     using LearnFast.Data.Seeding;
     using LearnFast.Services.Data;
+    using LearnFast.Services.Data.CourseService;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Messaging;
     using LearnFast.Web.ViewModels;

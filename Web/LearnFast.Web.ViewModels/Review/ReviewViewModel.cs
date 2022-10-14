@@ -1,9 +1,9 @@
 ﻿namespace LearnFast.Web.ViewModels.Review
 {
-    using LearnFast.Web.ViewModels.ApplicationUser;
-    using LearnFast.Web.ViewModels.Course;
+    using LearnFast.Data.Models;
+    using LearnFast.Services.Mapping;
 
-    public class ReviewViewModel
+    public class ReviewViewModel : IMapFrom<Review>
     {
         public int Id { get; set; }
 
@@ -12,9 +12,5 @@
         public string Content { get; set; }
 
         public int Rating { get; set; }
-
-        public CourseViewModel Course { get; set; }
-
-        public BaseUserViewModel User { get; set; }
     }
 }

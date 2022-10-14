@@ -31,7 +31,7 @@
 
             if (language == null)
             {
-                throw new NullReferenceException(GlobalExceptions.LanguageNullException);
+                throw new NullReferenceException(GlobalExceptions.LanguageNullExceptionMessage);
             }
 
             var model = this.mapper.Map<LanguageViewModel>(language);

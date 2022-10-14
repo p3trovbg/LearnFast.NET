@@ -1,4 +1,4 @@
-﻿namespace LearnFast.Services.Data
+﻿namespace LearnFast.Services.Data.CourseService
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

@@ -1,4 +1,4 @@
-﻿namespace LearnFast.Services.Data
+﻿namespace LearnFast.Services.Data.CourseService
 {
     using System;
     using System.Collections.Generic;
@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
+    using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
@@ -48,12 +49,12 @@
 
             if (course == null)
             {
-                throw new InvalidOperationException("No such course exists!");
+                throw new NullReferenceException(GlobalExceptions.CourseIsNotExistExceptionMessage);
             }
 
             if (course.Owner.Id != userId)
             {
-                throw new ArgumentException("This user is not in possession of this course!");
+                throw new ArgumentException(GlobalExceptions.DoNotOwnThisCourseExceptionMessage);
             }
 
             this.courseRepository.Delete(course);
@@ -69,12 +70,12 @@
 
             if (course == null)
             {
-                throw new ArgumentException("Don't exist this course.");
+                throw new NullReferenceException(GlobalExceptions.CourseIsNotExistExceptionMessage);
             }
 
             if (userId != course.Owner.Id)
             {
-                throw new ArgumentException("This user is not in possession of this course!");
+                throw new ArgumentException(GlobalExceptions.DoNotOwnThisCourseExceptionMessage);
             }
 
             PropertyCopier<ImportCourseModel, Course>.CopyPropertiesFrom(model, course);
@@ -83,19 +84,12 @@
 
         public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            return await this.courseRepository
-                .AllAsNoTracking()
-                .Include(x => x.Language)
-                .Include(x => x.Category)
-                .Include(x => x.Owner)
-                .To<T>()
-                .ToListAsync();
+            return await this.GetAllWithBasicInformation().To<T>().ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetAllOrderByPriceAsync<T>()
         {
-            return await this.courseRepository
-                .AllAsNoTracking()
+            return await this.GetAllWithBasicInformation()
                 .OrderBy(x => x.Price)
                 .To<T>()
                 .ToListAsync();
@@ -103,8 +97,7 @@
 
         public async Task<IEnumerable<T>> GetAllOrderByDescendingPriceAsync<T>()
         {
-            return await this.courseRepository
-               .AllAsNoTracking()
+            return await this.GetAllWithBasicInformation()
                .OrderByDescending(x => x.Price)
                .To<T>()
                .ToListAsync();
@@ -112,9 +105,7 @@
 
         public async Task<IEnumerable<T>> GetAllBySellsAsync<T>()
         {
-            return await this.courseRepository
-               .AllAsNoTracking()
-               .Include(x => x.CourseStudents)
+            return await this.GetAllWithBasicInformation()
                .OrderByDescending(x => x.CourseStudents)
                .To<T>()
                .ToListAsync();
@@ -122,8 +113,7 @@
 
         public async Task<IEnumerable<T>> GetFreeCourseAsync<T>()
         {
-            return await this.courseRepository
-               .AllAsNoTracking()
+            return await this.GetAllWithBasicInformation()
                .Where(x => x.IsFree)
                .To<T>()
                .ToListAsync();
@@ -131,9 +121,7 @@
 
         public async Task<IEnumerable<T>> GetOwnCoursesAsync<T>(string userId)
         {
-            return await this.courseRepository
-               .AllAsNoTracking()
-               .Include(x => x.Owner)
+            return await this.GetAllWithBasicInformation()
                .Where(x => x.Owner.Id == userId)
                .To<T>()
                .ToListAsync();
@@ -141,8 +129,7 @@
 
         public async Task<IEnumerable<T>> GetEnrolledCoursesAsync<T>(string userId)
         {
-            return await this.courseRepository
-             .AllAsNoTracking()
+            return await this.GetAllWithBasicInformation()
              .Include(x => x.CourseStudents)
              .Where(x => x.CourseStudents.Any(x => x.UserId == userId))
              .To<T>()
@@ -151,8 +138,7 @@
 
         public async Task<IEnumerable<T>> GetCoursesByLanguageAsync<T>(int languageId)
         {
-            return await this.courseRepository
-               .AllAsNoTracking()
+            return await this.GetAllWithBasicInformation()
                .Where(x => x.LanguageId == languageId)
                .To<T>()
                .ToListAsync();
@@ -160,8 +146,7 @@
 
         public async Task<IEnumerable<T>> GetCoursesByCategoryAsync<T>(int categoryId)
         {
-            return await this.courseRepository
-               .AllAsNoTracking()
+            return await this.GetAllWithBasicInformation()
                .Where(x => x.CategoryId == categoryId)
                .To<T>()
                .ToListAsync();
@@ -169,8 +154,7 @@
 
         public async Task<IEnumerable<T>> GetCoursesByDifficultAsync<T>(int difficulty)
         {
-            return await this.courseRepository
-               .AllAsNoTracking()
+            return await this.GetAllWithBasicInformation()
                .Where(x => (int)x.Difficulty == difficulty)
                .To<T>()
                .ToListAsync();
@@ -178,20 +162,41 @@
 
         public async Task<T> GetByIdAsync<T>(int courseId)
         {
-            var course = await this.courseRepository
-                .AllAsNoTracking()
+            var course = await this.GetWithAllInformation()
                 .Where(x => x.Id == courseId)
                 .To<T>()
                 .FirstOrDefaultAsync();
 
             if (course == null)
             {
-                throw new NullReferenceException("Doesn't exist this course!");
+                throw new NullReferenceException(GlobalExceptions.CourseIsNotExistExceptionMessage);
             }
 
+            // Here, should add in map profile the model.
             var model = this.mapper.Map<T>(course);
 
             return model;
+        }
+
+        private IQueryable<Course> GetAllWithBasicInformation()
+        {
+            return this.courseRepository
+               .AllAsNoTracking()
+               .Include(x => x.Language)
+               .Include(x => x.Category)
+               .Include(x => x.Owner);
+        }
+
+        private IQueryable<Course> GetWithAllInformation()
+        {
+            return this.courseRepository
+               .AllAsNoTracking()
+               .Include(x => x.Language)
+               .Include(x => x.Category)
+               .Include(x => x.Owner)
+               .Include(x => x.Reviews)
+               .Include(x => x.CourseStudents)
+               .Include(x => x.Content);
         }
     }
 }

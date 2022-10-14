@@ -6,6 +6,7 @@
 
     using LearnFast.Data.Models;
     using LearnFast.Services.Data;
+    using LearnFast.Services.Data.CourseService;
     using LearnFast.Web.ViewModels.Course;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -83,9 +84,9 @@
         }
 
         [Authorize]
-        public async Task<IActionResult> Current(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var course = await this.filterCourse.GetByIdAsync(id);
+            var course = await this.filterCourse.GetByIdAsync<CourseViewModel>(id);
             ;
             return this.Redirect("/");
         }

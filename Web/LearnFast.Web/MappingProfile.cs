@@ -12,6 +12,7 @@
         {
             this.CreateMap<ImportCourseModel, Course>();
             this.CreateMap<Course, CourseViewModel>();
+            this.CreateMap<Course, BaseCourseViewModel>();
             this.CreateMap<LanguageViewModel, Language>();
             this.CreateMap<CategoryViewModel, Category>();
         }

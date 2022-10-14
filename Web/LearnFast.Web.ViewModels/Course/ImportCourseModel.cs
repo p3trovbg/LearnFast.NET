@@ -4,6 +4,7 @@
     using System.ComponentModel.DataAnnotations;
 
     using LearnFast.Data.Models;
+    using LearnFast.Services.Mapping;
     using LearnFast.Services.Mapping.PropertyCopier;
     using Microsoft.AspNetCore.Http;
 
