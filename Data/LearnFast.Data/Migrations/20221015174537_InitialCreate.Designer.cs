@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnFast.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221012183852_AddAditionalPropsToModels")]
-    partial class AddAditionalPropsToModels
+    [Migration("20221015174537_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -99,8 +99,8 @@ namespace LearnFast.Data.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
+                    b.Property<string>("ImageId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -183,8 +183,8 @@ namespace LearnFast.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
+                    b.Property<string>("ImageId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -263,8 +263,8 @@ namespace LearnFast.Data.Migrations
                     b.Property<int>("Grade")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
+                    b.Property<string>("ImageId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -346,17 +346,11 @@ namespace LearnFast.Data.Migrations
 
             modelBuilder.Entity("LearnFast.Data.Models.Image", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ContentId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
@@ -364,10 +358,7 @@ namespace LearnFast.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Path")
+                    b.Property<string>("UrlPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -527,17 +518,11 @@ namespace LearnFast.Data.Migrations
 
             modelBuilder.Entity("LearnFast.Data.Models.Video", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ContentId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
@@ -545,10 +530,7 @@ namespace LearnFast.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Path")
+                    b.Property<string>("UrlPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -765,7 +747,7 @@ namespace LearnFast.Data.Migrations
             modelBuilder.Entity("LearnFast.Data.Models.StudentCourse", b =>
                 {
                     b.HasOne("LearnFast.Data.Models.Course", "Course")
-                        .WithMany("Students")
+                        .WithMany("CourseStudents")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -870,9 +852,9 @@ namespace LearnFast.Data.Migrations
                 {
                     b.Navigation("Content");
 
-                    b.Navigation("Reviews");
+                    b.Navigation("CourseStudents");
 
-                    b.Navigation("Students");
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("LearnFast.Data.Models.CourseContent", b =>

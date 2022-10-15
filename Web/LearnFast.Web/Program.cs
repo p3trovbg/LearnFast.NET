@@ -1,7 +1,13 @@
 namespace LearnFast.Web
 {
+    using System;
+    using System.Configuration;
+    using System.Linq;
     using System.Reflection;
+    using System.Security.Principal;
+
     using AutoMapper;
+    using CloudinaryDotNet;
     using LearnFast.Data;
     using LearnFast.Data.Common;
     using LearnFast.Data.Common.Repositories;
@@ -10,6 +16,7 @@ namespace LearnFast.Web
     using LearnFast.Data.Seeding;
     using LearnFast.Services.Data;
     using LearnFast.Services.Data.CourseService;
+    using LearnFast.Services.Data.ImageService;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Messaging;
     using LearnFast.Web.ViewModels;
@@ -35,6 +42,18 @@ namespace LearnFast.Web
 
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
+            // Cloudinary api
+            var cloudName = configuration.GetValue<string>("AccountSettings:CloudName");
+            var apiKey = configuration.GetValue<string>("AccountSettings:ApiKey");
+            var apiSecret = configuration.GetValue<string>("AccountSettings:ApiSecret");
+
+            if (new[] { cloudName, apiKey, apiSecret }.Any(string.IsNullOrWhiteSpace))
+            {
+                throw new ArgumentException("Please specify Cloudinary account details!");
+            }
+
+            services.AddSingleton(new Cloudinary(new Account(cloudName, apiKey, apiSecret)));
+
             services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
@@ -85,6 +104,8 @@ namespace LearnFast.Web
 
             services.AddTransient<ILanguageService, LanguageService>();
             services.AddTransient<ICategoryService, CategoryService>();
+
+            services.AddTransient<IImageService, ImageService>();
         }
 
         private static void Configure(WebApplication app)

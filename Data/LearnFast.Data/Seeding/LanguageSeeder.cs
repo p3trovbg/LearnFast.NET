@@ -28,7 +28,7 @@
 
         public List<Language> GetAllLanguages()
         {
-            using (StreamReader r = new StreamReader("filepath"))
+            using (StreamReader r = new StreamReader("path.json"))
             {
                 string json = r.ReadToEnd();
                 List<ImportLanguageDTO> items = JsonConvert.DeserializeObject<List<ImportLanguageDTO>>(json);

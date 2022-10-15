@@ -2,7 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-
+    using AutoMapper;
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
     using LearnFast.Web.ViewModels.ApplicationUser;
@@ -11,7 +11,7 @@
     using LearnFast.Web.ViewModels.Review;
     using Microsoft.AspNetCore.Http;
 
-    public class BaseCourseViewModel : IMapFrom<Course>
+    public class BaseCourseViewModel : IMapFrom<Course>, IHaveCustomMappings
     {
         public string Title { get; set; }
 
@@ -22,7 +22,7 @@
         [Display(Name = "Free:")]
         public bool IsFree { get; set; }
 
-        public int Difficulty { get; set; }
+        public string Difficulty { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime Duration { get; set; }
@@ -32,5 +32,13 @@
         public CategoryViewModel Category { get; set; }
 
         public BaseUserViewModel Owner { get; set; }
+
+        public void CreateMappings(IProfileExpression configuration)
+        {
+            configuration.CreateMap<Course, CourseViewModel>()
+                 .ForMember(
+                d => d.Difficulty,
+                m => m.MapFrom(x => x.Difficulty.ToString()));
+        }
     }
 }

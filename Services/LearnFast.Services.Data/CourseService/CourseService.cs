@@ -84,12 +84,12 @@
 
         public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            return await this.GetAllWithBasicInformation().To<T>().ToListAsync();
+            return await this.GetAllWithBasicInformationAsNoTracking().To<T>().ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetAllOrderByPriceAsync<T>()
         {
-            return await this.GetAllWithBasicInformation()
+            return await this.GetAllWithBasicInformationAsNoTracking()
                 .OrderBy(x => x.Price)
                 .To<T>()
                 .ToListAsync();
@@ -97,7 +97,7 @@
 
         public async Task<IEnumerable<T>> GetAllOrderByDescendingPriceAsync<T>()
         {
-            return await this.GetAllWithBasicInformation()
+            return await this.GetAllWithBasicInformationAsNoTracking()
                .OrderByDescending(x => x.Price)
                .To<T>()
                .ToListAsync();
@@ -105,7 +105,7 @@
 
         public async Task<IEnumerable<T>> GetAllBySellsAsync<T>()
         {
-            return await this.GetAllWithBasicInformation()
+            return await this.GetAllWithBasicInformationAsNoTracking()
                .OrderByDescending(x => x.CourseStudents)
                .To<T>()
                .ToListAsync();
@@ -113,7 +113,7 @@
 
         public async Task<IEnumerable<T>> GetFreeCourseAsync<T>()
         {
-            return await this.GetAllWithBasicInformation()
+            return await this.GetAllWithBasicInformationAsNoTracking()
                .Where(x => x.IsFree)
                .To<T>()
                .ToListAsync();
@@ -121,7 +121,7 @@
 
         public async Task<IEnumerable<T>> GetOwnCoursesAsync<T>(string userId)
         {
-            return await this.GetAllWithBasicInformation()
+            return await this.GetAllWithBasicInformationAsNoTracking()
                .Where(x => x.Owner.Id == userId)
                .To<T>()
                .ToListAsync();
@@ -129,7 +129,7 @@
 
         public async Task<IEnumerable<T>> GetEnrolledCoursesAsync<T>(string userId)
         {
-            return await this.GetAllWithBasicInformation()
+            return await this.GetAllWithBasicInformationAsNoTracking()
              .Include(x => x.CourseStudents)
              .Where(x => x.CourseStudents.Any(x => x.UserId == userId))
              .To<T>()
@@ -138,7 +138,7 @@
 
         public async Task<IEnumerable<T>> GetCoursesByLanguageAsync<T>(int languageId)
         {
-            return await this.GetAllWithBasicInformation()
+            return await this.GetAllWithBasicInformationAsNoTracking()
                .Where(x => x.LanguageId == languageId)
                .To<T>()
                .ToListAsync();
@@ -146,7 +146,7 @@
 
         public async Task<IEnumerable<T>> GetCoursesByCategoryAsync<T>(int categoryId)
         {
-            return await this.GetAllWithBasicInformation()
+            return await this.GetAllWithBasicInformationAsNoTracking()
                .Where(x => x.CategoryId == categoryId)
                .To<T>()
                .ToListAsync();
@@ -154,7 +154,7 @@
 
         public async Task<IEnumerable<T>> GetCoursesByDifficultAsync<T>(int difficulty)
         {
-            return await this.GetAllWithBasicInformation()
+            return await this.GetAllWithBasicInformationAsNoTracking()
                .Where(x => (int)x.Difficulty == difficulty)
                .To<T>()
                .ToListAsync();
@@ -162,7 +162,7 @@
 
         public async Task<T> GetByIdAsync<T>(int courseId)
         {
-            var course = await this.GetWithAllInformation()
+            var course = await this.GetWithAllInformationAsNoTracking()
                 .Where(x => x.Id == courseId)
                 .To<T>()
                 .FirstOrDefaultAsync();
@@ -178,7 +178,7 @@
             return model;
         }
 
-        private IQueryable<Course> GetAllWithBasicInformation()
+        private IQueryable<Course> GetAllWithBasicInformationAsNoTracking()
         {
             return this.courseRepository
                .AllAsNoTracking()
@@ -187,7 +187,7 @@
                .Include(x => x.Owner);
         }
 
-        private IQueryable<Course> GetWithAllInformation()
+        private IQueryable<Course> GetWithAllInformationAsNoTracking()
         {
             return this.courseRepository
                .AllAsNoTracking()

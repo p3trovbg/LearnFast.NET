@@ -30,6 +30,7 @@
                               new CountrySeeder(),
                               new LanguageSeeder(),
                               new CategorySeeder(),
+                              //new CourseSeeder(),
                           };
 
             foreach (var seeder in seeders)

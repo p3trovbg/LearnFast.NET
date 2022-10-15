@@ -46,4 +46,10 @@
     <ProjectReference Include="..\LearnFast.Data.Models\LearnFast.Data.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Seeding\coursesJson.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

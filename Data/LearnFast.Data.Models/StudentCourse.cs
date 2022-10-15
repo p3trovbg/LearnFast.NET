@@ -1,7 +1,5 @@
 ﻿namespace LearnFast.Data.Models
 {
-    using System;
-
     using LearnFast.Data.Common.Models;
 
     public class StudentCourse : BaseDeletableModel<int>

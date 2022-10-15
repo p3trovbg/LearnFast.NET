@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
             <h2>Create a new account.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -42,7 +42,7 @@
                 <select asp-for="Input.CountryId" asp-items="Model.Countries" class="form-select"></select>
                 <label asp-for="Input.CountryId" class="form-label">Select city</label>
                 <span asp-validation-for="Input.CountryId" class="text-danger"></span>
-            </div>
+            </div>       
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>

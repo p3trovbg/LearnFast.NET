@@ -8,13 +8,13 @@
     using LearnFast.Web.ViewModels.CourseContent;
     using LearnFast.Web.ViewModels.Review;
 
-    public class CourseViewModel : BaseCourseViewModel, IMapFrom<Course>
+    public class CourseViewModel : BaseCourseViewModel
     {
         public string Description { get; set; }
 
         public string Requirments { get; set; }
 
-        public CourseContentView CourseContent { get; set; }
+        public CourseContentView? CourseContent { get; set; }
 
         public IEnumerable<ReviewViewModel> Reviews { get; set; }
 

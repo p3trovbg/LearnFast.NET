@@ -3,7 +3,7 @@
     using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
+    using CloudinaryDotNet.Actions;
     using LearnFast.Data.Models;
     using LearnFast.Services.Data;
     using LearnFast.Services.Data.CourseService;
@@ -15,29 +15,23 @@
     public class CourseController : BaseController
     {
         private readonly ICourseService courseService;
-        private readonly ILanguageService languageService;
-        private readonly ICategoryService categoryService;
         private readonly IFilterCourse filterCourse;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ImageUploadParams imageUpload;
 
         public CourseController(
             ICourseService courseService,
             UserManager<ApplicationUser> userManager,
-            ILanguageService languageService,
-            ICategoryService categoryService,
             IFilterCourse filterCourse)
         {
             this.courseService = courseService;
             this.userManager = userManager;
-            this.languageService = languageService;
-            this.categoryService = categoryService;
             this.filterCourse = filterCourse;
         }
 
         public IActionResult Index()
         {
             var courses = this.courseService.GetAllAsync<BaseCourseViewModel>();
-            // TODO 
             var model = new BaseCourseListViewModel { Courses = courses.Result };
 
             return this.View(model);
@@ -77,6 +71,11 @@
         [Authorize]
         public async Task<IActionResult> Update(ImportCourseModel course, int courseId)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
+
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             await this.courseService.UpdateAsync(course, userId, courseId);
@@ -87,7 +86,6 @@
         public async Task<IActionResult> Details(int id)
         {
             var course = await this.filterCourse.GetByIdAsync<CourseViewModel>(id);
-            ;
             return this.Redirect("/");
         }
     }
