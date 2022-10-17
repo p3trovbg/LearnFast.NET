@@ -182,7 +182,6 @@
                 throw new NullReferenceException(GlobalExceptions.CourseIsNotExistExceptionMessage);
             }
 
-            // Here, should add in map profile the model.
             var model = this.mapper.Map<T>(course);
 
             return model;

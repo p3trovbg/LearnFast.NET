@@ -53,13 +53,13 @@
             <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
         <div class="form-floating">
-            <textarea rows="10" cols="120" asp-for="Requirments" class="form-textarea" aria-required="true" oninput="auto_height(this)"></textarea>
             <label asp-for="Requirments"></label>
+            <textarea rows="10" cols="120" asp-for="Requirments" class="form-textarea" aria-required="true" oninput="auto_height(this)"></textarea>
             <span asp-validation-for="Requirments" class="text-danger"></span>
         </div>
         <div class="form-floating">
-            <textarea rows="10" cols="120" asp-for="Description" class="form-textarea" aria-required="true" oninput="auto_height(this)"></textarea>
             <label asp-for="Description"></label>
+            <textarea rows="10" cols="120" asp-for="Description" class="form-textarea" aria-required="true" oninput="auto_height(this)"></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
         <div id="upload-image" class="form-floating">
@@ -76,20 +76,22 @@
 </section>
 
 
-<script>
-    function auto_height(area) {
-        area.style.height = "100px";
-        area.style.height = (area.scrollHeight) + "px";
-    }
-
-    document.getElementById('upload').addEventListener('change', function () {
-        if (this.files[0]) {
-            var picture = new FileReader();
-            picture.readAsDataURL(this.files[0]);
-            picture.addEventListener('load', function (event) {
-                document.getElementById('uploadedImage').setAttribute('src', event.target.result);
-                document.getElementById('uploadedImage').style.display = 'block';
-            });
+@section Scripts {
+    <script>
+        function auto_height(area) {
+            area.style.height = "100px";
+            area.style.height = (area.scrollHeight) + "px";
         }
-    });
-</script>
+
+        document.getElementById('upload').addEventListener('change', function () {
+            if (this.files[0]) {
+                var picture = new FileReader();
+                picture.readAsDataURL(this.files[0]);
+                picture.addEventListener('load', function (event) {
+                    document.getElementById('uploadedImage').setAttribute('src', event.target.result);
+                    document.getElementById('uploadedImage').style.display = 'block';
+                });
+            }
+        });
+    </script>
+}
