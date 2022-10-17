@@ -106,6 +106,7 @@ namespace LearnFast.Web
             services.AddTransient<ICategoryService, CategoryService>();
 
             services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<IDifficultyService, DifficultyService>();
         }
 
         private static void Configure(WebApplication app)
