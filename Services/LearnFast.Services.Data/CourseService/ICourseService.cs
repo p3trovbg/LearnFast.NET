@@ -11,7 +11,7 @@
 
         Task DeleteCourseByIdAsync(int courseId, string userId);
 
-        Task UpdateAsync(ImportCourseModel model, string userId, int courseId);
+        Task UpdateAsync(ImportCourseModel model, string userId);
 
         Task<IEnumerable<T>> GetAllAsync<T>();
 

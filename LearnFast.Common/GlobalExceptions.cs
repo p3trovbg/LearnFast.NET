@@ -8,6 +8,6 @@
 
         public const string CourseIsNotExistExceptionMessage = "This course is not exist!";
 
-        public const string DoNotOwnThisCourseExceptionMessage = "You do not own this course!";
+        public const string DoesNotOwnThisCourseExceptionMessage = "You do not own this course!";
     }
 }

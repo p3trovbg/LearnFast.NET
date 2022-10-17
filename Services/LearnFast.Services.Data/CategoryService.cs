@@ -1,12 +1,15 @@
 ﻿namespace LearnFast.Services.Data
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using AutoMapper;
     using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
     using LearnFast.Data.Models;
+    using LearnFast.Services.Mapping;
     using LearnFast.Web.ViewModels.Category;
     using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +24,11 @@
         {
             this.categoryRepository = categoryRepository;
             this.mapper = mapper;
+        }
+
+        public IEnumerable<T> GetAll<T>()
+        {
+            return this.categoryRepository.AllAsNoTracking().To<T>().ToList();
         }
 
         public async Task<CategoryViewModel> GetCategoryById(int id)

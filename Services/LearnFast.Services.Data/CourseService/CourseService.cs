@@ -9,6 +9,7 @@
     using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
     using LearnFast.Data.Models;
+    using LearnFast.Services.Data.ImageService;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Mapping.PropertyMatcher;
     using LearnFast.Web.ViewModels.Course;
@@ -17,19 +18,24 @@
     public class CourseService : ICourseService, ISorterCourse, IFilterCourse
     {
         private readonly IMapper mapper;
+        private readonly IImageService imageService;
         private readonly IDeletableEntityRepository<Course> courseRepository;
 
         public CourseService(
             IMapper mapper,
-            IDeletableEntityRepository<Course> courseRepository)
+            IDeletableEntityRepository<Course> courseRepository,
+            IImageService imageService)
         {
             this.mapper = mapper;
             this.courseRepository = courseRepository;
+            this.imageService = imageService;
         }
 
         public async Task AddCourseAsync(ImportCourseModel model)
         {
             var course = this.mapper.Map<Course>(model);
+            var image = await this.imageService.UploadImage(model.MainImage, "images");
+            course.MainImageUrl = image.UrlPath;
 
             await this.courseRepository.AddAsync(course);
             await this.courseRepository.SaveChangesAsync();
@@ -54,19 +60,19 @@
 
             if (course.Owner.Id != userId)
             {
-                throw new ArgumentException(GlobalExceptions.DoNotOwnThisCourseExceptionMessage);
+                throw new ArgumentException(GlobalExceptions.DoesNotOwnThisCourseExceptionMessage);
             }
 
             this.courseRepository.Delete(course);
             await this.courseRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(ImportCourseModel model, string userId, int courseId)
+        public async Task UpdateAsync(ImportCourseModel model, string userId)
         {
             var course = await this.courseRepository
                 .All()
                 .Include(x => x.Owner)
-                .FirstOrDefaultAsync(x => x.Id == courseId);
+                .FirstOrDefaultAsync(x => x.Id == model.Id);
 
             if (course == null)
             {
@@ -75,10 +81,14 @@
 
             if (userId != course.Owner.Id)
             {
-                throw new ArgumentException(GlobalExceptions.DoNotOwnThisCourseExceptionMessage);
+                throw new ArgumentException(GlobalExceptions.DoesNotOwnThisCourseExceptionMessage);
             }
 
             PropertyCopier<ImportCourseModel, Course>.CopyPropertiesFrom(model, course);
+
+            var image = await this.imageService.UploadImage(model.MainImage, "images");
+            course.MainImageUrl = image.UrlPath;
+
             await this.courseRepository.SaveChangesAsync();
         }
 
@@ -196,7 +206,8 @@
                .Include(x => x.Owner)
                .Include(x => x.Reviews)
                .Include(x => x.CourseStudents)
-               .Include(x => x.Content);
+               .Include(x => x.Videos)
+               .Include(x => x.Images);
         }
     }
 }

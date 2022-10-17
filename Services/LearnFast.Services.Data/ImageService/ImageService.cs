@@ -20,7 +20,7 @@
             this.cloudinary = cloudinary;
         }
 
-        public async Task UploadImage(IFormFile imageFile, string nameFolder)
+        public async Task<Image> UploadImage(IFormFile imageFile, string nameFolder)
         {
             using var stream = imageFile.OpenReadStream();
             var image = new Image();
@@ -35,6 +35,8 @@
 
             await this.imageRepository.AddAsync(image);
             await this.imageRepository.SaveChangesAsync();
+
+            return image;
         }
     }
 }

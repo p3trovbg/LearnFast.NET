@@ -5,7 +5,7 @@
     using LearnFast.Services.Mapping.PropertyCopier;
 
     public class PropertyCopier<TParent, TChild>
-        where TParent : class
+        where TParent : class, new()
         where TChild : class
     {
         public static void CopyPropertiesFrom(TParent parent, TChild child)

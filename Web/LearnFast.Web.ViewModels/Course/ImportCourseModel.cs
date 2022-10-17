@@ -1,15 +1,20 @@
 ﻿namespace LearnFast.Web.ViewModels.Course
 {
     using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Mapping.PropertyCopier;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class ImportCourseModel
+    public class ImportCourseModel : IMapFrom<Course>
     {
+        public int Id { get; set; }
+
         [RegularExpression(@"([A-Za-z]\S+)")]
         [Required]
         [Display(Name = "Course title")]
@@ -22,13 +27,13 @@
         [MaxLength(400)]
         public string Description { get; set; }
 
+        [Display(Name = "Upload image")]
         public IFormFile MainImage { get; set; }
 
         [Required]
         [MaxLength(120)]
         public string Requirments { get; set; }
 
-        [Required]
         [Display(Name = "Is free")]
         public bool IsFree { get; set; }
 
@@ -47,5 +52,13 @@
 
         [NotCopy]
         public ApplicationUser Owner { get; set; }
+
+        public string MainImageUrl { get; set; }
+
+        public IEnumerable<SelectListItem> Languages { get; set; }
+
+        public IEnumerable<SelectListItem> Categories { get; set; }
+
+        public IEnumerable<SelectListItem> Difficulties { get; set; }
     }
 }

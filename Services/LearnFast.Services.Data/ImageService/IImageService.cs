@@ -3,10 +3,11 @@
     using System.Threading.Tasks;
 
     using CloudinaryDotNet;
+    using LearnFast.Data.Models;
     using Microsoft.AspNetCore.Http;
 
     public interface IImageService
     {
-        public Task UploadImage(IFormFile imageFile, string nameFolder);
+        public Task<Image> UploadImage(IFormFile imageFile, string nameFolder);
     }
 }
