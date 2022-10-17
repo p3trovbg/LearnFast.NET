@@ -14,11 +14,9 @@ namespace LearnFast.Data.Models
 
         public string Id { get; set; }
 
+        public Course Course { get; set; }
+
         public string UrlPath { get; set; }
-
-        public int ContentId { get; set; }
-
-        public CourseContent Content { get; set; }
 
         public bool IsDeleted { get; set; }
 

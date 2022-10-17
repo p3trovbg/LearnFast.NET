@@ -41,8 +41,6 @@
 
         public DbSet<StudentCourse> StudentCourses { get; set; }
 
-        public DbSet<CourseContent> CourseContents { get; set; }
-
         public DbSet<Video> Videos { get; set; }
 
         public DbSet<Language> Languages { get; set; }

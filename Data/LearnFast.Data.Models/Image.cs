@@ -2,7 +2,7 @@
 namespace LearnFast.Data.Models
 {
     using System;
-
+    using System.Runtime;
     using LearnFast.Data.Common.Models;
 
     public class Image : IDeletableEntity
@@ -16,9 +16,7 @@ namespace LearnFast.Data.Models
 
         public string UrlPath { get; set; }
 
-        public int ContentId { get; set; }
-
-        public CourseContent Content { get; set; }
+        public Course Course { get; set; }
 
         public bool IsDeleted { get; set; }
 

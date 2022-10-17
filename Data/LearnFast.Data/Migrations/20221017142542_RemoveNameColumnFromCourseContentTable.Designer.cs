@@ -4,6 +4,7 @@ using LearnFast.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnFast.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221017142542_RemoveNameColumnFromCourseContentTable")]
+    partial class RemoveNameColumnFromCourseContentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,6 +99,9 @@ namespace LearnFast.Data.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -108,9 +113,6 @@ namespace LearnFast.Data.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("MainImageUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
@@ -148,6 +150,8 @@ namespace LearnFast.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
+
+                    b.HasIndex("ImageId");
 
                     b.HasIndex("IsDeleted");
 
@@ -259,6 +263,9 @@ namespace LearnFast.Data.Migrations
                     b.Property<int>("Grade")
                         .HasColumnType("int");
 
+                    b.Property<string>("ImageId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -267,9 +274,6 @@ namespace LearnFast.Data.Migrations
 
                     b.Property<int>("LanguageId")
                         .HasColumnType("int");
-
-                    b.Property<string>("MainImageUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
@@ -293,6 +297,8 @@ namespace LearnFast.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ImageId");
+
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("LanguageId");
@@ -302,12 +308,45 @@ namespace LearnFast.Data.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("LearnFast.Data.Models.CourseContent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId")
+                        .IsUnique();
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("CourseContents");
+                });
+
             modelBuilder.Entity("LearnFast.Data.Models.Image", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("CourseId")
+                    b.Property<int>("ContentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DeletedOn")
@@ -321,7 +360,7 @@ namespace LearnFast.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("ContentId");
 
                     b.HasIndex("IsDeleted");
 
@@ -479,7 +518,7 @@ namespace LearnFast.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("CourseId")
+                    b.Property<int>("ContentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DeletedOn")
@@ -493,7 +532,7 @@ namespace LearnFast.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("ContentId");
 
                     b.HasIndex("IsDeleted");
 
@@ -614,7 +653,13 @@ namespace LearnFast.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("LearnFast.Data.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
                     b.Navigation("Country");
+
+                    b.Navigation("Image");
                 });
 
             modelBuilder.Entity("LearnFast.Data.Models.Category", b =>
@@ -634,6 +679,10 @@ namespace LearnFast.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("LearnFast.Data.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+
                     b.HasOne("LearnFast.Data.Models.Language", "Language")
                         .WithMany("Courses")
                         .HasForeignKey("LanguageId")
@@ -646,18 +695,33 @@ namespace LearnFast.Data.Migrations
 
                     b.Navigation("Category");
 
+                    b.Navigation("Image");
+
                     b.Navigation("Language");
 
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("LearnFast.Data.Models.Image", b =>
+            modelBuilder.Entity("LearnFast.Data.Models.CourseContent", b =>
                 {
                     b.HasOne("LearnFast.Data.Models.Course", "Course")
-                        .WithMany("Images")
-                        .HasForeignKey("CourseId");
+                        .WithOne("Content")
+                        .HasForeignKey("LearnFast.Data.Models.CourseContent", "CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("LearnFast.Data.Models.Image", b =>
+                {
+                    b.HasOne("LearnFast.Data.Models.CourseContent", "Content")
+                        .WithMany("Images")
+                        .HasForeignKey("ContentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Content");
                 });
 
             modelBuilder.Entity("LearnFast.Data.Models.Review", b =>
@@ -696,11 +760,13 @@ namespace LearnFast.Data.Migrations
 
             modelBuilder.Entity("LearnFast.Data.Models.Video", b =>
                 {
-                    b.HasOne("LearnFast.Data.Models.Course", "Course")
+                    b.HasOne("LearnFast.Data.Models.CourseContent", "Content")
                         .WithMany("Videos")
-                        .HasForeignKey("CourseId");
+                        .HasForeignKey("ContentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Navigation("Course");
+                    b.Navigation("Content");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -781,11 +847,16 @@ namespace LearnFast.Data.Migrations
 
             modelBuilder.Entity("LearnFast.Data.Models.Course", b =>
                 {
+                    b.Navigation("Content");
+
                     b.Navigation("CourseStudents");
 
-                    b.Navigation("Images");
-
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("LearnFast.Data.Models.CourseContent", b =>
+                {
+                    b.Navigation("Images");
 
                     b.Navigation("Videos");
                 });
