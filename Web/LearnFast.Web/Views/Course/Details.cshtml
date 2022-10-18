@@ -1,0 +1,46 @@
+﻿@model LearnFast.Web.ViewModels.Course.CourseViewModel
+
+@{
+    this.ViewData["Title"] = "Course details";
+    this.ViewData["Style"] = "details.css";
+}
+
+<section>
+    <h1>@this.ViewData["Title"]</h1>
+    <hr />
+    <h3>@Model.Title</h3>>
+    <div class="overview">
+        <div class="description">@Model.Description</div>
+        <hr />
+        <div>
+            <div>
+                <span>@Model.ReviewsCount reviews</span>
+                <span>@Model.Sells students</span>
+            </div>
+            <div>Created by: @Model.Owner.FullName</div>
+            <div>Language: @Model.Language.Name</div>
+            <div>@($"${Model.Price:F2} ")<a>enroll in this course</a></div>
+        </div>
+    </div>
+    <div class="main-image">
+        <img src="@Model.MainImageUrl" accept="image/gif, image/jpeg, image/png" width="350" height="400">
+    </div>
+    <hr />
+    <div>
+        <h4>Course requirments</h4>
+        <p>
+            @Model.Requirments;
+        </p>
+    </div>
+    <div>
+        <h4>Course content</h4>
+        <span>@Model.Videos.Count()</span>
+        <span>@Model.Images.Count()</span>
+        <ul>
+            @foreach (var video in Model.Videos)
+            {
+                // TODO: Add videos.
+            }
+        </ul>
+    </div>
+</section>

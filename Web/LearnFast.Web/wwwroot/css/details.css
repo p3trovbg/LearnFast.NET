@@ -1,0 +1,44 @@
+﻿p {
+    position: relative;
+    max-width: 40%;
+    display: inline-block;
+}
+
+h1 {
+    font-family: "Open Sans";
+    text-transform: uppercase;
+    color: rgba(0, 35, 122, 0.9);
+    font-size: 30px;
+    text-decoration: none;
+}
+
+h3 {
+    font-family: "Open Sans";
+    color: rgba(0, 35, 110, 0.9);
+
+}
+
+
+.description {
+    margin-bottom: 70px;
+    margin-left: 0 auto;
+    max-width: 350px;
+    display: inline-block;
+    background-color: antiquewhite;
+    
+}
+
+.overview {
+    display: inline-block;
+    padding: 50px;
+}
+
+.main-image {
+    display: inline-block;
+    margin-left: 50px;
+    position: relative;
+}
+
+    .main-image img {
+        vertical-align: baseline;
+    }
