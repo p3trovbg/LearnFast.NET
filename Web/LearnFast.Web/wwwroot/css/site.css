@@ -2,7 +2,7 @@
 
 body {
     height: 100%;
-    background-image: linear-gradient(to right top, #8e44 0%, #3498db 100%);
+    background-image: linear-gradient(to right top, #FF9999 0%, #FFCC99 100%);
 }
 
 nav {
@@ -13,6 +13,7 @@ nav {
 }
 
     nav ul {
+        display: inline-block;
         text-align: center;
         background: linear-gradient( 90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0) 100% );
         box-shadow: 0 0 25px rgba(0, 0, 0, 0.1), inset 0 0 1px rgba(255, 255, 255, 0.6);
@@ -20,14 +21,15 @@ nav {
 
         nav ul li {
             display: inline-block;
+            text-overflow: clip;
         }
 
-            nav ul li a {
+            nav ul li a, button {
                 padding: 18px;
                 font-family: "Open Sans";
                 text-transform: uppercase;
                 color: rgba(0, 35, 122, 0.5);
-                font-size: 18px;
+                font-size: 16px;
                 text-decoration: none;
                 display: block;
             }
@@ -37,3 +39,4 @@ nav {
                     background: rgba(255, 255, 255, 0.1);
                     color: rgba(0, 35, 122, 0.7);
                 }
+

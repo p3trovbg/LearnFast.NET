@@ -10,6 +10,7 @@
     using LearnFast.Web.ViewModels.Language;
     using LearnFast.Web.ViewModels.Review;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.EntityFrameworkCore;
 
     public class BaseCourseViewModel : IMapFrom<Course>, IHaveCustomMappings
     {
@@ -17,7 +18,7 @@
 
         public decimal Price { get; set; }
 
-        public IFormFile MainImage { get; set; }
+        public string MainImageUrl { get; set; }
 
         [Display(Name = "Free:")]
         public bool IsFree { get; set; }
@@ -26,6 +27,8 @@
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime Duration { get; set; }
+
+        public int Sells { get; set; }
 
         public LanguageViewModel Language { get; set; }
 

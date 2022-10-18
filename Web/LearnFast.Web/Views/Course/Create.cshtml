@@ -7,7 +7,7 @@
 
 <section>
     <h1>@this.ViewData["Title"]</h1>
-
+    <hr />
     <form method="post" enctype="multipart/form-data" class="create-form">
         <div class="form-floating">
             <input asp-for="Title" class="form-control" aria-required="true" />
@@ -70,28 +70,12 @@
         <div class="border-1">
             <img id="uploadedImage" alt="Uploaded Image" accept="image/gif, image/jpeg, image/png" style="display:none;">
         </div>
-
+        <hr />
         <button class="button" asp-controller="Course" asp-action="Create">Create course</button>
     </form>
 </section>
 
 
 @section Scripts {
-    <script>
-        function auto_height(area) {
-            area.style.height = "100px";
-            area.style.height = (area.scrollHeight) + "px";
-        }
-
-        document.getElementById('upload').addEventListener('change', function () {
-            if (this.files[0]) {
-                var picture = new FileReader();
-                picture.readAsDataURL(this.files[0]);
-                picture.addEventListener('load', function (event) {
-                    document.getElementById('uploadedImage').setAttribute('src', event.target.result);
-                    document.getElementById('uploadedImage').style.display = 'block';
-                });
-            }
-        });
-    </script>
+    <script type="module" src="/js/create.js"></script>
 }

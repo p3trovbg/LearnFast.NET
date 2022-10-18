@@ -14,6 +14,8 @@ namespace LearnFast.Data.Models
 
         public string Id { get; set; }
 
+        public string Title { get; set; }
+
         public Course Course { get; set; }
 
         public string UrlPath { get; set; }

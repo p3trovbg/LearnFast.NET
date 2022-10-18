@@ -15,7 +15,6 @@
     {
         public int Id { get; set; }
 
-        [RegularExpression(@"([A-Za-z]\S+)")]
         [Required]
         [Display(Name = "Course title")]
         public string Title { get; set; }
@@ -28,6 +27,7 @@
         public string Description { get; set; }
 
         [Display(Name = "Upload image")]
+        [Required]
         public IFormFile MainImage { get; set; }
 
         [Required]

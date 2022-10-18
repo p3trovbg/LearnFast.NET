@@ -133,12 +133,15 @@
         }
 
         [Authorize]
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var course = await this.filterCourse.GetByIdAsync<CourseViewModel>(id);
-            return this.Redirect("/");
+            var model = await this.filterCourse.GetByIdAsync<CourseViewModel>(id);
+
+            return this.View(model);
         }
 
+        // TODO: These private methods should be moved into the services.
         private void GetDifficultyList(ImportCourseModel model)
         {
             model.Difficulties = this.difficultyService.GetAll()

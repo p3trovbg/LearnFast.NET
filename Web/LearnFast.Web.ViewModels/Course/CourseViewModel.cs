@@ -1,10 +1,9 @@
 ﻿namespace LearnFast.Web.ViewModels.Course
 {
     using System.Collections.Generic;
+    using System.Linq;
 
-    using AutoMapper;
-    using LearnFast.Data.Models;
-    using LearnFast.Services.Mapping;
+    using LearnFast.Web.ViewModels.Content;
     using LearnFast.Web.ViewModels.Review;
 
     public class CourseViewModel : BaseCourseViewModel
@@ -15,7 +14,14 @@
 
         public IEnumerable<ReviewViewModel> Reviews { get; set; }
 
+        public IEnumerable<VideoViewModel> Videos { get; set; }
 
-        // TODO: We should add course students list
+        public IEnumerable<ImageViewModel> Images { get; set; }
+
+        public int ReviewsCount => this.Reviews.Count();
+
+        public int VideosCount => this.Videos.Count();
+
+        public int ImagesCount => this.Images.Count();
     }
 }

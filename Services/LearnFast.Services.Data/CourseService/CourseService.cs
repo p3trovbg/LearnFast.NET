@@ -204,7 +204,6 @@
                .Include(x => x.Category)
                .Include(x => x.Owner)
                .Include(x => x.Reviews)
-               .Include(x => x.CourseStudents)
                .Include(x => x.Videos)
                .Include(x => x.Images);
         }

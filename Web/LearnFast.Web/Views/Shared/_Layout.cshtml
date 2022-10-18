@@ -1,4 +1,6 @@
 ﻿@using LearnFast.Common
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,13 +19,11 @@
                     <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
                 <li>
-                    <a asp-area="" asp-controller="Course" asp-action="Create">Create course</a>
-                </li>
-                <li>
                     <a asp-area="" asp-controller="Home" asp-action="Index">Services</a>
                 </li>
                 <li>
                     <a asp-area="" asp-controller="Home" asp-action="Index">Contact</a>
+                    @await Html.PartialAsync("_LoginPartial")
                 </li>
             </ul>
         </nav>

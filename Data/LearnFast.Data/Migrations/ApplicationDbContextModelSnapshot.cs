@@ -488,6 +488,9 @@ namespace LearnFast.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UrlPath")
                         .HasColumnType("nvarchar(max)");
 
