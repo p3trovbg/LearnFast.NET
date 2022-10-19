@@ -1,0 +1,17 @@
+﻿@model LearnFast.Web.ViewModels.Category.CategoryViewModel
+
+@{
+    this.ViewData["Title"] = "Courses";
+    this.ViewData["Style"] = "category.css";
+}
+
+<section>
+    <h1>@this.ViewData["Title"]</h1>
+    <hr />
+    <div>
+        @foreach (var course in Model.Courses)
+        {
+            <div class="category"><a asp-area="" asp-controller="Home" asp-action="Index">@course.Title</a></div>
+        }
+    </div>
+</section>

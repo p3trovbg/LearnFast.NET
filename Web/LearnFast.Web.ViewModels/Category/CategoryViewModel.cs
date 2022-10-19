@@ -1,8 +1,10 @@
 ﻿namespace LearnFast.Web.ViewModels.Category
 {
-    using LearnFast.Data.Models;
+    using System.Collections.Generic;
 
+    using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
+    using LearnFast.Web.ViewModels.Course;
 
     public class CategoryViewModel : IMapFrom<Category>
     {
@@ -11,5 +13,7 @@
         public string Name { get; set; }
 
         public string Description { get; set; }
+
+        public IEnumerable<BaseCourseViewModel> Courses { get; set; }
     }
 }
