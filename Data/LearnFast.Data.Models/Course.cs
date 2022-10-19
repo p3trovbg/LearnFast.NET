@@ -36,8 +36,6 @@ namespace LearnFast.Data.Models
 
         public Difficulty Difficulty { get; set; }
 
-        public DateTime Duration { get; set; }
-
         public int Sells { get; set; }
 
         public virtual ApplicationUser Owner { get; set; }
