@@ -1,15 +1,10 @@
 ﻿namespace LearnFast.Web.Controllers
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
-    using CloudinaryDotNet.Actions;
     using LearnFast.Data.Models;
-    using LearnFast.Data.Models.Enums;
     using LearnFast.Services.Data;
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Web.ViewModels.Category;
@@ -46,21 +41,13 @@
             this.difficultyService = difficultyService;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            var courses = await  this.courseService.GetAllAsync<BaseCourseViewModel>();
-            var model = new BaseCourseListViewModel { Courses = courses };
-
-            return this.View(model);
-        }
-
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var model = new ImportCourseModel();
 
             this.GetLanguageList(model);
-            this.GetCategoryList(model);
+            await this.GetCategoryList(model);
             this.GetDifficultyList(model);
 
             return this.View(model);
@@ -152,10 +139,10 @@
                 });
         }
 
-        private void GetCategoryList(ImportCourseModel model)
+        private async Task GetCategoryList(ImportCourseModel model)
         {
-            model.Categories = this.categoryService.GetAll<CategoryViewModel>()
-                .Select(x => new SelectListItem()
+            var categories = await this.categoryService.GetAll<CategoryViewModel>();
+            model.Categories = categories.Select(x => new SelectListItem()
                 {
                     Text = x.Name,
                     Value = x.Id.ToString(),

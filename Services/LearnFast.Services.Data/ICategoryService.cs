@@ -9,6 +9,6 @@
     {
         Task<CategoryViewModel> GetCategoryById(int id);
 
-        IEnumerable<T> GetAll<T>();
+        Task<IEnumerable<T>> GetAll<T>();
     }
 }

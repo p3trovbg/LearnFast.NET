@@ -6,7 +6,9 @@ body {
 }
 
 nav {
-    max-width: 960px;
+    max-width: 100%;
+    text-align: center;
+    width: 960px;
     mask-image: linear-gradient( 90deg, rgba(255, 255, 255, 0) 0%, #ffffff 25%, #ffffff 75%, rgba(255, 255, 255, 0) 100% );
     margin: 0 auto;
     padding: 60px 0;

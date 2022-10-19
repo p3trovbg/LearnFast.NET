@@ -23,7 +23,14 @@
             <div>Created by: @Model.Owner.FullName</div>
             <div>Language: @Model.Language.Name</div>
             <div>Difficulty: @Model.Difficulty</div>
-            <div>@($"${Model.Price:F2} ")<a>enroll in this course</a></div>
+            @if (Model.Price <= 0)
+            {
+                <div class="price">Free course</div>
+            }
+            else
+            {
+                <div class="price">@($"${Model.Price:F2}")<a asp-controller="Home" asp-action="Index"><i class="bi bi-bag-fill"></i></a></div>
+            }
         </div>
     </div>
     <div class="main-image">
@@ -38,13 +45,33 @@
     </div>
     <div>
         <h4>Course content</h4>
-        <span>@Model.Videos.Count()</span>
-        <span>@Model.Images.Count()</span>
-        <ul>
-            @foreach (var video in Model.Videos)
-            {
-                // TODO: Add videos.
-            }
-        </ul>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item col-xl-6">
+                @if(Model.VideosCount == 0) {
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            No content yet.
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                        </div>
+                    </div>
+                }
+                @foreach (var video in Model.Videos)
+                {
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            @video.Title;
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            @*// video content*@
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 </section>

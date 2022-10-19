@@ -26,9 +26,9 @@
             this.mapper = mapper;
         }
 
-        public IEnumerable<T> GetAll<T>()
+        public async Task<IEnumerable<T>> GetAll<T>()
         {
-            return this.categoryRepository.AllAsNoTracking().To<T>().ToList();
+            return await this.categoryRepository.AllAsNoTracking().To<T>().ToListAsync();
         }
 
         public async Task<CategoryViewModel> GetCategoryById(int id)

@@ -47,6 +47,8 @@
                 course.MainImageUrl = BaseCourseImageUrl;
             }
 
+            _ = course.Price == 0 ? course.IsFree = true : course.IsFree = false;
+
             await this.courseRepository.AddAsync(course);
             await this.courseRepository.SaveChangesAsync();
         }
@@ -102,6 +104,7 @@
                 course.MainImageUrl = image.UrlPath;
             }
 
+            _ = course.Price == 0 ? course.IsFree = true : course.IsFree = false;
             course.Difficulty = (Difficulty)model.Difficulty;
             await this.courseRepository.SaveChangesAsync();
         }
