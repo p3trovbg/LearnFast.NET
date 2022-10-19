@@ -46,10 +46,10 @@
             this.difficultyService = difficultyService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var courses = this.courseService.GetAllAsync<BaseCourseViewModel>();
-            var model = new BaseCourseListViewModel { Courses = courses.Result };
+            var courses = await  this.courseService.GetAllAsync<BaseCourseViewModel>();
+            var model = new BaseCourseListViewModel { Courses = courses };
 
             return this.View(model);
         }
@@ -129,7 +129,7 @@
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             await this.courseService.UpdateAsync(course, userId);
 
-            return this.Redirect("/");
+            return this.Redirect($"/course/details?id={course.Id}");
         }
 
         [Authorize]

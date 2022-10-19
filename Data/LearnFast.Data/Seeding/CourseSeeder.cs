@@ -21,7 +21,7 @@
 
         private List<Course> GetCourses()
         {
-            using (StreamReader r = new StreamReader("path.json"))
+            using (StreamReader r = new StreamReader("C:\\Users\\Georgi Petrov\\source\\LearnFastProject\\LearnFastProject\\Data\\LearnFast.Data\\Seeding\\coursesJson.json"))
             {
                 string json = r.ReadToEnd();
                 List<Course> items = JsonConvert.DeserializeObject<List<Course>>(json);

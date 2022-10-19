@@ -9,6 +9,7 @@
     using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
     using LearnFast.Data.Models;
+    using LearnFast.Data.Models.Enums;
     using LearnFast.Services.Data.ImageService;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Mapping.PropertyMatcher;
@@ -17,6 +18,7 @@
 
     public class CourseService : ICourseService, ISorterCourse, IFilterCourse
     {
+        private const string BaseCourseImageUrl = "https://akm-img-a-in.tosshub.com/indiatoday/images/bodyeditor/202009/e-learning_digital_education-1200x1080.jpg?XjMNHsb4gLoU_cC7110HB7jVghJQROOj";
         private readonly IMapper mapper;
         private readonly IImageService imageService;
         private readonly IDeletableEntityRepository<Course> courseRepository;
@@ -34,8 +36,16 @@
         public async Task AddCourseAsync(ImportCourseModel model)
         {
             var course = this.mapper.Map<Course>(model);
-            var image = await this.imageService.UploadImage(model.MainImage, "images");
-            course.MainImageUrl = image.UrlPath;
+
+            if (model.MainImage != null)
+            {
+                var image = await this.imageService.UploadImage(model.MainImage, "images");
+                course.MainImageUrl = image.UrlPath;
+            }
+            else
+            {
+                course.MainImageUrl = BaseCourseImageUrl;
+            }
 
             await this.courseRepository.AddAsync(course);
             await this.courseRepository.SaveChangesAsync();
@@ -86,9 +96,13 @@
 
             PropertyCopier<ImportCourseModel, Course>.CopyPropertiesFrom(model, course);
 
-            var image = await this.imageService.UploadImage(model.MainImage, "images");
-            course.MainImageUrl = image.UrlPath;
+            if (model.MainImage != null)
+            {
+                var image = await this.imageService.UploadImage(model.MainImage, "images");
+                course.MainImageUrl = image.UrlPath;
+            }
 
+            course.Difficulty = (Difficulty)model.Difficulty;
             await this.courseRepository.SaveChangesAsync();
         }
 

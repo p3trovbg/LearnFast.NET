@@ -27,7 +27,6 @@
         public string Description { get; set; }
 
         [Display(Name = "Upload image")]
-        [Required]
         public IFormFile MainImage { get; set; }
 
         [Required]
@@ -39,10 +38,6 @@
 
         [Required]
         public int Difficulty { get; set; }
-
-        [Required]
-        [DataType(DataType.DateTime)]
-        public DateTime Duration { get; set; }
 
         [Required]
         public int LanguageId { get; set; }

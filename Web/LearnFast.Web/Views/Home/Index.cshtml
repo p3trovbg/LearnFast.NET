@@ -3,12 +3,6 @@
     this.ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-
-<form method="Post" enctype="multipart/form-data">
-    <input name="image" type="file" multiple accept="image/gif, image/jpeg, image/png">
-    <button type="submit" class="btn btn-lg btn-success">Submit</button>
-</form>
+<section>
+    <h1>Welcome @this.User.Identity.Name</h1>
+</section>

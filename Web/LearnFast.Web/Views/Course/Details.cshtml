@@ -7,26 +7,30 @@
 
 <section>
     <h1>@this.ViewData["Title"]</h1>
+    <h2>@Model.Category.Name (Category)</h2>
     <hr />
     <h3>@Model.Title</h3>>
     <div class="overview">
+        <h4>Description</h4>
         <div class="description">@Model.Description</div>
         <hr />
-        <div>
+        <h4>Overview</h4>
+        <div class="additional-info">
             <div>
                 <span>@Model.ReviewsCount reviews</span>
                 <span>@Model.Sells students</span>
             </div>
             <div>Created by: @Model.Owner.FullName</div>
             <div>Language: @Model.Language.Name</div>
+            <div>Difficulty: @Model.Difficulty</div>
             <div>@($"${Model.Price:F2} ")<a>enroll in this course</a></div>
         </div>
     </div>
     <div class="main-image">
-        <img src="@Model.MainImageUrl" accept="image/gif, image/jpeg, image/png" width="350" height="400">
+        <img src="@Model.MainImageUrl" accept="image/gif, image/jpeg, image/png">
     </div>
     <hr />
-    <div>
+    <div class="requirments">
         <h4>Course requirments</h4>
         <p>
             @Model.Requirments;

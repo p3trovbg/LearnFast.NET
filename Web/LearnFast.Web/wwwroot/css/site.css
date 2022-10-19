@@ -2,7 +2,7 @@
 
 body {
     height: 100%;
-    background-image: linear-gradient(to right top, #FF9999 0%, #FFCC99 100%);
+    background-image: linear-gradient(to right top, #CCCCFF 0%, #FFCC99 100%);
 }
 
 nav {

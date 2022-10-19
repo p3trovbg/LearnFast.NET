@@ -1,44 +1,63 @@
-﻿p {
+﻿section {
+    margin: 0 auto;
+}
+
+p {
     position: relative;
     max-width: 40%;
     display: inline-block;
 }
 
 h1 {
-    font-family: "Open Sans";
+    font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
     text-transform: uppercase;
-    color: rgba(0, 35, 122, 0.9);
+    color: rgba(0, 35, 130, 0.9);
     font-size: 30px;
     text-decoration: none;
+    text-align: center;
+    text-shadow: 2px 2px #ebada3;
+    border: 3px inset #d6c2e0;
 }
 
-h3 {
+h3, h2, h4 {
     font-family: "Open Sans";
     color: rgba(0, 35, 110, 0.9);
 
 }
 
+.description, .additional-info {
+    border: 5px inset #d6c2e0;
+    box-shadow: 5px 5px 6px #ebada3;
+}
+
 
 .description {
-    margin-bottom: 70px;
+    margin-bottom: 40px;
     margin-left: 0 auto;
     max-width: 350px;
     display: inline-block;
-    background-color: antiquewhite;
-    
+    padding: 25px;
 }
 
 .overview {
     display: inline-block;
+    font-family: Georgia, serif;
     padding: 50px;
 }
 
 .main-image {
+    vertical-align: central;
     display: inline-block;
-    margin-left: 50px;
-    position: relative;
+    box-shadow: 60px -16px #ebada3;
 }
 
     .main-image img {
         vertical-align: baseline;
+        width: 470px;
+        height: 520px;
     }
+
+
+.additional-info {
+    padding: 20px;
+}

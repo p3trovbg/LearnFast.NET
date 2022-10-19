@@ -25,9 +25,6 @@
 
         public string Difficulty { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
-        public DateTime Duration { get; set; }
-
         public int Sells { get; set; }
 
         public LanguageViewModel Language { get; set; }
