@@ -1,8 +1,6 @@
 ﻿namespace LearnFast.Web.ViewModels.Course
 {
-    using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
 
     using LearnFast.Data.Models;
@@ -50,10 +48,13 @@
 
         public string MainImageUrl { get; set; }
 
+        [NotCopy]
         public IEnumerable<SelectListItem> Languages { get; set; }
 
+        [NotCopy]
         public IEnumerable<SelectListItem> Categories { get; set; }
 
+        [NotCopy]
         public IEnumerable<SelectListItem> Difficulties { get; set; }
     }
 }

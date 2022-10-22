@@ -28,13 +28,13 @@
             return this.View(model);
         }
 
-        public async Task<IActionResult> CoursesByCategory(int id)
+        public async Task<IActionResult> Courses(int id)
         {
             var courses = await this.filterCourse.GetCoursesByCategoryAsync<BaseCourseViewModel>(id);
 
             var model = new CategoryViewModel { Courses = courses };
 
-            return this.View("CategoryCourses", model);
+            return this.View(model);
         }
     }
 }

@@ -57,7 +57,7 @@ label, legend, #upload-image input {
 
     .button::after {
         content: "";
-        background-color: #ffe54c;
+        background-color: #ffcccc;
         width: 100%;
         z-index: -1;
         position: absolute;

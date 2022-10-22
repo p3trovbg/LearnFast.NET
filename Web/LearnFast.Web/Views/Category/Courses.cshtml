@@ -1,0 +1,82 @@
+﻿@model LearnFast.Web.ViewModels.Category.CategoryViewModel
+
+@{
+    this.ViewData["Title"] = "Courses";
+    this.ViewData["Style"] = "category-courses.css";
+}
+
+<h1>@($"{Model.Name} {this.ViewData["Title"]}")</h1>
+<hr />
+<div class="container">
+    <div class="filter-container">
+        <h3>Filters </h3>
+        <form class="form-inline my-2 my-lg-0 search-form" method="get" enctype="application/x-www-form-urlencoded">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search">
+            <button class="btn btn-outline-success col-12" type="submit">Search</button>
+            <div>
+                <hr />
+                <div>
+                    <h5>Price</h5>
+                    <input class="price form-control" type="number" placeholder="$5">
+                    <br />
+                    <input class="price form-control" type="number" placeholder="$2000">
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox" value="option1">
+                    <label class="form-check-label" for="inlineCheckbox1">Free courses</label>
+                </div>
+            </div>
+            <hr />
+            <div>
+                <h5>Language</h5>
+                <select class="form-select">
+                    <option disabled selected></option>
+                </select>
+                <span class="text-danger"></span>
+            </div>
+            <hr />
+            <div>
+                <h5>Category</h5>
+                <select class="form-select">
+                    <option disabled selected></option>
+                </select>
+                <span class="text-danger"></span>
+            </div>
+            <hr />
+            <div>
+                <h5>Difficulty</h5>
+                <select class="form-select">
+                    <option disabled selected></option>
+                </select>
+                <span class="text-danger"></span>
+            </div>
+            <hr />
+            <button class="btn btn-outline-success col-12" type="submit">Search</button>
+        </form>
+    </div>
+    <div class="courses">
+        @foreach (var course in Model.Courses)
+        {
+            <div class="course-element">
+                <img src="@course.MainImageUrl"></img>
+
+                <div class="title">Title: @course.Title</div>
+                @if (course.Price == 0)
+                {
+                    <p class="price">Free</p>
+
+                }
+                else
+                {
+                    <div class="price">Price: @($"{course.Price:f2}")</div>
+                }
+                
+                <div class="difficulty">Difficulty: @course.Difficulty</div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script type="module" src="/js/filter.js"></script>
+}

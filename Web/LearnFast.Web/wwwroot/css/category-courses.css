@@ -1,0 +1,47 @@
+﻿.container {
+    display: flex;
+}
+
+.courses {
+    padding: 20px;
+    text-align: start;
+    box-shadow: inset 0 3px 6px rgb(222, 203, 219), 0 4px 6px rgba(0,0,0,0.45);
+    border-radius: 10px;
+}
+
+.course-element {
+    text-align: start;
+    border-bottom: 5px ridge #d3b0b7;
+    display: inline-block;
+    margin-bottom: 70px;
+    padding: 20px;
+}
+
+    .course-element img {
+        border: 10px ridge #d3b0b7;
+        max-width: 250px;
+        width: 100%;
+    }
+
+.title, .price, .difficulty {
+    display: block;
+    max-width: fit-content;
+}
+
+.filter-container {
+    display: inline-block;
+    text-align: start;
+    width: auto;
+    max-width: 500px;
+    width: 100%;
+    margin-right: 20px;
+    padding: 10px;
+    box-shadow: inset 0 3px 6px rgba(0,0,0,0.16), 0 4px 6px rgba(0,0,0,0.45);
+    border-radius: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+    .container {
+        display: block;
+    }
+}

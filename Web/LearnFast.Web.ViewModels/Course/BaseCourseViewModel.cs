@@ -1,16 +1,13 @@
 ﻿namespace LearnFast.Web.ViewModels.Course
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
+
     using AutoMapper;
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
     using LearnFast.Web.ViewModels.ApplicationUser;
     using LearnFast.Web.ViewModels.Category;
     using LearnFast.Web.ViewModels.Language;
-    using LearnFast.Web.ViewModels.Review;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.EntityFrameworkCore;
 
     public class BaseCourseViewModel : IMapFrom<Course>, IHaveCustomMappings
     {
