@@ -21,7 +21,7 @@
 
     public class CourseController : BaseController
     {
-        private const string OrderByName = "name";
+        private const string OrderByTitle = "title";
         private const string OrderByPrice = "price";
         private const string OrderDescByPrice = "desc_price";
 
@@ -180,6 +180,22 @@
                 coursesAsQuery = coursesAsQuery.Where(x => x.IsFree);
             }
 
+            if (!string.IsNullOrEmpty(model.SorterArgument))
+            {
+                switch (model.SorterArgument)
+                {
+                    case OrderByTitle:
+                        coursesAsQuery = coursesAsQuery.OrderBy(x => x.Title);
+                        break;
+                    case OrderByPrice:
+                        coursesAsQuery = coursesAsQuery.OrderBy(x => x.Price);
+                        break;
+                    case OrderDescByPrice:
+                        coursesAsQuery = coursesAsQuery.OrderByDescending(x => x.Price);
+                        break;
+                }
+            }
+
             model.Courses = await coursesAsQuery.ToListAsync();
             await this.GetDefaultModelProps(model);
 
@@ -195,7 +211,7 @@
             {
                 new SelectListItem { Text = "Order by price", Value = OrderByPrice },
                 new SelectListItem { Text = "Order by desc price", Value = OrderDescByPrice },
-                new SelectListItem { Text = "Order by name", Value = OrderByName },
+                new SelectListItem { Text = "Order by name", Value = OrderByTitle },
             };
         }
     }

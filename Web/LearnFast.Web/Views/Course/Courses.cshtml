@@ -14,6 +14,13 @@
             <input asp-for="SearchString" class="form-control mr-sm-2" type="search" placeholder="Search">
             <button class="btn btn-outline-success col-6" type="submit">Search</button>
             <div>
+                <h5>Sorter</h5>
+                <select asp-for="SorterArgument" asp-items="@Model.Sorter" class="form-select">
+                    <option disabled selected>Select sorter</option>
+                </select>
+                <span class="text-danger"></span>
+            </div>
+            <div>
                 <hr />
                 <div>
                     <h5>Price</h5>
