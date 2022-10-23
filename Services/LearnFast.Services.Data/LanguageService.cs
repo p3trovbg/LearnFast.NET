@@ -11,6 +11,7 @@
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
     using LearnFast.Web.ViewModels.Language;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
 
     public class LanguageService : ILanguageService
@@ -26,9 +27,9 @@
             this.mapper = mapper;
         }
 
-        public IEnumerable<T> GetAllLanguage<T>()
+        public async Task<IEnumerable<T>> GetAllLanguageAsync<T>()
         {
-            return this.languageRepository.AllAsNoTracking().To<T>().ToList();
+            return await this.languageRepository.AllAsNoTracking().To<T>().ToListAsync();
         }
 
         public async Task<LanguageViewModel> GetLanguageByIdAsync(int id)
@@ -45,6 +46,16 @@
             var model = this.mapper.Map<LanguageViewModel>(language);
 
             return model;
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetLanguageListAsync()
+        {
+            var list = await this.GetAllLanguageAsync<LanguageViewModel>();
+            return list.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.Id.ToString(),
+            }).ToList();
         }
     }
 }

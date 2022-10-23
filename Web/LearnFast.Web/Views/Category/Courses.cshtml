@@ -1,52 +1,52 @@
-﻿@model LearnFast.Web.ViewModels.Category.CategoryViewModel
+﻿@model LearnFast.Web.ViewModels.Filter.FilterViewModel
 
 @{
     this.ViewData["Title"] = "Courses";
     this.ViewData["Style"] = "category-courses.css";
 }
 
-<h1>@($"{Model.Name} {this.ViewData["Title"]}")</h1>
+<h1>@($"{Model.CategoryName} {this.ViewData["Title"]}")</h1>
 <hr />
 <div class="container">
     <div class="filter-container">
         <h3>Filters </h3>
-        <form class="form-inline my-2 my-lg-0 search-form" method="get" enctype="application/x-www-form-urlencoded">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search">
+        <form asp-controller="Course" asp-action="Search" class="form-inline my-2 my-lg-0 search-form" method="get">
+            <input asp-for="SearchString" class="form-control mr-sm-2" type="search" placeholder="Search">
             <button class="btn btn-outline-success col-12" type="submit">Search</button>
             <div>
                 <hr />
                 <div>
                     <h5>Price</h5>
-                    <input class="price form-control" type="number" placeholder="$5">
+                    <input asp-for="InitialPrice" class="price form-control" type="number">
                     <br />
-                    <input class="price form-control" type="number" placeholder="$2000">
+                    <input asp-for="FinalPrice" class="price form-control" type="number">
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="inlineCheckbox" value="option1">
-                    <label class="form-check-label" for="inlineCheckbox1">Free courses</label>
+                    <input asp-for="IsFree" class="form-check-input" type="checkbox">
+                    <label asp-for="IsFree" class="form-check-label">Free courses</label>
                 </div>
             </div>
             <hr />
             <div>
                 <h5>Language</h5>
-                <select class="form-select">
-                    <option disabled selected></option>
+                <select asp-for="LanguageId" asp-items="@Model.Languages" class="form-select">
+                    <option disabled selected>Select language</option>
                 </select>
                 <span class="text-danger"></span>
             </div>
             <hr />
             <div>
                 <h5>Category</h5>
-                <select class="form-select">
-                    <option disabled selected></option>
+                <select asp-for="CategoryId" asp-items="@Model.Categories" class="form-select">
+                    <option disabled selected>Select category</option>
                 </select>
                 <span class="text-danger"></span>
             </div>
             <hr />
             <div>
                 <h5>Difficulty</h5>
-                <select class="form-select">
-                    <option disabled selected></option>
+                <select asp-for="Difficulty" asp-items="@Model.Difficulties" class="form-select">
+                    <option disabled selected>Select difficulty</option>
                 </select>
                 <span class="text-danger"></span>
             </div>
@@ -55,6 +55,7 @@
         </form>
     </div>
     <div class="courses">
+
         @foreach (var course in Model.Courses)
         {
             <div class="course-element">
@@ -70,7 +71,7 @@
                 {
                     <div class="price">Price: @($"{course.Price:f2}")</div>
                 }
-                
+
                 <div class="difficulty">Difficulty: @course.Difficulty</div>
             </div>
         }

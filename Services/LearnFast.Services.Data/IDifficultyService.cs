@@ -1,10 +1,13 @@
-﻿using LearnFast.Data.Models.Enums;
-using System.Collections.Generic;
-
-namespace LearnFast.Services.Data
+﻿namespace LearnFast.Services.Data
 {
+    using System.Collections.Generic;
+
+    using Microsoft.AspNetCore.Mvc.Rendering;
+
     public interface IDifficultyService
     {
         Dictionary<int, string> GetAll();
+
+        IEnumerable<SelectListItem> GetDifficultyList();
     }
 }

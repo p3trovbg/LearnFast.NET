@@ -4,11 +4,14 @@
     using System.Threading.Tasks;
 
     using LearnFast.Web.ViewModels.Category;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public interface ICategoryService
     {
         Task<CategoryViewModel> GetCategoryById(int id);
 
-        Task<IEnumerable<T>> GetAll<T>();
+        Task<IEnumerable<T>> GetAllAsync<T>();
+
+        Task<IEnumerable<SelectListItem>> GetCategoryList();
     }
 }

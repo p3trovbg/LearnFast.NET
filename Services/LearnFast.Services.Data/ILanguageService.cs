@@ -1,13 +1,17 @@
-﻿using LearnFast.Web.ViewModels.Language;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace LearnFast.Services.Data
+﻿namespace LearnFast.Services.Data
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    using LearnFast.Web.ViewModels.Language;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+
     public interface ILanguageService
     {
         Task<LanguageViewModel> GetLanguageByIdAsync(int id);
 
-        IEnumerable<T> GetAllLanguage<T>();
+        Task<IEnumerable<T>> GetAllLanguageAsync<T>();
+
+        Task<IEnumerable<SelectListItem>> GetLanguageListAsync();
     }
 }

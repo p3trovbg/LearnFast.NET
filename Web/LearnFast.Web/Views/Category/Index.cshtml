@@ -11,7 +11,15 @@
     <div>
         @foreach (var category in Model.Categories)
         {
-            <div class="category"><a asp-area="" asp-controller="Home" asp-action="Index">@category.Name</a></div>
+            <div class="category">
+                <a asp-area=""
+                   asp-controller="Category"
+                   asp-action="Courses"
+                   asp-route-id="@category.Id"
+                   asp-route-name="@category.Name">
+                    @category.Name
+                </a>
+            </div>
         }
     </div>
 </section>

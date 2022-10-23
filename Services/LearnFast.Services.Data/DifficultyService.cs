@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using LearnFast.Data.Models.Enums;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class DifficultyService : IDifficultyService
     {
@@ -12,6 +13,16 @@
             return Enum.GetValues(typeof(Difficulty))
                 .Cast<Difficulty>()
                 .ToDictionary(t => (int)t, t => t.ToString());
+        }
+
+        public IEnumerable<SelectListItem> GetDifficultyList()
+        {
+            return this.GetAll()
+                .Select(keyValuePair => new SelectListItem()
+                {
+                    Text = keyValuePair.Value.ToString(),
+                    Value = keyValuePair.Key.ToString(),
+                });
         }
     }
 }

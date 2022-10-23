@@ -9,6 +9,7 @@
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Web.ViewModels.Category;
     using LearnFast.Web.ViewModels.Course;
+    using LearnFast.Web.ViewModels.Filter;
     using LearnFast.Web.ViewModels.Language;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -46,9 +47,9 @@
         {
             var model = new ImportCourseModel();
 
-            this.GetLanguageList(model);
-            await this.GetCategoryList(model);
-            this.GetDifficultyList(model);
+            model.Languages = await this.languageService.GetLanguageListAsync();
+            model.Categories = await this.categoryService.GetCategoryList();
+            model.Difficulties = this.difficultyService.GetDifficultyList();
 
             return this.View(model);
         }
@@ -97,9 +98,9 @@
                 return this.Unauthorized();
             }
 
-            this.GetLanguageList(model);
-            this.GetCategoryList(model);
-            this.GetDifficultyList(model);
+            model.Languages = await this.languageService.GetLanguageListAsync();
+            model.Categories = await this.categoryService.GetCategoryList();
+            model.Difficulties = this.difficultyService.GetDifficultyList();
 
             return this.View(model);
         }
@@ -128,35 +129,11 @@
             return this.View(model);
         }
 
-        // TODO: These private methods should be moved into the services.
-        private void GetDifficultyList(ImportCourseModel model)
+        public async Task<IActionResult> Search(FilterViewModel model)
         {
-            model.Difficulties = this.difficultyService.GetAll()
-                .Select(keyValuePair => new SelectListItem()
-                {
-                    Text = keyValuePair.Value.ToString(),
-                    Value = keyValuePair.Key.ToString(),
-                });
-        }
-
-        private async Task GetCategoryList(ImportCourseModel model)
-        {
-            var categories = await this.categoryService.GetAll<CategoryViewModel>();
-            model.Categories = categories.Select(x => new SelectListItem()
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString(),
-                });
-        }
-
-        private void GetLanguageList(ImportCourseModel model)
-        {
-            model.Languages = this.languageService.GetAllLanguage<LanguageViewModel>().OrderBy(x => x.Name)
-                            .Select(x => new SelectListItem()
-                            {
-                                Text = x.Name,
-                                Value = x.Id.ToString(),
-                            }).ToList();
+            ;
+            // TODO: logic
+            return this.View();
         }
     }
 }

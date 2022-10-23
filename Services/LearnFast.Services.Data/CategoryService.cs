@@ -11,6 +11,8 @@
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
     using LearnFast.Web.ViewModels.Category;
+    using LearnFast.Web.ViewModels.Course;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
 
     public class CategoryService : ICategoryService
@@ -26,7 +28,7 @@
             this.mapper = mapper;
         }
 
-        public async Task<IEnumerable<T>> GetAll<T>()
+        public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
             return await this.categoryRepository.AllAsNoTracking().To<T>().ToListAsync();
         }
@@ -43,6 +45,17 @@
             }
 
             return this.mapper.Map<CategoryViewModel>(category);
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetCategoryList()
+        {
+            var categories = await this.GetAllAsync<CategoryViewModel>();
+
+            return categories.Select(x => new SelectListItem()
+            {
+                Text = x.Name,
+                Value = x.Id.ToString(),
+            });
         }
     }
 }
