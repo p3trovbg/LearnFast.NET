@@ -13,10 +13,10 @@
         {
             <div class="category">
                 <a asp-area=""
-                   asp-controller="Category"
-                   asp-action="Courses"
-                   asp-route-id="@category.Id"
-                   asp-route-name="@category.Name">
+                   asp-controller="Course"
+                   asp-action="Search"
+                   asp-route-categoryId="@category.Id"
+                   asp-route-categoryName="@category.Name">
                     @category.Name
                 </a>
             </div>

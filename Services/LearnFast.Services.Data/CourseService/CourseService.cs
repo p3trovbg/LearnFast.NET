@@ -204,6 +204,11 @@
             return model;
         }
 
+        public IQueryable<T> GetAllAsQueryAble<T>()
+        {
+            return this.GetAllWithBasicInformationAsNoTracking().To<T>();
+        }
+
         private IQueryable<Course> GetAllWithBasicInformationAsNoTracking()
         {
             return this.courseRepository

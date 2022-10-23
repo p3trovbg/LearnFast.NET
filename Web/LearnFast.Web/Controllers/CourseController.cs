@@ -1,23 +1,30 @@
 ﻿namespace LearnFast.Web.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
+
     using LearnFast.Data.Models;
+    using LearnFast.Data.Models.Enums;
     using LearnFast.Services.Data;
     using LearnFast.Services.Data.CourseService;
-    using LearnFast.Web.ViewModels.Category;
     using LearnFast.Web.ViewModels.Course;
     using LearnFast.Web.ViewModels.Filter;
-    using LearnFast.Web.ViewModels.Language;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.EntityFrameworkCore;
 
     public class CourseController : BaseController
     {
+        private const string OrderByName = "name";
+        private const string OrderByPrice = "price";
+        private const string OrderDescByPrice = "desc_price";
+
         private readonly ICourseService courseService;
         private readonly IFilterCourse filterCourse;
         private readonly ILanguageService languageService;
@@ -131,9 +138,65 @@
 
         public async Task<IActionResult> Search(FilterViewModel model)
         {
-            ;
-            // TODO: logic
-            return this.View();
+            var coursesAsQuery = this.courseService.GetAllAsQueryAble<BaseCourseViewModel>();
+
+            if (!string.IsNullOrEmpty(model.SearchString))
+            {
+                coursesAsQuery = coursesAsQuery.Where(x => x.Title.ToLower().Contains(model.SearchString.ToLower()));
+            }
+
+            if (model.CategoryId != null)
+            {
+                coursesAsQuery = coursesAsQuery.Where(x => x.Category.Id == model.CategoryId);
+
+                if (!coursesAsQuery.Any())
+                {
+                    return this.RedirectToAction("Empty", "Category");
+                }
+                else
+                {
+                    model.CategoryName = this.categoryService.GetCategoryName(model.CategoryId);
+                }
+            }
+
+            if (model.FinalPrice > 0 && model.IsFree == false)
+            {
+                coursesAsQuery = coursesAsQuery.Where(x => x.Price >= model.InitialPrice && x.Price <= model.FinalPrice);
+            }
+
+            if (model.LanguageId != null)
+            {
+                coursesAsQuery = coursesAsQuery.Where(x => x.Language.Id == model.LanguageId);
+            }
+
+            if (model.Difficulty != null)
+            {
+                var diff = (Difficulty)model.Difficulty;
+                coursesAsQuery = (IQueryable<BaseCourseViewModel>)coursesAsQuery.AsEnumerable().Where(x => x.Difficulty == diff.ToString());
+            }
+
+            if (model.IsFree)
+            {
+                coursesAsQuery = coursesAsQuery.Where(x => x.IsFree);
+            }
+
+            model.Courses = await coursesAsQuery.ToListAsync();
+            await this.GetDefaultModelProps(model);
+
+            return this.View("Courses", model);
+        }
+
+        private async Task GetDefaultModelProps(FilterViewModel model)
+        {
+            model.Difficulties = this.difficultyService.GetDifficultyList();
+            model.Categories = await this.categoryService.GetCategoryList();
+            model.Languages = await this.languageService.GetLanguageListAsync();
+            model.Sorter = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Order by price", Value = OrderByPrice },
+                new SelectListItem { Text = "Order by desc price", Value = OrderDescByPrice },
+                new SelectListItem { Text = "Order by name", Value = OrderByName },
+            };
         }
     }
 }

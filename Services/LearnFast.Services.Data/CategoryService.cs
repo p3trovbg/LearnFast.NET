@@ -57,5 +57,10 @@
                 Value = x.Id.ToString(),
             });
         }
+
+        public string GetCategoryName(int? id)
+        {
+            return this.categoryRepository.AllAsNoTracking().FirstOrDefault(x => x.Id == id).Name;
+        }
     }
 }

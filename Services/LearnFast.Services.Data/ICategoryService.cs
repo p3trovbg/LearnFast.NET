@@ -13,5 +13,7 @@
         Task<IEnumerable<T>> GetAllAsync<T>();
 
         Task<IEnumerable<SelectListItem>> GetCategoryList();
+
+        string GetCategoryName(int? id);
     }
 }
