@@ -1,14 +1,10 @@
 ﻿namespace LearnFast.Web.Controllers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Security.Claims;
-    using System.Security.Cryptography.X509Certificates;
     using System.Threading.Tasks;
 
     using LearnFast.Data.Models;
-    using LearnFast.Data.Models.Enums;
     using LearnFast.Services.Data;
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Web.ViewModels.Course;
@@ -16,14 +12,12 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using Microsoft.EntityFrameworkCore;
 
     public class CourseController : BaseController
     {
-        private const string OrderByTitle = "title";
-        private const string OrderByPrice = "price";
-        private const string OrderDescByPrice = "desc_price";
+        private const string EmptyView = "Empty";
+        private const string CoursesView = "Courses";
+        private const string CategoryController = "Category";
 
         private readonly ICourseService courseService;
         private readonly IFilterCourse filterCourse;
@@ -67,20 +61,19 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.BadRequest();
+                return this.View(model);
             }
 
             model.Owner = await this.userManager.GetUserAsync(this.User);
-            await this.courseService.AddCourseAsync(model);
+            var courseId = await this.courseService.AddCourseAsync(model);
 
-            return this.Redirect("/");
+            return this.RedirectToAction(nameof(this.Details), new { id = courseId });
         }
 
         [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             try
             {
                 await this.courseService.DeleteCourseByIdAsync(id, userId);
@@ -90,7 +83,7 @@
                 return this.BadRequest(ex.Message);
             }
 
-            return this.Redirect("/");
+            return this.RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -98,18 +91,25 @@
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var model = await this.filterCourse.GetByIdAsync<ImportCourseModel>(id);
-
-            if (model.Owner.Id != userId)
+            try
             {
-                return this.Unauthorized();
+                var model = await this.filterCourse.GetByIdAsync<ImportCourseModel>(id);
+
+                if (model.Owner.Id != userId)
+                {
+                    return this.Unauthorized();
+                }
+
+                model.Languages = await this.languageService.GetLanguageListAsync();
+                model.Categories = await this.categoryService.GetCategoryList();
+                model.Difficulties = this.difficultyService.GetDifficultyList();
+
+                return this.View(model);
             }
-
-            model.Languages = await this.languageService.GetLanguageListAsync();
-            model.Categories = await this.categoryService.GetCategoryList();
-            model.Difficulties = this.difficultyService.GetDifficultyList();
-
-            return this.View(model);
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
         }
 
         [Authorize]
@@ -118,101 +118,42 @@
         {
             if (!this.ModelState.IsValid)
             {
-                return this.BadRequest();
+                return this.View(course);
             }
 
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             await this.courseService.UpdateAsync(course, userId);
 
-            return this.Redirect($"/course/details?id={course.Id}");
+            return this.RedirectToAction(nameof(this.Details), new { id = course.Id });
         }
 
         [Authorize]
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var model = await this.filterCourse.GetByIdAsync<CourseViewModel>(id);
-
-            return this.View(model);
+            try
+            {
+                var model = await this.filterCourse.GetByIdAsync<CourseViewModel>(id);
+                return this.View(model);
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
         }
 
         public async Task<IActionResult> Search(FilterViewModel model)
         {
-            var coursesAsQuery = this.courseService.GetAllAsQueryAble<BaseCourseViewModel>();
-
-            if (!string.IsNullOrEmpty(model.SearchString))
+            try
             {
-                coursesAsQuery = coursesAsQuery.Where(x => x.Title.ToLower().Contains(model.SearchString.ToLower()));
+                await this.courseService.GetAllWithFilter(model);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction(EmptyView, CategoryController);
             }
 
-            if (model.CategoryId != null)
-            {
-                coursesAsQuery = coursesAsQuery.Where(x => x.Category.Id == model.CategoryId);
-
-                if (!coursesAsQuery.Any())
-                {
-                    return this.RedirectToAction("Empty", "Category");
-                }
-                else
-                {
-                    model.CategoryName = this.categoryService.GetCategoryName(model.CategoryId);
-                }
-            }
-
-            if (model.FinalPrice > 0 && model.IsFree == false)
-            {
-                coursesAsQuery = coursesAsQuery.Where(x => x.Price >= model.InitialPrice && x.Price <= model.FinalPrice);
-            }
-
-            if (model.LanguageId != null)
-            {
-                coursesAsQuery = coursesAsQuery.Where(x => x.Language.Id == model.LanguageId);
-            }
-
-            if (model.Difficulty != null)
-            {
-                var diff = (Difficulty)model.Difficulty;
-                coursesAsQuery = (IQueryable<BaseCourseViewModel>)coursesAsQuery.AsEnumerable().Where(x => x.Difficulty == diff.ToString());
-            }
-
-            if (model.IsFree)
-            {
-                coursesAsQuery = coursesAsQuery.Where(x => x.IsFree);
-            }
-
-            if (!string.IsNullOrEmpty(model.SorterArgument))
-            {
-                switch (model.SorterArgument)
-                {
-                    case OrderByTitle:
-                        coursesAsQuery = coursesAsQuery.OrderBy(x => x.Title);
-                        break;
-                    case OrderByPrice:
-                        coursesAsQuery = coursesAsQuery.OrderBy(x => x.Price);
-                        break;
-                    case OrderDescByPrice:
-                        coursesAsQuery = coursesAsQuery.OrderByDescending(x => x.Price);
-                        break;
-                }
-            }
-
-            model.Courses = await coursesAsQuery.ToListAsync();
-            await this.GetDefaultModelProps(model);
-
-            return this.View("Courses", model);
-        }
-
-        private async Task GetDefaultModelProps(FilterViewModel model)
-        {
-            model.Difficulties = this.difficultyService.GetDifficultyList();
-            model.Categories = await this.categoryService.GetCategoryList();
-            model.Languages = await this.languageService.GetLanguageListAsync();
-            model.Sorter = new List<SelectListItem>
-            {
-                new SelectListItem { Text = "Order by price", Value = OrderByPrice },
-                new SelectListItem { Text = "Order by desc price", Value = OrderDescByPrice },
-                new SelectListItem { Text = "Order by name", Value = OrderByTitle },
-            };
+            return this.View(CoursesView, model);
         }
     }
 }

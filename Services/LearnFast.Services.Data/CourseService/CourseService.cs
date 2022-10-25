@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
+    using CloudinaryDotNet.Actions;
     using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
     using LearnFast.Data.Models;
@@ -14,32 +15,50 @@
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Mapping.PropertyMatcher;
     using LearnFast.Web.ViewModels.Course;
+    using LearnFast.Web.ViewModels.Filter;
+    using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
+    using Newtonsoft.Json.Linq;
 
     public class CourseService : ICourseService, ISorterCourse, IFilterCourse
     {
         private const string BaseCourseImageUrl = "https://akm-img-a-in.tosshub.com/indiatoday/images/bodyeditor/202009/e-learning_digital_education-1200x1080.jpg?XjMNHsb4gLoU_cC7110HB7jVghJQROOj";
+        private const string ImageFolderName = "images";
+
+        private const string OrderByTitle = "title";
+        private const string OrderByPrice = "price";
+        private const string OrderDescByPrice = "desc_price";
+
         private readonly IMapper mapper;
         private readonly IImageService imageService;
+        private readonly ICategoryService categoryService;
+        private readonly ILanguageService languageService;
+        private readonly IDifficultyService difficultyService;
         private readonly IDeletableEntityRepository<Course> courseRepository;
 
         public CourseService(
             IMapper mapper,
             IDeletableEntityRepository<Course> courseRepository,
-            IImageService imageService)
+            IImageService imageService,
+            ICategoryService categoryService,
+            ILanguageService languageService,
+            IDifficultyService difficultyService)
         {
             this.mapper = mapper;
             this.courseRepository = courseRepository;
             this.imageService = imageService;
+            this.categoryService = categoryService;
+            this.languageService = languageService;
+            this.difficultyService = difficultyService;
         }
 
-        public async Task AddCourseAsync(ImportCourseModel model)
+        public async Task<int> AddCourseAsync(ImportCourseModel model)
         {
             var course = this.mapper.Map<Course>(model);
 
             if (model.MainImage != null)
             {
-                var image = await this.imageService.UploadImage(model.MainImage, "images");
+                var image = await this.imageService.UploadImage(model.MainImage, ImageFolderName);
                 course.MainImageUrl = image.UrlPath;
             }
             else
@@ -51,6 +70,8 @@
 
             await this.courseRepository.AddAsync(course);
             await this.courseRepository.SaveChangesAsync();
+
+            return course.Id;
         }
 
         public async Task<int> GetCountAsync()
@@ -100,7 +121,7 @@
 
             if (model.MainImage != null)
             {
-                var image = await this.imageService.UploadImage(model.MainImage, "images");
+                var image = await this.imageService.UploadImage(model.MainImage, ImageFolderName);
                 course.MainImageUrl = image.UrlPath;
             }
 
@@ -209,6 +230,80 @@
             return this.GetAllWithBasicInformationAsNoTracking().To<T>();
         }
 
+        public async Task GetAllWithFilter(FilterViewModel model)
+        {
+            var coursesAsQuery = this.GetAllAsQueryAble<BaseCourseViewModel>();
+
+            if (model.CategoryId != null)
+            {
+                coursesAsQuery = coursesAsQuery.Where(x => x.Category.Id == model.CategoryId);
+
+                if (!coursesAsQuery.Any())
+                {
+                    throw new NullReferenceException();
+                }
+                else
+                {
+                    model.CategoryName = this.categoryService.GetCategoryName(model.CategoryId);
+                }
+            }
+
+
+            model.Page = model.Page == null ? 1 : model.Page;
+
+
+            if (!string.IsNullOrEmpty(model.SearchString))
+            {
+                coursesAsQuery = coursesAsQuery.Where(x => x.Title.ToLower().Contains(model.SearchString.ToLower()));
+            }
+
+            if (model.FinalPrice > 0 && model.IsFree == false)
+            {
+                coursesAsQuery = coursesAsQuery.Where(x => x.Price >= model.InitialPrice && x.Price <= model.FinalPrice);
+            }
+
+            if (model.IsFree)
+            {
+                coursesAsQuery = coursesAsQuery.Where(x => x.IsFree);
+            }
+
+            if (model.LanguageId != null)
+            {
+                coursesAsQuery = coursesAsQuery.Where(x => x.Language.Id == model.LanguageId);
+            }
+
+            if (!string.IsNullOrEmpty(model.SorterArgument))
+            {
+                switch (model.SorterArgument)
+                {
+                    case OrderByTitle:
+                        coursesAsQuery = coursesAsQuery.OrderBy(x => x.Title);
+                        break;
+                    case OrderByPrice:
+                        coursesAsQuery = coursesAsQuery.OrderBy(x => x.Price);
+                        break;
+                    case OrderDescByPrice:
+                        coursesAsQuery = coursesAsQuery.OrderByDescending(x => x.Price);
+                        break;
+                }
+            }
+
+            model.Courses = await coursesAsQuery.ToListAsync();
+
+            if (model.Difficulty != null)
+            {
+                var diffString = Enum.GetName(typeof(Difficulty), model.Difficulty);
+                model.Courses = model.Courses.Where(x => x.Difficulty == diffString);
+            }
+
+            model.CoursesCount = model.Courses.Count();
+            model.Courses = model.Courses
+                .Skip((int)((model.Page - 1) * model.ItemsPerPage))
+                .Take(model.ItemsPerPage);
+
+            await this.GetDefaultModelProps(model);
+        }
+
         private IQueryable<Course> GetAllWithBasicInformationAsNoTracking()
         {
             return this.courseRepository
@@ -228,6 +323,19 @@
                .Include(x => x.Reviews)
                .Include(x => x.Videos)
                .Include(x => x.Images);
+        }
+
+        private async Task GetDefaultModelProps(FilterViewModel model)
+        {
+            model.Difficulties = this.difficultyService.GetDifficultyList();
+            model.Categories = await this.categoryService.GetCategoryList();
+            model.Languages = await this.languageService.GetLanguageListAsync();
+            model.Sorter = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Order by price", Value = OrderByPrice },
+                new SelectListItem { Text = "Order by desc price", Value = OrderDescByPrice },
+                new SelectListItem { Text = "Order by name", Value = OrderByTitle },
+            };
         }
     }
 }

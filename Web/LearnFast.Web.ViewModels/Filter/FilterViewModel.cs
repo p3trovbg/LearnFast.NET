@@ -5,7 +5,7 @@
     using LearnFast.Web.ViewModels.Course;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class FilterViewModel
+    public class FilterViewModel : PagingViewModel
     {
         public string? SearchString { get; set; }
 
@@ -34,5 +34,17 @@
         public IEnumerable<SelectListItem>? Languages { get; set; }
 
         public IEnumerable<SelectListItem>? Sorter { get; set; }
+
+        public Dictionary<string, string> Params => new Dictionary<string, string>()
+        {
+            { nameof(this.SearchString), this.SearchString },
+            { nameof(this.LanguageId), this.LanguageId.ToString() },
+            { nameof(this.CategoryId), this.CategoryId.ToString() },
+            { nameof(this.Difficulty), this.Difficulty.ToString() },
+            { nameof(this.InitialPrice), this.InitialPrice.ToString() },
+            { nameof(this.FinalPrice), this.FinalPrice.ToString() },
+            { nameof(this.SorterArgument), this.SorterArgument },
+            { nameof(this.IsFree), this.IsFree.ToString() },
+        };
     }
 }

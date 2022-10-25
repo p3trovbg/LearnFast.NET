@@ -33,18 +33,20 @@
             return await this.categoryRepository.AllAsNoTracking().To<T>().ToListAsync();
         }
 
-        public async Task<CategoryViewModel> GetCategoryById(int id)
+        public async Task<T> GetCategoryById<T>(int id)
         {
             var category = await this.categoryRepository
                 .AllAsNoTracking()
-                .FirstOrDefaultAsync(x => x.Id == id);
+                .Where(x => x.Id == id)
+                .To<T>()
+                .FirstOrDefaultAsync();
 
             if (category == null)
             {
                 throw new NullReferenceException(GlobalExceptions.CategoryNullExceptionMessage);
             }
 
-            return this.mapper.Map<CategoryViewModel>(category);
+            return this.mapper.Map<T>(category);
         }
 
         public async Task<IEnumerable<SelectListItem>> GetCategoryList()

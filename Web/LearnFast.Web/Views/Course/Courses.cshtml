@@ -64,26 +64,52 @@
         </form>
     </div>
     <div class="courses">
-
         @foreach (var course in Model.Courses)
         {
-            <div class="course-element">
-                <img src="@course.MainImageUrl"/>
+            <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id">
+                <div class="course-element">
+                    <img src="@course.MainImageUrl" />
+                    <div class="title">Title: @course.Title</div>
+                    @if (course.Price == 0)
+                    {
+                        <p class="price">Free</p>
 
-                <div class="title">Title: @course.Title</div>
-                @if (course.Price == 0)
-                {
-                    <p class="price">Free</p>
-
-                }
-                else
-                {
-                    <div class="price">Price: @($"{course.Price:f2}")</div>
-                }
-
-                <div class="difficulty">Difficulty: @course.Difficulty</div>
-            </div>
+                    }
+                    else
+                    {
+                        <div class="price">Price: @($"{course.Price:f2}")</div>
+                    }
+                    <div class="difficulty">Difficulty: @course.Difficulty</div>
+                </div>
+            </a>
         }
+        @if (Model.PagesCount > 1)
+        {
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    @if (Model.HasPreviousPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                       asp-action="Search"
+                       asp-all-route-data="@Model.Params"
+                       asp-route-Page="@Model.PreviousPage">Previous</a>
+                        </li>
+                    }
+
+                    @if (Model.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                       asp-action="Search"
+                       asp-all-route-data="@Model.Params"
+                       asp-route-Page="@Model.NextPage">Next</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+
     </div>
 </div>
 

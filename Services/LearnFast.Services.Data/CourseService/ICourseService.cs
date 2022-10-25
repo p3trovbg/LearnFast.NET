@@ -5,12 +5,15 @@
     using System.Threading.Tasks;
 
     using LearnFast.Web.ViewModels.Course;
+    using LearnFast.Web.ViewModels.Filter;
 
     public interface ICourseService
     {
         IQueryable<T> GetAllAsQueryAble<T>();
 
-        Task AddCourseAsync(ImportCourseModel course);
+        Task GetAllWithFilter(FilterViewModel model);
+
+        Task<int> AddCourseAsync(ImportCourseModel course);
 
         Task DeleteCourseByIdAsync(int courseId, string userId);
 

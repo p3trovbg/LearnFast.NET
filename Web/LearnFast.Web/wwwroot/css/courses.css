@@ -16,6 +16,8 @@
     display: inline-block;
     margin-bottom: 70px;
     padding: 20px;
+    max-width: 300px;
+    width: 100%
 }
 
     .course-element img {
@@ -27,6 +29,11 @@
 .title, .price, .difficulty {
     display: block;
     max-width: fit-content;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+a {
+    color: cornflowerblue;
 }
 
 .filter-container {

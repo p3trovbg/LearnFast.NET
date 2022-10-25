@@ -7,6 +7,7 @@
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Mapping.PropertyCopier;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class ImportCourseModel : IMapFrom<Course>
@@ -21,14 +22,14 @@
         public decimal Price { get; set; }
 
         [Required]
-        [MaxLength(400)]
+        [MaxLength(3000)]
         public string Description { get; set; }
 
         [Display(Name = "Upload image")]
         public IFormFile MainImage { get; set; }
 
         [Required]
-        [MaxLength(120)]
+        [MaxLength(3000)]
         public string Requirments { get; set; }
 
         [Display(Name = "Is free")]
