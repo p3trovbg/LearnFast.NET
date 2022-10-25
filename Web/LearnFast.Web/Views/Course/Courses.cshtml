@@ -5,14 +5,11 @@
     this.ViewData["Style"] = "courses.css";
 }
 
-<h1>@($"{Model.CategoryName} - {this.ViewData["Title"]}")</h1>
+<h1>@($"{Model.CategoryName} {this.ViewData["Title"]}")</h1>
 <hr />
 <div class="container">
     <div class="filter-container">
-        <h3>Filters </h3>
         <form asp-controller="Course" asp-action="Search" class="form-inline my-2 my-lg-0 search-form" method="get">
-            <input asp-for="SearchString" class="form-control mr-sm-2" type="search" placeholder="Search">
-            <button class="btn btn-outline-success col-6" type="submit">Search</button>
             <div>
                 <h5>Sorter</h5>
                 <select asp-for="SorterArgument" asp-items="@Model.Sorter" class="form-select">
@@ -20,21 +17,24 @@
                 </select>
                 <span class="text-danger"></span>
             </div>
+            <hr />
+            <input asp-for="SearchString" class="form-control mr-sm-2" type="search" placeholder="Search by title">
             <div>
                 <hr />
                 <div>
                     <h5>Price</h5>
                     <span>From</span>
-                    <input asp-for="InitialPrice" class="price form-control" type="number">
+                    <input asp-for="InitialPrice" class="price form-control" type="number" min="0">
                     <br />
                     <span>To</span>
-                    <input asp-for="FinalPrice" class="price form-control" type="number">
+                    <input asp-for="FinalPrice" class="price form-control" type="number" min="0">
                 </div>
                 <div class="form-check form-check-inline">
                     <input asp-for="IsFree" class="form-check-input" type="checkbox" id="inlineCheckbox">
                     <label asp-for="IsFree" class="form-check-label">Free courses</label>
                 </div>
             </div>
+            <a type="button" class="btn btn-danger btn-sm" asp-action="Search" asp-route-CategoryId="@Model.CategoryId">Clear</a>
             <hr />
             <div>
                 <h5>Language</h5>

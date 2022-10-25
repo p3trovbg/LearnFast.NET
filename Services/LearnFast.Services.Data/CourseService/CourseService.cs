@@ -20,7 +20,7 @@
     using Microsoft.EntityFrameworkCore;
     using Newtonsoft.Json.Linq;
 
-    public class CourseService : ICourseService, ISorterCourse, IFilterCourse
+    public class CourseService : ICourseService, IFilterCourse
     {
         private const string BaseCourseImageUrl = "https://akm-img-a-in.tosshub.com/indiatoday/images/bodyeditor/202009/e-learning_digital_education-1200x1080.jpg?XjMNHsb4gLoU_cC7110HB7jVghJQROOj";
         private const string ImageFolderName = "images";
@@ -135,38 +135,6 @@
             return await this.GetAllWithBasicInformationAsNoTracking().To<T>().ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllOrderByPriceAsync<T>()
-        {
-            return await this.GetAllWithBasicInformationAsNoTracking()
-                .OrderBy(x => x.Price)
-                .To<T>()
-                .ToListAsync();
-        }
-
-        public async Task<IEnumerable<T>> GetAllOrderByDescendingPriceAsync<T>()
-        {
-            return await this.GetAllWithBasicInformationAsNoTracking()
-               .OrderByDescending(x => x.Price)
-               .To<T>()
-               .ToListAsync();
-        }
-
-        public async Task<IEnumerable<T>> GetAllBySellsAsync<T>()
-        {
-            return await this.GetAllWithBasicInformationAsNoTracking()
-               .OrderByDescending(x => x.CourseStudents)
-               .To<T>()
-               .ToListAsync();
-        }
-
-        public async Task<IEnumerable<T>> GetFreeCourseAsync<T>()
-        {
-            return await this.GetAllWithBasicInformationAsNoTracking()
-               .Where(x => x.IsFree)
-               .To<T>()
-               .ToListAsync();
-        }
-
         public async Task<IEnumerable<T>> GetOwnCoursesAsync<T>(string userId)
         {
             return await this.GetAllWithBasicInformationAsNoTracking()
@@ -182,30 +150,6 @@
              .Where(x => x.CourseStudents.Any(x => x.UserId == userId))
              .To<T>()
              .ToListAsync();
-        }
-
-        public async Task<IEnumerable<T>> GetCoursesByLanguageAsync<T>(int languageId)
-        {
-            return await this.GetAllWithBasicInformationAsNoTracking()
-               .Where(x => x.LanguageId == languageId)
-               .To<T>()
-               .ToListAsync();
-        }
-
-        public async Task<IEnumerable<T>> GetCoursesByCategoryAsync<T>(int categoryId)
-        {
-            return await this.GetAllWithBasicInformationAsNoTracking()
-               .Where(x => x.CategoryId == categoryId)
-               .To<T>()
-               .ToListAsync();
-        }
-
-        public async Task<IEnumerable<T>> GetCoursesByDifficultAsync<T>(int difficulty)
-        {
-            return await this.GetAllWithBasicInformationAsNoTracking()
-               .Where(x => (int)x.Difficulty == difficulty)
-               .To<T>()
-               .ToListAsync();
         }
 
         public async Task<T> GetByIdAsync<T>(int courseId)
@@ -247,10 +191,6 @@
                     model.CategoryName = this.categoryService.GetCategoryName(model.CategoryId);
                 }
             }
-
-
-            model.Page = model.Page == null ? 1 : model.Page;
-
 
             if (!string.IsNullOrEmpty(model.SearchString))
             {
@@ -296,6 +236,7 @@
                 model.Courses = model.Courses.Where(x => x.Difficulty == diffString);
             }
 
+            model.Page = model.Page == null ? 1 : model.Page;
             model.CoursesCount = model.Courses.Count();
             model.Courses = model.Courses
                 .Skip((int)((model.Page - 1) * model.ItemsPerPage))

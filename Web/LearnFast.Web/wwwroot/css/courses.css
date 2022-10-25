@@ -3,6 +3,30 @@
     justify-content: space-between;
 }
 
+h1 {
+    font-family: "Open Sans";
+    text-transform: uppercase;
+    color: rgba(0, 35, 122, 0.9);
+    font-size: 30px;
+    text-decoration: none;
+}
+
+h5, h3{
+    font-family: "Open Sans";
+    text-transform: uppercase;
+    color: rgba(0, 35, 122, 0.9);
+    font-size: 18px;
+    text-decoration: none;
+}
+
+span {
+    font-family: "Open Sans";
+    text-transform: uppercase;
+    color: rgba(0, 35, 122, 0.9);
+    font-size: 15px;
+    text-decoration: none;
+}
+
 .courses {
     padding: 20px;
     text-align: start;
