@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using LearnFast.Data.Models;
     using LearnFast.Web.ViewModels.Course;
     using LearnFast.Web.ViewModels.Filter;
 
@@ -22,5 +22,7 @@
         Task<IEnumerable<T>> GetAllAsync<T>();
 
         Task<int> GetCountAsync();
+
+        Task AddVideoToCourse(Video video);
     }
 }

@@ -5,23 +5,19 @@ namespace LearnFast.Data.Models
 
     using LearnFast.Data.Common.Models;
 
-    public class Video : IDeletableEntity
+    public class Video : BaseDeletableModel<string>
     {
         public Video()
         {
             this.Id = Guid.NewGuid().ToString();
         }
 
-        public string Id { get; set; }
-
         public string Title { get; set; }
+
+        public int CourseId { get; set; }
 
         public Course Course { get; set; }
 
         public string UrlPath { get; set; }
-
-        public bool IsDeleted { get; set; }
-
-        public DateTime? DeletedOn { get; set; }
     }
 }

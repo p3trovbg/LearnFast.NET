@@ -14,11 +14,11 @@ h1 {
 .category {
     display: inline-block;
     width: 300px;
-    border: 15px inset #c17e8c;
+    border: 15px inset #7eb3c18c;
     padding: 40px;
     margin: 20px;
     text-align: center;
-    box-shadow: 16px -16px #ebbdb6;
+    box-shadow: 16px -16px rgb(13 110 253 / 11%);
 }
 
     .category a {

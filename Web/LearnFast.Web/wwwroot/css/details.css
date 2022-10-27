@@ -82,3 +82,18 @@ h3, h2, h4 {
     border-left: 3px inset #d6c2e0;
     border-bottom: 3px inset #d6c2e0;
 }
+
+video {
+    width: 100%;
+    max-width: max-content;
+}
+
+.accordion #label::before {
+    content: '+';
+    color: black;
+    position: absolute;
+    top: 50%;
+    right: -5px;
+    font-size: 30px;
+    transform: translateY(-50%);
+}

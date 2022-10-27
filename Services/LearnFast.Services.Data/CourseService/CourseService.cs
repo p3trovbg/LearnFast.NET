@@ -197,7 +197,7 @@
                 coursesAsQuery = coursesAsQuery.Where(x => x.Title.ToLower().Contains(model.SearchString.ToLower()));
             }
 
-            if (model.FinalPrice > 0 && model.IsFree == false)
+            if (model.InitialPrice >= 0 && model.FinalPrice > 0 && model.IsFree == false)
             {
                 coursesAsQuery = coursesAsQuery.Where(x => x.Price >= model.InitialPrice && x.Price <= model.FinalPrice);
             }
@@ -245,6 +245,11 @@
             await this.GetDefaultModelProps(model);
         }
 
+        public async Task AddVideoToCourse(LearnFast.Data.Models.Video video)
+        {
+            
+        }
+
         private IQueryable<Course> GetAllWithBasicInformationAsNoTracking()
         {
             return this.courseRepository
@@ -278,5 +283,6 @@
                 new SelectListItem { Text = "Order by name", Value = OrderByTitle },
             };
         }
+
     }
 }

@@ -134,6 +134,7 @@
             try
             {
                 var model = await this.filterCourse.GetByIdAsync<CourseViewModel>(id);
+                model.CurrentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 return this.View(model);
             }
             catch (Exception ex)

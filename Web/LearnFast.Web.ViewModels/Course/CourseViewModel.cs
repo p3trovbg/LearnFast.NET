@@ -23,5 +23,7 @@
         public int VideosCount => this.Videos.Count();
 
         public int ImagesCount => this.Images.Count();
+
+        public string CurrentUserId { get; set; }
     }
 }

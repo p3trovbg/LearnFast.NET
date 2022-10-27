@@ -1,10 +1,8 @@
 namespace LearnFast.Web
 {
     using System;
-    using System.Configuration;
     using System.Linq;
     using System.Reflection;
-    using System.Security.Principal;
 
     using AutoMapper;
     using CloudinaryDotNet;
@@ -17,6 +15,7 @@ namespace LearnFast.Web
     using LearnFast.Services.Data;
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Services.Data.ImageService;
+    using LearnFast.Services.Data.VideoService;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Messaging;
     using LearnFast.Web.ViewModels;
@@ -100,12 +99,12 @@ namespace LearnFast.Web
 
             services.AddTransient<ICourseService, CourseService>();
             services.AddTransient<IFilterCourse, CourseService>();
-            services.AddTransient<ISorterCourse, CourseService>();
 
             services.AddTransient<ILanguageService, LanguageService>();
             services.AddTransient<ICategoryService, CategoryService>();
 
             services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<IVideoService, VideoService>();
             services.AddTransient<IDifficultyService, DifficultyService>();
         }
 

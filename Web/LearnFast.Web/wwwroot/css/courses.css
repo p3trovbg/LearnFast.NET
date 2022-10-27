@@ -30,22 +30,22 @@ span {
 .courses {
     padding: 20px;
     text-align: start;
-    box-shadow: inset 0 3px 6px rgb(222, 203, 219), 0 4px 6px rgba(0,0,0,0.45);
+    box-shadow: inset 0 3px 6px rgb(13 110 253 / 50%), 0 4px 6px rgba(0,0,0,0.45);
     border-radius: 10px;
 }
 
 .course-element {
     text-align: start;
-    border-bottom: 5px ridge #d3b0b7;
+    border-bottom: 5px ridge rgb(13 110 253 / 25%);
     display: inline-block;
     margin-bottom: 70px;
     padding: 20px;
     max-width: 300px;
-    width: 100%
+    width: 100%;
 }
 
     .course-element img {
-        border: 10px ridge #d3b0b7;
+        border: 10px ridge rgb(13 110 253 / 16%);
         max-width: 230px;
         width: 100%;
     }
@@ -76,4 +76,9 @@ a {
     .container {
         display: block;
     }
+}
+
+#pageCounts {
+    text-align: end;
+    color: rgb(74, 128, 32, 0.90);
 }

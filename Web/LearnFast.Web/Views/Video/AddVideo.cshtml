@@ -1,0 +1,25 @@
+﻿@model LearnFast.Web.ViewModels.Content.ImportVideoModel
+
+@{
+    this.ViewData["Title"] = "Add video";
+}
+
+<section>
+    <h1>@this.ViewData["Title"]</h1>
+    <form method="post" enctype="multipart/form-data" class="create-form">
+        <div class="form-control">
+            <label asp-for="Title"></label>
+            <input asp-for="Title" class="form-control" aria-required="true" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-control">
+            <input asp-for="VideoFile" multiple accept="video/*">
+            <span asp-validation-for="VideoFile" class="text-danger"></span>
+        </div>
+        <button class="button"
+                asp-action="AddVideo"
+                asp-route-CourseId="@Model.CourseId">
+            Upload video
+        </button>
+    </form>
+</section>

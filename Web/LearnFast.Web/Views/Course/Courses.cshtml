@@ -6,6 +6,7 @@
 }
 
 <h1>@($"{Model.CategoryName} {this.ViewData["Title"]}")</h1>
+<span>Category</span>
 <hr />
 <div class="container">
     <div class="filter-container">
@@ -85,31 +86,29 @@
         }
         @if (Model.PagesCount > 1)
         {
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    @if (Model.HasPreviousPage)
-                    {
-                        <li class="page-item">
-                            <a class="page-link"
-                       asp-action="Search"
+            <nav>
+                <ul class="pagination justify-content-between">
+                        @if (Model.HasPreviousPage)
+                        {
+                        <li class="page-item mx-auto">
+                            <a asp-action="Search"
                        asp-all-route-data="@Model.Params"
                        asp-route-Page="@Model.PreviousPage">Previous</a>
                         </li>
-                    }
+                        }
 
-                    @if (Model.HasNextPage)
-                    {
-                        <li class="page-item">
-                            <a class="page-link"
-                       asp-action="Search"
+                        @if (Model.HasNextPage)
+                        {
+                        <li class="page-item mx-auto">
+                            <a asp-action="Search"
                        asp-all-route-data="@Model.Params"
                        asp-route-Page="@Model.NextPage">Next</a>
                         </li>
-                    }
+                        }
+                    <li id="pageCounts" class="page-item"><a>Total pages: @Model.PagesCount</a></li>
                 </ul>
             </nav>
         }
-
     </div>
 </div>
 

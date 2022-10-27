@@ -1,13 +1,12 @@
 ﻿namespace LearnFast.Services.Data.VideoService
 {
-    using System;
     using System.Threading.Tasks;
-    using LearnFast.Data.Common.Repositories;
-    using LearnFast.Data.Models;
-    using Microsoft.AspNetCore.Http;
 
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
+    using LearnFast.Data.Common.Repositories;
+    using LearnFast.Web.ViewModels.Content;
+
     using Video = LearnFast.Data.Models.Video;
 
     public class VideoService : IVideoService
@@ -17,31 +16,34 @@
         private readonly Cloudinary cloudinary;
         private readonly IDeletableEntityRepository<Video> videoRepository;
 
-        public VideoService(IDeletableEntityRepository<Video> videoRepository, Cloudinary cloudinary)
+        public VideoService(
+            IDeletableEntityRepository<Video> videoRepository,
+            Cloudinary cloudinary)
         {
             this.videoRepository = videoRepository;
             this.cloudinary = cloudinary;
         }
 
-        public async Task<Video> UploadVideo(IFormFile videoFile, string videoTitle, string nameFolder = Folder)
+        public async Task UploadVideo(ImportVideoModel model)
         {
-            using var stream = videoFile.OpenReadStream();
+            using var stream = model.VideoFile.OpenReadStream();
             var video = new Video();
-            video.Title = videoTitle;
+            video.Title = model.Title;
+
             var uploadParams = new VideoUploadParams()
             {
                 File = new FileDescription(video.Id, stream),
                 Overwrite = true,
-                Folder = nameFolder,
+                Folder = Folder,
             };
 
             var result = await this.cloudinary.UploadAsync(uploadParams);
             video.UrlPath = result.Url.ToString();
 
+            video.CourseId = model.CourseId;
+
             await this.videoRepository.AddAsync(video);
             await this.videoRepository.SaveChangesAsync();
-
-            return video;
         }
     }
 }

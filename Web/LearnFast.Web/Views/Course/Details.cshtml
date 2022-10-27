@@ -7,7 +7,8 @@
 
 <section>
     <h1>@this.ViewData["Title"]</h1>
-    <h2>@Model.Category.Name (Category)</h2>
+    <span>Category</span>
+    <h2>@Model.Category.Name</h2>
     <hr />
     <h3>@Model.Title</h3>>
     <div class="overview">
@@ -44,34 +45,39 @@
         </p>
     </div>
     <div>
+        @if (Model.Owner.Id == Model.CurrentUserId)
+        {
+            <a asp-controller="Video" 
+               asp-action="AddVideo" 
+               asp-route-courseId="@Model.Id"
+               asp-route-ownerId="@Model.Owner.Id" type="submit">Add video</a>
+        }
         <h4>Course content</h4>
-        <div class="accordion" id="accordionExample">
-            <div class="accordion-item col-xl-6">
-                @if(Model.VideosCount == 0) {
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            No content yet.
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                        </div>
-                    </div>
-                }
-                @foreach (var video in Model.Videos)
-                {
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            @video.Title;
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            @*// video content*@
-                        </div>
-                    </div>
-                }
+        @if (Model.VideosCount == 0)
+        {
+            <div class="alert alert-info mx-auto" role="alert">
+                No contents.
             </div>
-        </div>
+        }
+        else
+        {
+            @foreach (var video in Model.Videos)
+            {
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@(video.Title)" aria-expanded="false" aria-controls="flush-collapseOne">
+                                @video.Title
+                            </button>
+                        </h2>
+                        <div id="@video.Title" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                <video src="@video.UrlPath" controls></video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
     </div>
 </section>
