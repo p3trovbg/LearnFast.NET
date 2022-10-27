@@ -1,4 +1,4 @@
-﻿namespace LearnFast.Services.Data
+﻿namespace LearnFast.Services.Data.DifficultyService
 {
     using System;
     using System.Collections.Generic;
@@ -17,7 +17,7 @@
 
         public IEnumerable<SelectListItem> GetDifficultyList()
         {
-            return this.GetAll()
+            return GetAll()
                 .Select(keyValuePair => new SelectListItem()
                 {
                     Text = keyValuePair.Value.ToString(),

@@ -1,4 +1,4 @@
-﻿namespace LearnFast.Services.Data
+﻿namespace LearnFast.Services.Data.CategoryService
 {
     using System;
     using System.Collections.Generic;
@@ -30,12 +30,12 @@
 
         public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            return await this.categoryRepository.AllAsNoTracking().To<T>().ToListAsync();
+            return await categoryRepository.AllAsNoTracking().To<T>().ToListAsync();
         }
 
         public async Task<T> GetCategoryById<T>(int id)
         {
-            var category = await this.categoryRepository
+            var category = await categoryRepository
                 .AllAsNoTracking()
                 .Where(x => x.Id == id)
                 .To<T>()
@@ -46,12 +46,12 @@
                 throw new NullReferenceException(GlobalExceptions.CategoryNullExceptionMessage);
             }
 
-            return this.mapper.Map<T>(category);
+            return mapper.Map<T>(category);
         }
 
         public async Task<IEnumerable<SelectListItem>> GetCategoryList()
         {
-            var categories = await this.GetAllAsync<CategoryViewModel>();
+            var categories = await GetAllAsync<CategoryViewModel>();
 
             return categories.Select(x => new SelectListItem()
             {
@@ -62,7 +62,7 @@
 
         public string GetCategoryName(int? id)
         {
-            return this.categoryRepository.AllAsNoTracking().FirstOrDefault(x => x.Id == id).Name;
+            return categoryRepository.AllAsNoTracking().FirstOrDefault(x => x.Id == id).Name;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace LearnFast.Services.Data
+﻿namespace LearnFast.Services.Data.DifficultyService
 {
     using System.Collections.Generic;
 

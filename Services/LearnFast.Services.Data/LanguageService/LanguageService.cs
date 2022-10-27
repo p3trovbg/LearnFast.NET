@@ -1,4 +1,4 @@
-﻿namespace LearnFast.Services.Data
+﻿namespace LearnFast.Services.Data.LanguageService
 {
     using System;
     using System.Collections.Generic;
@@ -29,12 +29,12 @@
 
         public async Task<IEnumerable<T>> GetAllLanguageAsync<T>()
         {
-            return await this.languageRepository.AllAsNoTracking().To<T>().ToListAsync();
+            return await languageRepository.AllAsNoTracking().To<T>().ToListAsync();
         }
 
         public async Task<LanguageViewModel> GetLanguageByIdAsync(int id)
         {
-            var language = await this.languageRepository
+            var language = await languageRepository
                 .AllAsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -43,14 +43,14 @@
                 throw new NullReferenceException(GlobalExceptions.LanguageNullExceptionMessage);
             }
 
-            var model = this.mapper.Map<LanguageViewModel>(language);
+            var model = mapper.Map<LanguageViewModel>(language);
 
             return model;
         }
 
         public async Task<IEnumerable<SelectListItem>> GetLanguageListAsync()
         {
-            var list = await this.GetAllLanguageAsync<LanguageViewModel>();
+            var list = await GetAllLanguageAsync<LanguageViewModel>();
             return list.Select(x => new SelectListItem
             {
                 Text = x.Name,

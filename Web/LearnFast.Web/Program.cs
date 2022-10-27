@@ -13,8 +13,12 @@ namespace LearnFast.Web
     using LearnFast.Data.Repositories;
     using LearnFast.Data.Seeding;
     using LearnFast.Services.Data;
+    using LearnFast.Services.Data.CategoryService;
+    using LearnFast.Services.Data.CountryService;
     using LearnFast.Services.Data.CourseService;
+    using LearnFast.Services.Data.DifficultyService;
     using LearnFast.Services.Data.ImageService;
+    using LearnFast.Services.Data.LanguageService;
     using LearnFast.Services.Data.VideoService;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Messaging;

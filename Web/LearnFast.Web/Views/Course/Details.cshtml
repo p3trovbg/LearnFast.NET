@@ -47,10 +47,14 @@
     <div>
         @if (Model.Owner.Id == Model.CurrentUserId)
         {
-            <a asp-controller="Video" 
-               asp-action="AddVideo" 
-               asp-route-courseId="@Model.Id"
-               asp-route-ownerId="@Model.Owner.Id" type="submit">Add video</a>
+            <a class="btn btn-success" asp-controller="Video"
+           asp-action="AddVideo"
+           asp-route-courseId="@Model.Id"
+           asp-route-ownerId="@Model.Owner.Id">Add video</a>
+
+            <a class="btn btn-success" asp-controller="Course"
+           asp-action="Edit"
+           asp-route-id="@Model.Id">Edit course</a>
         }
         <h4>Course content</h4>
         @if (Model.VideosCount == 0)
@@ -61,16 +65,18 @@
         }
         else
         {
-            @foreach (var video in Model.Videos)
+            var videos = Model.Videos.ToArray();
+            @for (int i = 0; i < Model.VideosCount; i++)
             {
-                <div class="accordion accordion-flush" id="accordionFlushExample">
+                var video = videos[i];
+                <div class="accordion accordion-flush" id="#@(i + 1)">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="flush-headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@(video.Title)" aria-expanded="false" aria-controls="flush-collapseOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@(i)" aria-expanded="false" aria-controls="flush-collapseOne">
                                 @video.Title
                             </button>
                         </h2>
-                        <div id="@video.Title" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                        <div id="@i" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#@(i + 1)">
                             <div class="accordion-body">
                                 <video src="@video.UrlPath" controls></video>
                             </div>
@@ -78,6 +84,7 @@
                     </div>
                 </div>
             }
+            
         }
     </div>
 </section>

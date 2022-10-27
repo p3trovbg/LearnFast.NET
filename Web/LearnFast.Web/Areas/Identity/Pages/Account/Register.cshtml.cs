@@ -14,7 +14,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
     using System.Threading.Tasks;
 
     using LearnFast.Data.Models;
-    using LearnFast.Services.Data;
+    using LearnFast.Services.Data.CountryService;
     using LearnFast.Web.ViewModels.Country;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;

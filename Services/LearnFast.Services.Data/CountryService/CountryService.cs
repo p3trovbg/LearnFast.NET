@@ -1,4 +1,4 @@
-﻿namespace LearnFast.Services.Data
+﻿namespace LearnFast.Services.Data.CountryService
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -18,12 +18,12 @@
 
         public IEnumerable<T> GetAll<T>()
         {
-            return this.countryRepository.All().To<T>().ToList();
+            return countryRepository.All().To<T>().ToList();
         }
 
         public IEnumerable<T> GetAllOrderByAlphabetical<T>()
         {
-            return this.countryRepository.All().OrderBy(x => x.Name).To<T>().ToList();
+            return countryRepository.All().OrderBy(x => x.Name).To<T>().ToList();
 
         }
     }

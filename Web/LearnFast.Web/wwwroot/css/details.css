@@ -12,23 +12,23 @@ p {
 h1 {
     font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
     text-transform: uppercase;
-    color: #974f81;
+    color: #325170;
     font-size: 30px;
     text-decoration: none;
     text-align: center;
-    text-shadow: 2px 2px #ebada3;
+    text-shadow: 2px 2px rgb(13 110 253 / 25%);
     text-emphasis-style: filled;
 }
 
-h3, h2, h4 {
+h3, h2, h4, span {
     font-family: "Open Sans";
     color: rgba(0, 35, 110, 0.9);
 
 }
 
 .description, .additional-info {
-    border: 5px inset #d6c2e0;
-    box-shadow: 5px 5px 6px #ebada3;
+    border: 5px inset rgb(13 110 253 / 25%);
+    box-shadow: 5px 5px 6px rgb(13 110 253 / 25%);
 }
 
 
@@ -50,7 +50,7 @@ h3, h2, h4 {
     margin-top: 7em;
     vertical-align: top;
     display: inline-block;
-    box-shadow: 60px -16px #ebada3;
+    box-shadow: 60px -16px rgb(13 110 253 / 25%);
 }
 
     .main-image img {
@@ -69,18 +69,18 @@ h3, h2, h4 {
     font-size: 30px;
     text-decoration: none;
     text-align: center;
-    text-shadow: 2px 2px #ebada3;
-    border: 3px inset #d6c2e0;
+    text-shadow: 2px 2px rgb(13 110 253 / 25%);
+    border: 3px inset rgb(13 110 253 / 25%);
 }
 
-.price i {
-    color: antiquewhite;
-    margin-left: 5px;
-}
+    .price i {
+        color: #325170;
+        margin-left: 5px;
+    }
 
 .requirments {
-    border-left: 3px inset #d6c2e0;
-    border-bottom: 3px inset #d6c2e0;
+    border-left: 3px inset rgb(13 110 253 / 25%);
+    border-bottom: 3px inset rgb(13 110 253 / 25%);
 }
 
 video {
