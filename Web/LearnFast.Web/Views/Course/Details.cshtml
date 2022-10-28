@@ -66,25 +66,35 @@
         else
         {
             var videos = Model.Videos.ToArray();
-            @for (int i = 0; i < Model.VideosCount; i++)
-            {
-                var video = videos[i];
-                <div class="accordion accordion-flush" id="#@(i + 1)">
+            <div class="accordion" id="flush">
+                @for (int i = 0; i < Model.VideosCount; i++)
+                {
+                    var video = videos[i];
                     <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush-headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#@(i)" aria-expanded="false" aria-controls="flush-collapseOne">
+                        <h2 class="accordion-header" id="flush-@i + 1">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-@i" aria-expanded="false" aria-controls="flush-@i">
                                 @video.Title
                             </button>
                         </h2>
-                        <div id="@i" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#@(i + 1)">
+                        <div id="flush-@i" class="accordion-collapse collapse" aria-labelledby="flush-@i + 1" data-bs-parent="#flush">
                             <div class="accordion-body">
                                 <video src="@video.UrlPath" controls></video>
                             </div>
+                            @if (Model.Owner.Id == Model.CurrentUserId)
+                            {
+                                <div class="accordion-body text-end">
+                                    <a asp-area=""
+                                       asp-controller="Video"
+                                       asp-action="RemoveVideo"
+                                       asp-route-videoId="@video.Id"
+                                       asp-route-ownerId="@Model.Owner.Id"
+                                       asp-route-courseId="@Model.Id" class="btn btn-outline-danger">Delete video</a>
+                                </div>
+                            }
                         </div>
                     </div>
-                </div>
-            }
-            
+                }
+            </div>
         }
     </div>
 </section>

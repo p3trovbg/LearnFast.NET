@@ -40,10 +40,21 @@
                 this.BadRequest();
             }
 
-
-
             await this.videoService.UploadVideo(model);
             return this.RedirectToAction("Details", "Course", new { id = model.CourseId });
+        }
+
+        public async Task<IActionResult> RemoveVideo(string videoId, string ownerId, int courseId)
+        {
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (currentUserId != ownerId)
+            {
+                return this.NotFound();
+            }
+
+            await this.videoService.RemoveVideo(videoId);
+
+            return this.RedirectToAction("Details", "Course", new { id = courseId });
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model LearnFast.Web.ViewModels.Filter.FilterViewModel
+﻿@model LearnFast.Web.ViewModels.Filter.SearchViewModel
 
 @{
     this.ViewData["Title"] = "Courses";
@@ -67,20 +67,19 @@
     <div class="courses">
         @foreach (var course in Model.Courses)
         {
-            <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id">
-                <div class="course-element">
+            <a class="course-element" asp-controller="Course" asp-action="Details" asp-route-id="@course.Id">
+                <div>
                     <img src="@course.MainImageUrl" />
                     <div class="title">Title: @course.Title</div>
+                    <div class="difficulty">Difficulty: @course.Difficulty</div>
                     @if (course.Price == 0)
                     {
-                        <p class="price">Free</p>
-
+                        <p class="price">Free course</p>
                     }
                     else
                     {
                         <div class="price">Price: @($"{course.Price:f2}")</div>
                     }
-                    <div class="difficulty">Difficulty: @course.Difficulty</div>
                 </div>
             </a>
         }
@@ -112,5 +111,5 @@
 </div>
 
 @section Scripts {
-    <script type="module" src="/js/filter.js" asp-append-version="false"></script>
+    <script type="module" src="/js/filter.js" asp-append-version="true"></script>
 }

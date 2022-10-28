@@ -9,5 +9,7 @@
     public interface IVideoService
     {
         public Task UploadVideo(ImportVideoModel model);
+
+        public Task RemoveVideo(string videoId);
     }
 }

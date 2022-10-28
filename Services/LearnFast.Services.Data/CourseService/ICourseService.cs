@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using LearnFast.Data.Models;
+
     using LearnFast.Web.ViewModels.Course;
     using LearnFast.Web.ViewModels.Filter;
 
@@ -11,7 +11,7 @@
     {
         IQueryable<T> GetAllAsQueryAble<T>();
 
-        Task GetAllWithFilter(FilterViewModel model);
+        Task GetAllWithFilter(SearchViewModel model);
 
         Task<int> AddCourseAsync(ImportCourseModel course);
 
@@ -22,7 +22,5 @@
         Task<IEnumerable<T>> GetAllAsync<T>();
 
         Task<int> GetCountAsync();
-
-        Task AddVideoToCourse(Video video);
     }
 }

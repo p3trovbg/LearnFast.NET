@@ -1,11 +1,14 @@
 ﻿namespace LearnFast.Services.Data.VideoService
 {
+    using System;
     using System.Threading.Tasks;
 
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
+    using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
     using LearnFast.Web.ViewModels.Content;
+    using Microsoft.EntityFrameworkCore;
 
     using Video = LearnFast.Data.Models.Video;
 
@@ -22,6 +25,19 @@
         {
             this.videoRepository = videoRepository;
             this.cloudinary = cloudinary;
+        }
+
+        public async Task RemoveVideo(string videoId)
+        {
+            var targetVideo = await this.videoRepository.All().FirstOrDefaultAsync(x => x.Id == videoId);
+
+            if (targetVideo == null)
+            {
+                throw new ArgumentException(GlobalExceptions.VideoIsNotExistExceptionMessage);
+            }
+
+            this.videoRepository.Delete(targetVideo);
+            await this.videoRepository.SaveChangesAsync();
         }
 
         public async Task UploadVideo(ImportVideoModel model)

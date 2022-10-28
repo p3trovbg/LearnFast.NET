@@ -177,7 +177,7 @@
             return this.GetAllWithBasicInformationAsNoTracking().To<T>();
         }
 
-        public async Task GetAllWithFilter(FilterViewModel model)
+        public async Task GetAllWithFilter(SearchViewModel model)
         {
             var coursesAsQuery = this.GetAllAsQueryAble<BaseCourseViewModel>();
 
@@ -248,11 +248,6 @@
             await this.GetDefaultModelProps(model);
         }
 
-        public async Task AddVideoToCourse(LearnFast.Data.Models.Video video)
-        {
-            
-        }
-
         private IQueryable<Course> GetAllWithBasicInformationAsNoTracking()
         {
             return this.courseRepository
@@ -274,7 +269,7 @@
                .Include(x => x.Images);
         }
 
-        private async Task GetDefaultModelProps(FilterViewModel model)
+        private async Task GetDefaultModelProps(SearchViewModel model)
         {
             model.Difficulties = this.difficultyService.GetDifficultyList();
             model.Categories = await this.categoryService.GetCategoryList();

@@ -1,5 +1,5 @@
 ﻿h1 {
-    margin-left: 40px;
+    text-align: center;
     font-family: "Open Sans";
     text-transform: uppercase;
     color: rgba(0, 35, 122, 0.9);
@@ -74,6 +74,6 @@ label, legend, #upload-image input {
 
 #uploadedImage {
     border: 5px inset #ffe54c;
-    width: 470px;
-    height: 520px;
+    width: 100%;
+    max-width: 350px;
 }

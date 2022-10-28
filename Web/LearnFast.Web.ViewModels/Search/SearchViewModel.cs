@@ -5,7 +5,7 @@
     using LearnFast.Web.ViewModels.Course;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class FilterViewModel : PagingViewModel
+    public class SearchViewModel : PagingViewModel
     {
         public string? SearchString { get; set; }
 

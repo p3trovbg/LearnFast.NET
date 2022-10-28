@@ -5,8 +5,10 @@
     using System.Threading.Tasks;
 
     using LearnFast.Data.Models;
-    using LearnFast.Services.Data;
+    using LearnFast.Services.Data.CategoryService;
     using LearnFast.Services.Data.CourseService;
+    using LearnFast.Services.Data.DifficultyService;
+    using LearnFast.Services.Data.LanguageService;
     using LearnFast.Web.ViewModels.Course;
     using LearnFast.Web.ViewModels.Filter;
     using Microsoft.AspNetCore.Authorization;
@@ -143,7 +145,7 @@
             }
         }
 
-        public async Task<IActionResult> Search(FilterViewModel model)
+        public async Task<IActionResult> Search(SearchViewModel model)
         {
             try
             {

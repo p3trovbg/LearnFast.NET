@@ -87,13 +87,3 @@ video {
     width: 100%;
     max-width: max-content;
 }
-
-.accordion #label::before {
-    content: '+';
-    color: black;
-    position: absolute;
-    top: 50%;
-    right: -5px;
-    font-size: 30px;
-    transform: translateY(-50%);
-}
