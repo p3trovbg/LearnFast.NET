@@ -13,6 +13,9 @@
         [Required]
         public int CourseId { get; set; }
 
+        [StringLength(150)]
+        public string Description { get; set; }
+
         [Required]
         public IFormFile VideoFile { get; set; }
     }

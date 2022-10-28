@@ -2,15 +2,14 @@
 {
     using System;
     using System.Threading.Tasks;
+
     using AutoMapper;
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
     using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
-    using LearnFast.Data.Models;
     using LearnFast.Services.Mapping.PropertyMatcher;
     using LearnFast.Web.ViewModels.Content;
-    using LearnFast.Web.ViewModels.Course;
     using Microsoft.EntityFrameworkCore;
 
     using Video = LearnFast.Data.Models.Video;
@@ -25,10 +24,12 @@
 
         public VideoService(
             IDeletableEntityRepository<Video> videoRepository,
-            Cloudinary cloudinary)
+            Cloudinary cloudinary,
+            IMapper mapper)
         {
             this.videoRepository = videoRepository;
             this.cloudinary = cloudinary;
+            this.mapper = mapper;
         }
 
         public async Task EditVideo(EditVideoViewModel model)
@@ -45,8 +46,10 @@
             if (model.VideoFile != null)
             {
                 var inputModel = this.mapper.Map<ImportVideoModel>(targetVideo);
-                var newUrlPath = await this.UploadVideo(inputModel);
-                targetVideo.UrlPath = newUrlPath;
+                inputModel.VideoFile = model.VideoFile;
+
+                var result = await this.RemoteUpload(inputModel, model.Id);
+                targetVideo.UrlPath = result.Url.ToString();
             }
 
             await this.videoRepository.SaveChangesAsync();
@@ -67,18 +70,11 @@
 
         public async Task<string> UploadVideo(ImportVideoModel model)
         {
-            using var stream = model.VideoFile.OpenReadStream();
             var video = new Video();
             video.Title = model.Title;
+            video.Description = model.Description;
 
-            var uploadParams = new VideoUploadParams()
-            {
-                File = new FileDescription(video.Id, stream),
-                Overwrite = true,
-                Folder = Folder,
-            };
-
-            var result = await this.cloudinary.UploadAsync(uploadParams);
+            var result = await this.RemoteUpload(model, video.Id);
             video.UrlPath = result.Url.ToString();
 
             video.CourseId = model.CourseId;
@@ -87,6 +83,20 @@
             await this.videoRepository.SaveChangesAsync();
 
             return video.UrlPath;
+        }
+
+        private async Task<VideoUploadResult> RemoteUpload(ImportVideoModel model, string videoId)
+        {
+            using var stream = model.VideoFile.OpenReadStream();
+
+            var uploadParams = new VideoUploadParams()
+            {
+                File = new FileDescription(videoId, stream),
+                Overwrite = true,
+                Folder = Folder,
+            };
+
+            return await this.cloudinary.UploadAsync(uploadParams);
         }
     }
 }

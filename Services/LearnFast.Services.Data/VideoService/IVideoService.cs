@@ -2,9 +2,7 @@
 {
     using System.Threading.Tasks;
 
-    using LearnFast.Data.Models;
     using LearnFast.Web.ViewModels.Content;
-    using Microsoft.AspNetCore.Http;
 
     public interface IVideoService
     {

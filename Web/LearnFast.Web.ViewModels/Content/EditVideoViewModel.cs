@@ -20,5 +20,7 @@
 
         [NotCopy]
         public IFormFile VideoFile { get; set; }
+
+        public string Description { get; set; }
     }
 }
