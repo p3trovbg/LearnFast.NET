@@ -2,12 +2,15 @@
 {
     using System;
     using System.Threading.Tasks;
-
+    using AutoMapper;
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
     using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
+    using LearnFast.Data.Models;
+    using LearnFast.Services.Mapping.PropertyMatcher;
     using LearnFast.Web.ViewModels.Content;
+    using LearnFast.Web.ViewModels.Course;
     using Microsoft.EntityFrameworkCore;
 
     using Video = LearnFast.Data.Models.Video;
@@ -18,6 +21,7 @@
 
         private readonly Cloudinary cloudinary;
         private readonly IDeletableEntityRepository<Video> videoRepository;
+        private readonly IMapper mapper;
 
         public VideoService(
             IDeletableEntityRepository<Video> videoRepository,
@@ -25,6 +29,27 @@
         {
             this.videoRepository = videoRepository;
             this.cloudinary = cloudinary;
+        }
+
+        public async Task EditVideo(EditVideoViewModel model)
+        {
+            var targetVideo = await this.videoRepository.All().FirstOrDefaultAsync(x => x.Id == model.Id);
+
+            if (targetVideo == null)
+            {
+                throw new ArgumentException(GlobalExceptions.VideoIsNotExistExceptionMessage);
+            }
+
+            PropertyCopier<EditVideoViewModel, Video>.CopyPropertiesFrom(model, targetVideo);
+
+            if (model.VideoFile != null)
+            {
+                var inputModel = this.mapper.Map<ImportVideoModel>(targetVideo);
+                var newUrlPath = await this.UploadVideo(inputModel);
+                targetVideo.UrlPath = newUrlPath;
+            }
+
+            await this.videoRepository.SaveChangesAsync();
         }
 
         public async Task RemoveVideo(string videoId)
@@ -40,7 +65,7 @@
             await this.videoRepository.SaveChangesAsync();
         }
 
-        public async Task UploadVideo(ImportVideoModel model)
+        public async Task<string> UploadVideo(ImportVideoModel model)
         {
             using var stream = model.VideoFile.OpenReadStream();
             var video = new Video();
@@ -60,6 +85,8 @@
 
             await this.videoRepository.AddAsync(video);
             await this.videoRepository.SaveChangesAsync();
+
+            return video.UrlPath;
         }
     }
 }

@@ -65,6 +65,7 @@
         }
         else
         {
+            // TODO: should don't show content on users who don't enroll in the course.
             var videos = Model.Videos.ToArray();
             <div class="accordion" id="flush">
                 @for (int i = 0; i < Model.VideosCount; i++)
@@ -82,6 +83,16 @@
                             </div>
                             @if (Model.Owner.Id == Model.CurrentUserId)
                             {
+                                <div class="accordion-body text-end">
+                                    <a asp-area=""
+                                       asp-controller="Video"
+                                       asp-action="Edit"
+                                       asp-route-Title="@video.Title"
+                                       asp-route-UrlPath="@video.UrlPath"
+                                       asp-route-Id="@video.Id"
+                                       asp-route-OwnerId="@Model.Owner.Id"
+                                       asp-route-CourseId="@Model.Id" class="btn btn-outline-secondary">Edit video</a>
+                                </div>
                                 <div class="accordion-body text-end">
                                     <a asp-area=""
                                        asp-controller="Video"

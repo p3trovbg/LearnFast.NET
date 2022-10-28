@@ -56,5 +56,37 @@
 
             return this.RedirectToAction("Details", "Course", new { id = courseId });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> EditVideo(EditVideoViewModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                this.BadRequest();
+            }
+
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (currentUserId != model.OwnerId)
+            {
+                return this.NotFound();
+            }
+
+            await this.videoService.EditVideo(model);
+
+            return this.RedirectToAction("Details", "Course", new { id = model.CourseId });
+        }
+
+        public IActionResult Edit(EditVideoViewModel model)
+        {
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (currentUserId != model.OwnerId)
+            {
+                return this.NotFound();
+            }
+
+            return this.View("EditVideo", model);
+        }
     }
 }

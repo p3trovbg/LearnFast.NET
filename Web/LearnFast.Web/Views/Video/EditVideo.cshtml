@@ -1,0 +1,44 @@
+﻿@model LearnFast.Web.ViewModels.Content.EditVideoViewModel
+
+@{
+    this.ViewData["Title"] = "Edit video";
+}
+
+<section>
+    <h1>@this.ViewData["Title"]</h1>
+    <form method="post" enctype="multipart/form-data" class="create-form col-6">
+        <div class="form-control">
+            <label asp-for="Title"></label>
+            <input asp-for="Title" class="form-control" aria-required="true" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-control">
+            <input id="upload" asp-for="VideoFile" multiple accept="video/*">
+            <span asp-validation-for="VideoFile" class="text-danger"></span>
+        </div>
+        <button class="button"
+                asp-action="EditVideo"
+                asp-route-Id="@Model.Id"
+                asp-route-CourseId="@Model.CourseId"
+                asp-route-OwnerId="@Model.OwnerId">
+            Edit video
+        </button>
+    </form>
+    <div class="border-1">
+        <video class="col-10" src="@Model.UrlPath" id="uploadedVideo" controls></video>
+    </div>
+</section>
+
+
+<script>
+    document.getElementById('upload').addEventListener('change', function () {
+        if (this.files[0]) {
+            var video = new FileReader();
+            video.readAsDataURL(this.files[0]);
+            video.addEventListener('load', function (event) {
+                document.getElementById('uploadedVideo').setAttribute('src', event.target.result);
+                document.getElementById('uploadedVideo').style.display = 'block';
+            });
+        }
+    });
+</script>

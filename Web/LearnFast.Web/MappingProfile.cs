@@ -3,6 +3,7 @@
     using AutoMapper;
     using LearnFast.Data.Models;
     using LearnFast.Web.ViewModels.Category;
+    using LearnFast.Web.ViewModels.Content;
     using LearnFast.Web.ViewModels.Course;
     using LearnFast.Web.ViewModels.Language;
 
@@ -15,6 +16,7 @@
             this.CreateMap<Course, BaseCourseViewModel>();
             this.CreateMap<LanguageViewModel, Language>();
             this.CreateMap<CategoryViewModel, Category>();
+            this.CreateMap<Video, ImportVideoModel>();
         }
     }
 }
