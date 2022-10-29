@@ -2,6 +2,7 @@
 namespace LearnFast.Data.Models
 {
     using LearnFast.Data.Common.Models;
+
     public class Review : BaseDeletableModel<int>
     {
         public int Title { get; set; }
@@ -9,6 +10,8 @@ namespace LearnFast.Data.Models
         public string Content { get; set; }
 
         public int Rating { get; set; }
+
+        public bool FeaturedReview { get; set; }
 
         public int CourseId { get; set; }
 

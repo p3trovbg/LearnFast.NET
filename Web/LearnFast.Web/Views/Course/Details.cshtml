@@ -109,4 +109,19 @@
             </div>
         }
     </div>
+    <div class="reviews">
+        <h4>Reviews</h4>
+        @if (this.Model.ReviewsCount == 0) 
+        {
+            <div class="alert alert-info mx-auto" role="alert">
+                No have reviews yet.
+            </div>
+            <div>
+                @foreach (var review in Model.Reviews)
+                {
+                        
+                }
+            </div>
+        }
+    </div>
 </section>
