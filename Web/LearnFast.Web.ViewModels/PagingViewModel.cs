@@ -16,10 +16,10 @@
 
         public int? NextPage => this.Page + 1;
 
-        public int CoursesCount { get; set; }
+        public int TotalCount { get; set; }
 
         public int ItemsPerPage => Items;
 
-        public int PagesCount => (int)Math.Ceiling((double)this.CoursesCount / this.ItemsPerPage);
+        public int PagesCount => (int)Math.Ceiling((double)this.TotalCount / this.ItemsPerPage);
     }
 }

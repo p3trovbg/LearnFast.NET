@@ -240,7 +240,7 @@
             }
 
             model.Page = model.Page == null ? 1 : model.Page;
-            model.CoursesCount = model.Courses.Count();
+            model.TotalCount = model.Courses.Count();
             model.Courses = model.Courses
                 .Skip((int)((model.Page - 1) * model.ItemsPerPage))
                 .Take(model.ItemsPerPage);
@@ -251,22 +251,13 @@
         private IQueryable<Course> GetAllWithBasicInformationAsNoTracking()
         {
             return this.courseRepository
-               .AllAsNoTracking()
-               .Include(x => x.Language)
-               .Include(x => x.Category)
-               .Include(x => x.Owner);
+               .AllAsNoTracking();
         }
 
         private IQueryable<Course> GetWithAllInformationAsNoTracking()
         {
             return this.courseRepository
-               .AllAsNoTracking()
-               .Include(x => x.Language)
-               .Include(x => x.Category)
-               .Include(x => x.Owner)
-               .Include(x => x.Reviews)
-               .Include(x => x.Videos)
-               .Include(x => x.Images);
+               .AllAsNoTracking();
         }
 
         private async Task GetDefaultModelProps(SearchViewModel model)

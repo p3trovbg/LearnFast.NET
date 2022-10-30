@@ -6,6 +6,7 @@
     using LearnFast.Web.ViewModels.Content;
     using LearnFast.Web.ViewModels.Course;
     using LearnFast.Web.ViewModels.Language;
+    using LearnFast.Web.ViewModels.Review;
 
     public class MappingProfile : Profile
     {
@@ -17,6 +18,7 @@
             this.CreateMap<LanguageViewModel, Language>();
             this.CreateMap<CategoryViewModel, Category>();
             this.CreateMap<Video, ImportVideoModel>();
+            this.CreateMap<ImportReviewViewModel, Review>();
         }
     }
 }

@@ -19,6 +19,7 @@ namespace LearnFast.Web
     using LearnFast.Services.Data.DifficultyService;
     using LearnFast.Services.Data.ImageService;
     using LearnFast.Services.Data.LanguageService;
+    using LearnFast.Services.Data.ReviewService;
     using LearnFast.Services.Data.VideoService;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Messaging;
@@ -106,10 +107,12 @@ namespace LearnFast.Web
 
             services.AddTransient<ILanguageService, LanguageService>();
             services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IDifficultyService, DifficultyService>();
 
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IVideoService, VideoService>();
-            services.AddTransient<IDifficultyService, DifficultyService>();
+
+            services.AddTransient<IReviewService, ReviewService>();
         }
 
         private static void Configure(WebApplication app)

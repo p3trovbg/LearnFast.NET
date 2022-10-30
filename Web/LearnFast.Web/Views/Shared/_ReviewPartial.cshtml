@@ -1,0 +1,33 @@
+﻿@model LearnFast.Web.ViewModels.Review.ReviewListViewModel
+
+@{
+    this.ViewData["Style"] = "reviews.css";
+}
+
+<div class="reviews">
+    @foreach (var review in Model.Reviews)
+    {
+        // Add paging
+        <div class="text-center review">
+            <p>@review.User.FullName</p>
+            <img class="avatar" src="@review.User.MainImageUrl" />
+            <p>@review.Content</p>
+            <div>
+                @for (int i = 1; i <= 6; i++)
+                {
+                    <span>
+                        @if (i <= review.Rating)
+                        {
+                            <i class="bi bi-star-fill star"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-star"></i>
+                        }
+                    </span>
+                }
+                <span>@review.Rating/6</span>
+            </div>
+        </div>
+    }
+</div>

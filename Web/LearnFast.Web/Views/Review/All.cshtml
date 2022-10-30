@@ -1,0 +1,12 @@
+﻿@model LearnFast.Web.ViewModels.Review.ReviewListViewModel
+
+@{
+    this.ViewData["Title"] = "All reviews";
+    this.ViewData["Style"] = "reviews.css";
+}
+
+<section>
+    <h1>@this.ViewData["Title"]</h1>
+    <hr />
+    <partial name="_ReviewPartial" model="Model"/>
+</section>

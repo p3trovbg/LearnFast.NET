@@ -1,8 +1,9 @@
 ﻿namespace LearnFast.Web.ViewModels.Course
 {
     using System.ComponentModel.DataAnnotations;
-
+    using System.Linq;
     using AutoMapper;
+
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
     using LearnFast.Web.ViewModels.ApplicationUser;
@@ -37,7 +38,10 @@
             configuration.CreateMap<Course, CourseViewModel>()
                  .ForMember(
                 d => d.Difficulty,
-                m => m.MapFrom(x => x.Difficulty.ToString()));
+                m => m.MapFrom(x => x.Difficulty.ToString()))
+                 .ForMember(
+                d => d.Reviews,
+                m => m.MapFrom(x => x.Reviews.Where(x => x.IsSelected)));
         }
     }
 }

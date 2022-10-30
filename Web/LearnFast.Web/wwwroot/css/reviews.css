@@ -1,0 +1,19 @@
+﻿h1, .review {
+    text-align: center;
+}
+
+.avatar {
+    vertical-align: middle;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.review {
+    margin-bottom: 70px;
+    border-bottom-style: groove;
+}
+
+.star {
+    color: gold;
+}

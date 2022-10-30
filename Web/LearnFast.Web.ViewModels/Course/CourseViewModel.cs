@@ -16,13 +16,9 @@
 
         public IEnumerable<VideoViewModel> Videos { get; set; }
 
-        public IEnumerable<ImageViewModel> Images { get; set; }
-
         public int ReviewsCount => this.Reviews.Count();
 
         public int VideosCount => this.Videos.Count();
-
-        public int ImagesCount => this.Images.Count();
 
         public string CurrentUserId { get; set; }
     }
