@@ -41,17 +41,7 @@
         {
             var model = new ImportReviewViewModel();
             model.CourseId = courseId;
-            var ratings = new List<SelectListItem>();
-            for (int rating = 1; rating <= 6; rating++)
-            {
-                ratings.Add(new SelectListItem
-                {
-                    Text = rating.ToString(),
-                    Value = rating.ToString(),
-                });
-            }
-
-            model.RatingList = ratings;
+            model.RatingList = LoadRatings();
 
             return this.View(model);
         }
@@ -74,7 +64,7 @@
                 this.NotFound(ex.Message);
             }
 
-            return this.RedirectToAction("Details", "Course", new { id = model.CourseId });
+            return this.RedirectToAction(nameof(this.All), new { CourseId = model.CourseId });
         }
 
         public async Task<IActionResult> Delete(int reviewId, string userId, int courseId)
@@ -96,5 +86,50 @@
 
             return this.RedirectToAction(nameof(this.All), new { CourseId = courseId });
         }
+
+        public IActionResult Edit(EditReviewViewModel model)
+        {
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (currentUserId != model.UserId)
+            {
+                return this.NotFound();
+            }
+
+            model.RatingList = LoadRatings();
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditReview(EditReviewViewModel model)
+        {
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (currentUserId != model.UserId)
+            {
+                return this.NotFound();
+            }
+
+            await this.reviewService.Edit(model);
+
+            return this.RedirectToAction(nameof(this.All), new { CourseId = model.CourseId });
+        }
+
+        private static List<SelectListItem> LoadRatings()
+        {
+            var ratings = new List<SelectListItem>();
+            for (int rating = 1; rating <= 6; rating++)
+            {
+                ratings.Add(new SelectListItem
+                {
+                    Text = rating.ToString(),
+                    Value = rating.ToString(),
+                });
+            }
+
+            return ratings;
+        }
+
     }
 }

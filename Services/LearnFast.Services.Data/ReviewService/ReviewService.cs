@@ -6,11 +6,13 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
+    using CloudinaryDotNet;
     using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
     using LearnFast.Data.Models;
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Services.Mapping;
+    using LearnFast.Services.Mapping.PropertyMatcher;
     using LearnFast.Web.ViewModels.Course;
     using LearnFast.Web.ViewModels.Review;
     using Microsoft.EntityFrameworkCore;
@@ -59,6 +61,22 @@
             await this.reviewRepository.SaveChangesAsync();
         }
 
+        public async Task Edit(EditReviewViewModel model)
+        {
+            var review = await this.reviewRepository
+                .All()
+                .FirstOrDefaultAsync(x => x.Id == model.ReviewId);
+
+            if (review == null)
+            {
+                throw new ArgumentException(GlobalExceptions.DoesNotExistReview);
+            }
+
+            PropertyCopier<EditReviewViewModel, Review>.CopyPropertiesFrom(model, review);
+
+            await this.reviewRepository.SaveChangesAsync();
+        }
+
         public async Task GetAllReviewsByCourse(ReviewListViewModel model)
         {
             var course = await this.filterCourse.GetByIdAsync<BaseCourseViewModel>(model.CourseId);
@@ -82,6 +100,7 @@
             model.Page = model.Page == null ? 1 : model.Page;
             model.TotalCount = reviewsCount;
             model.Reviews = await reviews
+            .OrderByDescending(x => x.CreatedOn)
             .Skip((int)((model.Page - 1) * model.ItemsPerPage))
             .Take(model.ItemsPerPage)
             .To<ReviewViewModel>()

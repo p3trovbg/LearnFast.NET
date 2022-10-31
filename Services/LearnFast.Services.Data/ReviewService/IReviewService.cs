@@ -14,5 +14,7 @@
         Task Add(ImportReviewViewModel model);
 
         Task Delete(int reviewId);
+
+        Task Edit(EditReviewViewModel model);
     }
 }
