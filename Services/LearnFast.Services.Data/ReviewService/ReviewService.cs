@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using AutoMapper;
     using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
@@ -42,6 +43,19 @@
             var review = this.mapper.Map<Review>(model);
 
             await this.reviewRepository.AddAsync(review);
+            await this.reviewRepository.SaveChangesAsync();
+        }
+
+        public async Task Delete(int reviewId)
+        {
+            var currentReview = await this.reviewRepository.All().Where(x => x.Id == reviewId).FirstOrDefaultAsync();
+
+            if (currentReview == null)
+            {
+                throw new ArgumentException(GlobalExceptions.DoesNotExistReview);
+            }
+
+            this.reviewRepository.Delete(currentReview);
             await this.reviewRepository.SaveChangesAsync();
         }
 

@@ -12,5 +12,7 @@
         Task GetAllReviewsByCourse(ReviewListViewModel model);
 
         Task Add(ImportReviewViewModel model);
+
+        Task Delete(int reviewId);
     }
 }

@@ -6,7 +6,9 @@
     {
         public int CourseId { get; set; }
 
-        public bool IsSelected { get; set; }
+        public bool IsSelectedReviews { get; set; }
+
+        public string CurrentUserId { get; set; }
 
         public IEnumerable<ReviewViewModel> Reviews { get; set; }
     }

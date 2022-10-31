@@ -7,12 +7,32 @@
 <div class="reviews">
     @foreach (var review in Model.Reviews)
     {
-        // Add paging
         <div class="text-center review">
-            <p>@review.User.FullName</p>
+            @if (Model.CurrentUserId == review.User.Id && !Model.IsSelectedReviews)
+            {
+                <p class="d-inline">@review.User.FullName</p>
+                <div class="text-end">
+                    <span class="btn btn-info"><a>Edit</a></span>
+                    <span>
+                        <a class="btn btn-danger"
+                            asp-area="" 
+                           asp-action="Delete"
+                           asp-route-reviewId="@review.Id"
+                           asp-route-userId="@review.User.Id"
+                           asp-route-courseId="@Model.CourseId">Delete</a>
+                    </span>
+                </div>
+            }
+            else
+            {
+                <p>@review.User.FullName</p>
+
+            }
             <img class="avatar" src="@review.User.MainImageUrl" />
             <p>@review.Content</p>
             <div>
+                <p>@review.CreatedOn</p>
+
                 @for (int i = 1; i <= 6; i++)
                 {
                     <span>
@@ -30,7 +50,7 @@
             </div>
         </div>
     }
-    @if (!Model.IsSelected || Model.PagesCount > 1)
+    @if (!Model.IsSelectedReviews || Model.PagesCount > 1)
     {
         <div class="paging">
             <nav aria-label="Page navigation example">

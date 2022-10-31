@@ -13,5 +13,7 @@
         public const string DoesNotOwnThisCourseExceptionMessage = "You do not own this course!";
 
         public const string DoesNotExistReviews = "Not have reviews yet.";
+
+        public const string DoesNotExistReview = "This review is not exist!";
     }
 }

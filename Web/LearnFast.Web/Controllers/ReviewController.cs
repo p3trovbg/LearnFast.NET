@@ -27,6 +27,7 @@
             try
             {
                 await this.reviewService.GetAllReviewsByCourse(model);
+                model.CurrentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                 return this.View(model);
             }
@@ -74,6 +75,26 @@
             }
 
             return this.RedirectToAction("Details", "Course", new { id = model.CourseId });
+        }
+
+        public async Task<IActionResult> Delete(int reviewId, string userId, int courseId)
+        {
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (currentUserId != userId)
+            {
+                this.NotFound();
+            }
+
+            try
+            {
+                await this.reviewService.Delete(reviewId);
+            }
+            catch (Exception ex)
+            {
+                this.NotFound(ex.Message);
+            }
+
+            return this.RedirectToAction(nameof(this.All), new { CourseId = courseId });
         }
     }
 }

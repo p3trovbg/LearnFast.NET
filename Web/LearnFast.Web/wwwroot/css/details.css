@@ -104,3 +104,7 @@ video {
 .review {
     display:block;
 }
+
+.star {
+    color: gold;
+}
