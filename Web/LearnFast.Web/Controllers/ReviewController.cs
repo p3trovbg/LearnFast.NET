@@ -22,14 +22,12 @@
             this.reviewService = reviewService;
         }
 
-
-        public async Task<IActionResult> All(int courseId)
+        public async Task<IActionResult> All(ReviewListViewModel model)
         {
             try
             {
-                var reviews = await this.reviewService.GetAllReviewsByCourse<ReviewViewModel>(courseId);
+                await this.reviewService.GetAllReviewsByCourse(model);
 
-                var model = new ReviewListViewModel { Reviews = reviews };
                 return this.View(model);
             }
             catch (Exception ex)

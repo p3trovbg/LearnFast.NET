@@ -112,7 +112,7 @@
     <hr />
     <div>
         <div>
-            <h4><a asp-area="" asp-controller="Review" asp-action="All" asp-route-courseId="@Model.Id">All</a>/Top reviews</h4>
+            <h4><a asp-area="" asp-controller="Review" asp-action="All" asp-route-CourseId="@Model.Id">All</a>/Top reviews</h4>
             <a class="btn btn-success" asp-area="" asp-controller="Review" asp-action="Add" asp-route-courseId="@Model.Id">Add review</a>
         </div>
         <div class="reviews">
@@ -125,7 +125,7 @@
             }
             else
             {
-                <partial name="_ReviewPartial" model="new ReviewListViewModel { Reviews = Model.Reviews }" />
+                <partial name="_ReviewPartial" model="new ReviewListViewModel { Reviews = Model.Reviews, IsSelected = true }" />
             }
         </div>
     </div>

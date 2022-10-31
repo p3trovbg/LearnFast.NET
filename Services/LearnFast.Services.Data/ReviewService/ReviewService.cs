@@ -45,19 +45,33 @@
             await this.reviewRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllReviewsByCourse<T>(int courseId)
+        public async Task GetAllReviewsByCourse(ReviewListViewModel model)
         {
-            var course = await this.filterCourse.GetByIdAsync<BaseCourseViewModel>(courseId);
+            var course = await this.filterCourse.GetByIdAsync<BaseCourseViewModel>(model.CourseId);
 
             if (course == null)
             {
                 throw new ArgumentException(GlobalExceptions.CourseIsNotExistExceptionMessage);
             }
 
-            return await this.reviewRepository.AllAsNoTracking()
-                .Where(x => x.CourseId == courseId)
-                .To<T>()
-                .ToListAsync();
+            var reviews = this.reviewRepository
+                .AllAsNoTracking()
+                .Where(x => x.CourseId == model.CourseId);
+
+            int reviewsCount = await reviews.CountAsync();
+
+            if (reviewsCount == 0)
+            {
+                throw new NullReferenceException(GlobalExceptions.DoesNotExistReviews);
+            }
+
+            model.Page = model.Page == null ? 1 : model.Page;
+            model.TotalCount = reviewsCount;
+            model.Reviews = await reviews
+            .Skip((int)((model.Page - 1) * model.ItemsPerPage))
+            .Take(model.ItemsPerPage)
+            .To<ReviewViewModel>()
+            .ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetSelectedReviewsByCourse<T>(int courseId)

@@ -6,7 +6,7 @@
 }
 
 <section>
-    <h1>@this.ViewData["Title"]</h1>
+    <h1>@this.ViewData["Title"] / <a asp-area"" asp-controller="Course" asp-action="Details" asp-route-id="@Model.CourseId">Back to course</a></h1>
     <hr />
     <partial name="_ReviewPartial" model="Model"/>
 </section>

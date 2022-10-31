@@ -11,5 +11,7 @@
         public const string VideoIsNotExistExceptionMessage = "This video is not exist!";
 
         public const string DoesNotOwnThisCourseExceptionMessage = "You do not own this course!";
+
+        public const string DoesNotExistReviews = "Not have reviews yet.";
     }
 }

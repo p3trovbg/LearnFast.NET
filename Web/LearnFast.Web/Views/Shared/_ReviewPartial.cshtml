@@ -30,4 +30,34 @@
             </div>
         </div>
     }
+    @if (!Model.IsSelected || Model.PagesCount > 1)
+    {
+        <div class="paging">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    @if (Model.HasPreviousPage)
+                    {
+                        <li class="page-item">
+                            <a asp-area=""
+                       asp-controller="Review"
+                       asp-action="All"
+                       asp-route-Page="@Model.PreviousPage"
+                       asp-route-CourseId="@Model.CourseId">Previous</a>
+                        </li>
+                    }
+
+                    @if (Model.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a asp-area=""
+                       asp-controller="Review"
+                       asp-action="All"
+                       asp-route-Page="@Model.NextPage"
+                       asp-route-CourseId="@Model.CourseId">Next</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    }
 </div>
