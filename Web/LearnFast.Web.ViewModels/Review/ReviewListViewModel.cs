@@ -10,6 +10,8 @@
 
         public string CurrentUserId { get; set; }
 
+        public string CourseOwnerId { get; set; }
+
         public IEnumerable<ReviewViewModel> Reviews { get; set; }
     }
 }

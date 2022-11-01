@@ -16,5 +16,7 @@
         Task Delete(int reviewId);
 
         Task Edit(EditReviewViewModel model);
+
+        Task Selecting(SelectingReviewViewModel model);
     }
 }

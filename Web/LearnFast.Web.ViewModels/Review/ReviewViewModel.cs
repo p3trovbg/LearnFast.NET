@@ -16,6 +16,8 @@
 
         public int Rating { get; set; }
 
+        public bool IsSelected { get; set; }
+
         public string CreatedOn { get; set; }
 
         public BaseUserViewModel User { get; set; }

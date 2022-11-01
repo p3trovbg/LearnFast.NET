@@ -114,5 +114,33 @@
                 .To<T>()
                 .ToListAsync();
         }
+
+        public async Task Selecting(SelectingReviewViewModel model)
+        {
+            var selectedReviews = this.reviewRepository.All().Where(x => x.CourseId == model.CourseId);
+
+            if (await selectedReviews.CountAsync() == 5)
+            {
+                throw new ArgumentOutOfRangeException(GlobalExceptions.LimitOfSelectedReviews);
+            }
+
+            var review = await selectedReviews.Where(x => x.Id == model.ReviewId).FirstOrDefaultAsync();
+
+            if (review == null)
+            {
+                throw new ArgumentException(GlobalExceptions.DoesNotExistReview);
+            }
+
+            if (model.IsSelected)
+            {
+                review.IsSelected = false;
+            }
+            else
+            {
+                review.IsSelected = true;
+            }
+
+            await this.reviewRepository.SaveChangesAsync();
+        }
     }
 }

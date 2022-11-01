@@ -112,8 +112,18 @@
     <hr />
     <div>
         <div>
-            <h4><a asp-area="" asp-controller="Review" asp-action="All" asp-route-CourseId="@Model.Id">All</a>/Top reviews</h4>
-            <a class="btn btn-success" asp-area="" asp-controller="Review" asp-action="Add" asp-route-courseId="@Model.Id">Add review</a>
+            <h4>
+                <a asp-area=""
+                   asp-controller="Review"
+                   asp-action="All"
+                   asp-route-CourseOwnerId="@Model.Owner.Id"
+                   asp-route-CourseId="@Model.Id">All</a>/Top reviews
+            </h4>
+            <a class="btn btn-success"
+               asp-area=""
+               asp-controller="Review"
+               asp-action="Add"
+               asp-route-courseId="@Model.Id">Add review</a>
         </div>
         <div class="reviews">
             <hr />
@@ -125,8 +135,17 @@
             }
             else
             {
-                <partial name="_ReviewPartial" model="new ReviewListViewModel { Reviews = Model.Reviews, IsSelectedReviews = true }" />
-            }
+                <partial name="_ReviewPartial"
+                     model="new ReviewListViewModel {
+                            Reviews = Model.Reviews,
+                            IsSelectedReviews = true,
+                            CourseId = Model.Id,
+                            CurrentUserId = Model.CurrentUserId,
+                            CourseOwnerId = Model.Owner.Id }" /> }
         </div>
     </div>
 </section>
+
+@section Styles {
+    <link rel="stylesheet" href="/css/details.css">
+}

@@ -2,7 +2,6 @@
 
 @{
     this.ViewData["Title"] = "All reviews";
-    this.ViewData["Style"] = "reviews.css";
 }
 
 <section>
@@ -10,3 +9,7 @@
     <hr />
     <partial name="_ReviewPartial" model="Model"/>
 </section>
+
+@section Styles {
+    <link rel="stylesheet" href="/css/reviews.css">
+}

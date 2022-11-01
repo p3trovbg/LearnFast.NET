@@ -116,6 +116,20 @@
             return this.RedirectToAction(nameof(this.All), new { CourseId = model.CourseId });
         }
 
+        public async Task<IActionResult> Selecting(SelectingReviewViewModel model)
+        {
+            try
+            {
+                await this.reviewService.Selecting(model);
+
+                return this.RedirectToAction("Details", "Course", new { id = model.CourseId });
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
+        }
+
         private static List<SelectListItem> LoadRatings()
         {
             var ratings = new List<SelectListItem>();

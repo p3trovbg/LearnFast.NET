@@ -14,12 +14,12 @@
                 <div class="text-end">
                     <span class="btn btn-info">
                         <a asp-area=""
-                        asp-action="Edit"
-                        asp-route-Content="@review.Content"
-                        asp-route-Rating="@review.Rating"
-                        asp-route-CourseId="@Model.CourseId"
-                        asp-route-UserId="@review.User.Id"
-                        asp-route-ReviewId="@review.Id">Edit</a>
+                   asp-action="Edit"
+                   asp-route-Content="@review.Content"
+                   asp-route-Rating="@review.Rating"
+                   asp-route-CourseId="@Model.CourseId"
+                   asp-route-UserId="@review.User.Id"
+                   asp-route-ReviewId="@review.Id">Edit</a>
                     </span>
                     <span>
                         <a class="btn btn-danger"
@@ -55,6 +55,47 @@
                     </span>
                 }
                 <span>@review.Rating/6</span>
+                @if (Model.CurrentUserId == Model.CourseOwnerId && Model.IsSelectedReviews)
+                {
+                    <p class="text-start">
+                        <a asp-controller="Review"
+                   asp-action="Selecting"
+                   asp-route-CourseId="@Model.CourseId"
+                   asp-route-ReviewId="@review.Id"
+                   asp-route-IsSelected="@review.IsSelected" class="btn btn-outline-danger btn-sm">
+                            Remove
+                        </a>
+                    </p>
+                }
+                else if (Model.CurrentUserId == Model.CourseOwnerId && !Model.IsSelectedReviews)
+                {
+                    <div class="text-end">
+                        @if (!review.IsSelected)
+                        {
+                            <p>
+                                <a asp-controller="Review"
+                       asp-action="Selecting"
+                       asp-route-ReviewId="@review.Id"
+                       asp-route-CourseId="@Model.CourseId"
+                       asp-route-IsSelected="@review.IsSelected" class="btn btn-outline-success btn-sm">
+                                    Select as top review
+                                </a>
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                <a asp-controller="Review"
+                       asp-action="Selecting"
+                       asp-route-ReviewId="@review.Id"
+                       asp-route-CourseId="@Model.CourseId"
+                       asp-route-IsSelected="@review.IsSelected" class="btn btn-outline-danger btn-sm">
+                                    Remove from selected reviews
+                                </a>
+                            </p>
+                        }
+                    </div>
+                }
             </div>
         </div>
     }
