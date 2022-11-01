@@ -1,16 +1,11 @@
 ﻿@model LearnFast.Web.ViewModels.Review.ReviewListViewModel
 
-@{
-    this.ViewData["Style"] = "reviews.css";
-}
-
 <div class="reviews">
     @foreach (var review in Model.Reviews)
     {
         <div class="text-center review">
             @if (Model.CurrentUserId == review.User.Id && !Model.IsSelectedReviews)
             {
-                <p class="d-inline">@review.User.FullName</p>
                 <div class="text-end">
                     <span class="btn btn-info">
                         <a asp-area=""
@@ -31,11 +26,7 @@
                     </span>
                 </div>
             }
-            else
-            {
-                <p>@review.User.FullName</p>
-
-            }
+            <p class="name">@review.User.FullName</p>
             <img class="avatar" src="@review.User.MainImageUrl" />
             <p>@review.Content</p>
             <div>
@@ -99,7 +90,7 @@
             </div>
         </div>
     }
-    @if (!Model.IsSelectedReviews || Model.PagesCount > 1)
+    @if (!Model.IsSelectedReviews && Model.PagesCount > 1)
     {
         <div class="paging">
             <nav aria-label="Page navigation example">

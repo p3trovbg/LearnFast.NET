@@ -23,7 +23,6 @@ h1 {
 h3, h2, h4, span {
     font-family: "Open Sans";
     color: rgba(0, 35, 110, 0.9);
-
 }
 
 .description, .additional-info {
@@ -102,9 +101,22 @@ video {
 }
 
 .review {
-    display:block;
+    display: block;
 }
 
 .star {
     color: gold;
+}
+
+.name {
+    font-family: 'Agency FB';
+    text-transform: uppercase;
+    color: #325170;
+    font-size: 25px;
+    text-decoration: none;
+}
+
+.title {
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     text-decoration: underline;
 }

@@ -5,7 +5,7 @@
 }
 
 <section class="row">
-    <h1 class="text-center">@this.ViewData["Title"]</h1>
+    <h1 class="text-center">@this.ViewData["Title"]/<a class="btn-outline-success" asp-area="" asp-controller="Course" asp-action="Details" asp-route-id="@Model.CourseId">Back to course</a></h1>
     <div>
         <form method="post" class="col-6 mx-auto">
             <div class="form-floating">
@@ -35,3 +35,7 @@
         area.style.height = (area.scrollHeight) + "px";
     }
 </script>
+
+@section Styles {
+    <link rel="stylesheet" href="/css/reviews.css" asp-append-version="true">
+}

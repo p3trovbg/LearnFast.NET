@@ -9,9 +9,8 @@
 <section>
     <h1>@this.ViewData["Title"]</h1>
     <span>Category</span>
-    <h2>@Model.Category.Name</h2>
+    <h2>@Model.Category.Name / <span class="title">@Model.Title</span></h2>
     <hr />
-    <h3>@Model.Title</h3>>
     <div class="overview">
         <h4>Description</h4>
         <div class="description">@Model.Description</div>
@@ -113,7 +112,7 @@
     <div>
         <div>
             <h4>
-                <a asp-area=""
+                <a class="btn-outline-success" asp-area=""
                    asp-controller="Review"
                    asp-action="All"
                    asp-route-CourseOwnerId="@Model.Owner.Id"
@@ -147,5 +146,5 @@
 </section>
 
 @section Styles {
-    <link rel="stylesheet" href="/css/details.css">
+    <link rel="stylesheet" href="/css/details.css" asp-append-version="true">
 }

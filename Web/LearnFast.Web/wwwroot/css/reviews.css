@@ -1,4 +1,21 @@
-﻿h1, .review {
+﻿h1 {
+    font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
+    text-transform: uppercase;
+    color: #325170;
+    font-size: 30px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.name {
+    font-family: 'Agency FB' ;
+    text-transform: uppercase;
+    color: #325170;
+    font-size: 30px;
+    text-decoration: none;
+}
+
+h1, .review {
     text-align: center;
 }
 

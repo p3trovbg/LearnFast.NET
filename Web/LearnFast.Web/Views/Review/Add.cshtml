@@ -25,9 +25,13 @@
     </div>
 </section>
 
-<script>
+<script asp-append-version="true">
     function auto_height(area) {
         area.style.height = "180px";
         area.style.height = (area.scrollHeight) + "px";
     }
 </script>
+
+@section Styles {
+    <link rel="stylesheet" href="/css/reviews.css" asp-append-version="true">
+}
