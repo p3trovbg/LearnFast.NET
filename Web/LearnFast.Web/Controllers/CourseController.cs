@@ -3,7 +3,7 @@
     using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
+    using Ganss.Xss;
     using LearnFast.Data.Models;
     using LearnFast.Services.Data.CategoryService;
     using LearnFast.Services.Data.CourseService;
@@ -50,9 +50,7 @@
         {
             var model = new ImportCourseModel();
 
-            model.Languages = await this.languageService.GetLanguageListAsync();
-            model.Categories = await this.categoryService.GetCategoryList();
-            model.Difficulties = this.difficultyService.GetDifficultyList();
+            await this.LoadingBaseParameters(model);
 
             return this.View(model);
         }
@@ -63,6 +61,8 @@
         {
             if (!this.ModelState.IsValid)
             {
+                await this.LoadingBaseParameters(model);
+
                 return this.View(model);
             }
 
@@ -102,9 +102,7 @@
                     return this.Unauthorized();
                 }
 
-                model.Languages = await this.languageService.GetLanguageListAsync();
-                model.Categories = await this.categoryService.GetCategoryList();
-                model.Difficulties = this.difficultyService.GetDifficultyList();
+                await this.LoadingBaseParameters(model);
 
                 return this.View(model);
             }
@@ -116,17 +114,19 @@
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Edit(ImportCourseModel course)
+        public async Task<IActionResult> Edit(ImportCourseModel model)
         {
             if (!this.ModelState.IsValid)
             {
-                return this.View(course);
+                await this.LoadingBaseParameters(model);
+
+                return this.View(model);
             }
 
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await this.courseService.UpdateAsync(course, userId);
+            await this.courseService.UpdateAsync(model, userId);
 
-            return this.RedirectToAction(nameof(this.Details), new { id = course.Id });
+            return this.RedirectToAction(nameof(this.Details), new { id = model.Id });
         }
 
         [Authorize]
@@ -137,6 +137,11 @@
             {
                 var model = await this.filterCourse.GetByIdAsync<CourseViewModel>(id);
                 model.CurrentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var sanitizer = new HtmlSanitizer();
+                model.Description = sanitizer.Sanitize(model.Description);
+                model.Requirments = sanitizer.Sanitize(model.Requirments);
+
                 return this.View(model);
             }
             catch (Exception ex)
@@ -157,6 +162,13 @@
             }
 
             return this.View(CoursesView, model);
+        }
+
+        private async Task LoadingBaseParameters(ImportCourseModel model)
+        {
+            model.Languages = await this.languageService.GetLanguageListAsync();
+            model.Categories = await this.categoryService.GetCategoryList();
+            model.Difficulties = this.difficultyService.GetDifficultyList();
         }
     }
 }

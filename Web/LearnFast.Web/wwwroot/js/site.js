@@ -1,3 +1,4 @@
-﻿$(window).on("load", function () {
-    $(".ring").fadeOut("slow");
+﻿tinymce.init({
+    selector: '.document',
+    placeholder: 'Type here...'
 });

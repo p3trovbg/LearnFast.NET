@@ -13,7 +13,7 @@
     <hr />
     <div class="overview">
         <h4>Description</h4>
-        <div class="description">@Model.Description</div>
+        <div class="description">@Html.Raw(Model.Description)</div>
         <hr />
         <h4>Overview</h4>
         <div class="additional-info">
@@ -40,7 +40,7 @@
     <div class="requirments">
         <h4>Course requirments</h4>
         <p>
-            @Model.Requirments;
+            @Html.Raw(Model.Requirments)
         </p>
     </div>
     <div>

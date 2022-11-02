@@ -47,14 +47,14 @@
             <label asp-for="CategoryId" class="form-label">Select category</label>
             <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
-        <div class="form-floating">
+        <div class="textarea-document">
             <label asp-for="Description"></label>
-            <textarea asp-for="Description" cols="120" rows="10"  class="form-textarea" aria-required="true" oninput="auto_height(this)"></textarea>
+            <textarea asp-for="Description" class="document" aria-required="true" oninput="auto_height(this)"></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
-        <div class="form-floating">
+        <div class="textarea-document">
             <label asp-for="Requirments"></label>
-            <textarea asp-for="Requirments" cols="120" rows="10" class="form-textarea" aria-required="true" oninput="auto_height(this)"></textarea>
+            <textarea asp-for="Requirments" class="document" aria-required="true" oninput="auto_height(this)"></textarea>
             <span asp-validation-for="Requirments" class="text-danger"></span>
         </div>
         <div id="upload-image" class="form-floating">

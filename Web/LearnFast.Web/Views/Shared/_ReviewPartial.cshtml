@@ -28,7 +28,7 @@
             }
             <p class="name">@review.User.FullName</p>
             <img class="avatar" src="@review.User.MainImageUrl" />
-            <p>@review.Content</p>
+            <p>@Html.Raw(review.Content)</p>
             <div>
                 <p>@review.CreatedOn</p>
 

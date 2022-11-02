@@ -2,13 +2,15 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Web.Mvc;
 
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Mapping.PropertyCopier;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
+
+    using SelectListItem = Microsoft.AspNetCore.Mvc.Rendering.SelectListItem;
 
     public class ImportCourseModel : IMapFrom<Course>
     {
@@ -22,6 +24,7 @@
         public decimal Price { get; set; }
 
         [Required]
+        [AllowHtml]
         [MaxLength(3000)]
         public string Description { get; set; }
 
@@ -29,6 +32,7 @@
         public IFormFile MainImage { get; set; }
 
         [Required]
+        [AllowHtml]
         [MaxLength(3000)]
         public string Requirments { get; set; }
 
@@ -50,11 +54,14 @@
         public string MainImageUrl { get; set; }
 
         [NotCopy]
+        [NotMapped]
         public IEnumerable<SelectListItem> Languages { get; set; }
 
+        [NotMapped]
         [NotCopy]
         public IEnumerable<SelectListItem> Categories { get; set; }
 
+        [NotMapped]
         [NotCopy]
         public IEnumerable<SelectListItem> Difficulties { get; set; }
     }

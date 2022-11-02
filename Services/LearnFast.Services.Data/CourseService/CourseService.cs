@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
 
     using AutoMapper;
-    using CloudinaryDotNet.Actions;
     using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
     using LearnFast.Data.Models;
@@ -21,7 +20,6 @@
     using LearnFast.Web.ViewModels.Filter;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
-    using Newtonsoft.Json.Linq;
 
     public class CourseService : ICourseService, IFilterCourse
     {

@@ -7,7 +7,7 @@
     text-decoration: none;
 }
 .create-form div {
-    margin: 40px;
+    margin-bottom: 50px;
 }
 
 #isfree {
@@ -26,10 +26,11 @@
     opacity: 0;
 }
 
-.form-textarea {
-    height: 100px;
-    max-width: 100%;
-    margin-top: 40px;
+.textarea-document {
+    max-width: 1000px;
+    width: 100%;
+    margin-top: 0px;
+    margin-left: 0px;
 }
 
 label, legend, #upload-image input {
