@@ -1,5 +1,6 @@
 ﻿namespace LearnFast.Web.ViewModels.Course
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using AutoMapper;
@@ -26,6 +27,8 @@
         public string Difficulty { get; set; }
 
         public int Sells { get; set; }
+
+        public DateTime CreatedOn { get; set; }
 
         public LanguageViewModel Language { get; set; }
 

@@ -29,6 +29,8 @@
         private const string OrderByTitle = "title";
         private const string OrderByPrice = "price";
         private const string OrderDescByPrice = "desc_price";
+        private const string OrderByNewestDate = "newest";
+        private const string OrderByOldestDate = "oldest";
 
         private readonly IMapper mapper;
         private readonly IImageService imageService;
@@ -226,6 +228,12 @@
                     case OrderDescByPrice:
                         coursesAsQuery = coursesAsQuery.OrderByDescending(x => x.Price);
                         break;
+                    case OrderByNewestDate:
+                        coursesAsQuery = coursesAsQuery.OrderByDescending(x => x.CreatedOn);
+                        break;
+                    case OrderByOldestDate:
+                        coursesAsQuery = coursesAsQuery.OrderBy(x => x.CreatedOn);
+                        break;
                 }
             }
 
@@ -268,6 +276,8 @@
                 new SelectListItem { Text = "Order by price", Value = OrderByPrice },
                 new SelectListItem { Text = "Order by desc price", Value = OrderDescByPrice },
                 new SelectListItem { Text = "Order by name", Value = OrderByTitle },
+                new SelectListItem { Text = "The newest", Value = OrderByNewestDate },
+                new SelectListItem { Text = "The oldest", Value = OrderByOldestDate },
             };
         }
 

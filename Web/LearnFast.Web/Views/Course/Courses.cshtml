@@ -70,7 +70,7 @@
             <a class="course-element" asp-controller="Course" asp-action="Details" asp-route-id="@course.Id">
                 <div>
                     <img src="@course.MainImageUrl" />
-                    <div class="title">Title: @course.Title</div>
+                    <div class="title">@course.Title</div>
                     <div class="difficulty">Difficulty: @course.Difficulty</div>
                     @if (course.Price == 0)
                     {
@@ -103,7 +103,11 @@
                        asp-route-Page="@Model.NextPage">Next</a>
                         </li>
                     }
-                    <li id="pageCounts" class="page-item"><a>Total pages: @Model.PagesCount</a></li>
+                    <li id="pageCounts" class="page-item">
+                        <a asp-action="Search"
+                       asp-all-route-data="@Model.Params"
+                       asp-route-Page="@Model.PagesCount">Last page: @Model.PagesCount</a>
+                    </li>
                 </ul>
             </nav>
         }
