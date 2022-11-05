@@ -1,9 +1,10 @@
 ﻿@model LearnFast.Web.ViewModels.ApplicationUser.UserViewModel
 
 @{
-    this.ViewData["Title"] = "My profile";
+    this.ViewData["Title"] = "Profile";
 }
 
+<partial name="_CookieConsentPartial" />
 <section style="background-color: rgb(13 108 253 / 25%);">
     <div class="container py-5">
         <div class="row">
@@ -11,10 +12,18 @@
                 <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                        <li class="breadcrumb-item active" aria-current="page">@this.ViewData["Title"]</li>
                     </ol>
                 </nav>
             </div>
+            @if (Model.IsOwner)
+            {
+                <div class="col-12">
+                    <form class="text-end" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@this.Url.Action("Index", "Home", new { area = string.Empty })">
+                        <button type="submit" class="btn btn-primary text-dark">Logout</button>
+                    </form>
+                </div>
+            }
         </div>
         <div class="row">
             <div class="col-lg-4">
@@ -131,28 +140,27 @@
                                                 {
                                                     @foreach (var review in Model.Reviews)
                                                     {
-                                                        <a asp-area="" 
-                                                        asp-controller="Review"
-                                                        asp-action="All"
-                                                        asp-route-CourseOwnerId="@review.CourseOwnerId"
-                                                        asp-route-CourseId="@review.CourseId"
-                                                        asp-fragment="@review.Id" class="list-group-item list-group-item-action">
+                                                        <a asp-area=""
+                                                   asp-controller="Review"
+                                                   asp-action="All"
+                                                   asp-route-CourseId="@review.CourseId"
+                                                   asp-fragment="@review.Id" class="list-group-item list-group-item-action">
                                                             @review.CourseTitle
                                                             <p class="list-group-item">
                                                                 @review.Content <i class="bi bi-dot"></i>
-                                                            @for (int i = 1; i <= 6; i++)
-                                                            {
-                                                                <span>
-                                                                    @if (i <= review.Rating)
-                                                                    {
-                                                                        <i class="bi bi-star-fill star"></i>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <i class="bi bi-star"></i>
-                                                                    }
-                                                                </span>
-                                                            }
+                                                                @for (int i = 1; i <= 6; i++)
+                                                                {
+                                                                    <span>
+                                                                        @if (i <= review.Rating)
+                                                                        {
+                                                                            <i class="bi bi-star-fill star"></i>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <i class="bi bi-star"></i>
+                                                                        }
+                                                                    </span>
+                                                                }
                                                                 <i class="bi bi-dot"></i>
                                                                 <span>@review.CreatedOn</span>
                                                             </p>

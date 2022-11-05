@@ -66,8 +66,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            public string UserName { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -112,16 +111,18 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await this.signInManager.PasswordSignInAsync(this.Input.Email, this.Input.Password, this.Input.RememberMe, lockoutOnFailure: false);
+                var result = await this.signInManager.PasswordSignInAsync(this.Input.UserName, this.Input.Password, this.Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     this._logger.LogInformation("User logged in.");
                     return this.LocalRedirect(returnUrl);
                 }
+
                 if (result.RequiresTwoFactor)
                 {
                     return this.RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = this.Input.RememberMe });
                 }
+
                 if (result.IsLockedOut)
                 {
                     this._logger.LogWarning("User account locked out.");
@@ -135,7 +136,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
             }
 
             // If we got this far, something failed, redisplay form
-            return this.Page();
+            return this.RedirectToAction("Profile", "Index", new { username = this.Input.UserName });
         }
     }
 }

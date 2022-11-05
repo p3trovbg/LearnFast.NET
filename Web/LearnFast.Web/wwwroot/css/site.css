@@ -7,17 +7,13 @@ body {
 }
 
 nav {
-    max-width: 100%;
-    text-align: center;
-    width: 960px;
     mask-image: linear-gradient( 90deg, rgba(255, 255, 255, 0) 0%, #ffffff 25%, #ffffff 75%, rgba(255, 255, 255, 0) 100% );
-    margin: 0 auto;
     padding: 60px 0;
+    text-align: right;
 }
 
     nav ul {
         display: inline-block;
-        text-align: center;
         background: linear-gradient( 90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0) 100% );
         box-shadow: 0 0 25px rgba(0, 0, 0, 0.1), inset 0 0 1px rgba(255, 255, 255, 0.6);
     }
@@ -43,3 +39,41 @@ nav {
                     color: rgba(0, 35, 122, 0.7);
                 }
 
+.chip {
+    padding: 0 25px;
+    padding-right: 50px;
+    height: 50px;
+}
+
+    .chip img {
+        float: right;
+        margin: 0 10px 0 -25px;
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        box-shadow: 8px -8px rgb(13 110 253 / 11%);
+    }
+
+@media only screen and (max-width: 600px) {
+    nav ul li {
+        display: block;
+    }
+
+    nav {
+        text-align: center;
+    }
+
+    nav ul {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .chip {
+        margin: 0 auto;
+        padding-right: 100px;
+    }
+}
+
+.account {
+    padding-right: 50px;
+}
