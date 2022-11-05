@@ -100,7 +100,7 @@
 
                 if (model.Owner.Id != userId)
                 {
-                    return this.Unauthorized();
+                    return this.NotFound();
                 }
 
                 await this.LoadingBaseParameters(model);

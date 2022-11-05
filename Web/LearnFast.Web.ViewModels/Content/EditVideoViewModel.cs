@@ -16,9 +16,6 @@
         public int CourseId { get; set; }
 
         [NotCopy]
-        public string OwnerId { get; set; }
-
-        [NotCopy]
         public IFormFile VideoFile { get; set; }
 
         public string Description { get; set; }

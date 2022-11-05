@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
+    using LearnFast.Services.Data.CourseService;
     using LearnFast.Services.Data.ReviewService;
     using LearnFast.Web.ViewModels.Review;
     using Microsoft.AspNetCore.Authorization;
@@ -16,10 +16,12 @@
     public class ReviewController : BaseController
     {
         private readonly IReviewService reviewService;
+        private readonly ICourseService courseService;
 
-        public ReviewController(IReviewService reviewService)
+        public ReviewController(IReviewService reviewService, ICourseService courseService)
         {
             this.reviewService = reviewService;
+            this.courseService = courseService;
         }
 
         public async Task<IActionResult> All(ReviewListViewModel model)
@@ -27,6 +29,7 @@
             try
             {
                 await this.reviewService.GetAllReviewsByCourse(model);
+                model.CourseOwnerId = await this.courseService.GetUserIdByCourse(model.CourseId);
                 model.CurrentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                 return this.View(model);
@@ -57,6 +60,7 @@
             try
             {
                 model.UserId = model.UserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
                 await this.reviewService.Add(model);
             }
             catch (Exception ex)
@@ -67,17 +71,12 @@
             return this.RedirectToAction(nameof(this.All), new { CourseId = model.CourseId });
         }
 
-        public async Task<IActionResult> Delete(int reviewId, string userId, int courseId)
+        public async Task<IActionResult> Delete(int reviewId, int courseId)
         {
-            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (currentUserId != userId)
-            {
-                this.NotFound();
-            }
-
             try
             {
-                await this.reviewService.Delete(reviewId);
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await this.reviewService.Delete(reviewId, userId);
             }
             catch (Exception ex)
             {
@@ -87,16 +86,17 @@
             return this.RedirectToAction(nameof(this.All), new { CourseId = courseId });
         }
 
-        public IActionResult Edit(EditReviewViewModel model)
+        public async Task<IActionResult> Edit(int reviewId)
         {
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            var model = await this.reviewService.GetReviewById<EditReviewViewModel>(reviewId);
+
+            model.RatingList = LoadRatings();
             if (currentUserId != model.UserId)
             {
                 return this.NotFound();
             }
-
-            model.RatingList = LoadRatings();
 
             return this.View(model);
         }

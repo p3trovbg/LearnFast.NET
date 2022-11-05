@@ -48,13 +48,19 @@
             await this.reviewRepository.SaveChangesAsync();
         }
 
-        public async Task Delete(int reviewId)
+        public async Task Delete(int reviewId, string userId)
         {
-            var currentReview = await this.reviewRepository.All().Where(x => x.Id == reviewId).FirstOrDefaultAsync();
+            var currentReview = await this.reviewRepository.All().Include(x => x.User).Where(x => x.Id == reviewId).FirstOrDefaultAsync();
+
 
             if (currentReview == null)
             {
                 throw new ArgumentException(GlobalExceptions.DoesNotExistReview);
+            }
+
+            if (currentReview.User.Id != userId)
+            {
+                throw new ArgumentException(GlobalExceptions.UserNotHasPermission);
             }
 
             this.reviewRepository.Delete(currentReview);
@@ -105,6 +111,11 @@
             .Take(model.ItemsPerPage)
             .To<ReviewViewModel>()
             .ToListAsync();
+        }
+
+        public async Task<T> GetReviewById<T>(int reviewId)
+        {
+            return await this.reviewRepository.AllAsNoTracking().Where(x => x.Id == reviewId).To<T>().FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<T>> GetSelectedReviewsByCourse<T>(int courseId)

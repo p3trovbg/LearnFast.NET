@@ -13,8 +13,6 @@
 
         public int CourseId { get; set; }
 
-        public string CourseOwnerId { get; set; }
-
         public int Rating { get; set; }
 
         public string CourseTitle { get; set; }

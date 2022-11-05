@@ -8,6 +8,17 @@
 <h1>@($"{Model.CategoryName} {this.ViewData["Title"]}")</h1>
 <span>Category</span>
 <hr />
+<div class="row">
+    <div class="col">
+        <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="breadcrumb-item"><a asp-area="" asp-controller="Category" asp-action="Index">Categories</a></li>
+                <li class="breadcrumb-item"><a>@Model.CategoryName</a></li>
+            </ol>
+        </nav>
+    </div>
+</div>
 <div class="container">
     <div class="filter-container">
         <form asp-controller="Course" asp-action="Search" class="form-inline my-2 my-lg-0 search-form" method="get">

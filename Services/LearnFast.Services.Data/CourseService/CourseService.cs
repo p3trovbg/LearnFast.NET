@@ -219,6 +219,13 @@
             await this.GetDefaultModelProps(model);
         }
 
+        public async Task<string> GetUserIdByCourse(int courseId)
+        {
+            var course = await this.courseRepository.AllAsNoTracking().Include(x => x.Owner).FirstOrDefaultAsync(x => x.Id == courseId);
+
+            return course.Owner.Id;
+        }
+
         private static IQueryable<BaseCourseViewModel> Filter(SearchViewModel model, IQueryable<BaseCourseViewModel> coursesAsQuery)
         {
             if (!string.IsNullOrEmpty(model.SearchString))

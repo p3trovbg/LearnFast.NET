@@ -11,9 +11,11 @@
 
         Task GetAllReviewsByCourse(ReviewListViewModel model);
 
+        Task<T> GetReviewById<T>(int reviewId);
+
         Task Add(ImportReviewViewModel model);
 
-        Task Delete(int reviewId);
+        Task Delete(int reviewId, string userId);
 
         Task Edit(EditReviewViewModel model);
 

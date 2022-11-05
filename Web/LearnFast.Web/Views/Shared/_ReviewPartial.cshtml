@@ -10,10 +10,6 @@
                     <span class="btn btn-info">
                         <a asp-area=""
                    asp-action="Edit"
-                   asp-route-Content="@review.Content"
-                   asp-route-Rating="@review.Rating"
-                   asp-route-CourseId="@Model.CourseId"
-                   asp-route-UserId="@review.User.Id"
                    asp-route-ReviewId="@review.Id">Edit</a>
                     </span>
                     <span>
@@ -21,7 +17,6 @@
                    asp-area=""
                    asp-action="Delete"
                    asp-route-reviewId="@review.Id"
-                   asp-route-userId="@review.User.Id"
                    asp-route-courseId="@Model.CourseId">Delete</a>
                     </span>
                 </div>

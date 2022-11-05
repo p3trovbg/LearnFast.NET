@@ -19,6 +19,8 @@
 
         Task UpdateAsync(ImportCourseModel model, string userId);
 
+        Task<string> GetUserIdByCourse(int courseId);
+
         Task<IEnumerable<T>> GetAllAsync<T>();
 
         Task<int> GetCountAsync();

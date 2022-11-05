@@ -2,7 +2,8 @@
 {
     using System.Security.Claims;
     using System.Threading.Tasks;
-
+    using LearnFast.Data.Models;
+    using LearnFast.Services.Data.CourseService;
     using LearnFast.Services.Data.VideoService;
     using LearnFast.Web.ViewModels.Content;
     using Microsoft.AspNetCore.Authorization;
@@ -12,15 +13,19 @@
     public class VideoController : BaseController
     {
         private readonly IVideoService videoService;
+        private readonly ICourseService courseService;
 
-        public VideoController(IVideoService videoService)
+        public VideoController(IVideoService videoService, ICourseService courseService)
         {
             this.videoService = videoService;
+            this.courseService = courseService;
         }
 
-        public IActionResult AddVideo(int courseId, string ownerId)
+        public async Task<IActionResult> AddVideo(int courseId)
         {
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var ownerId = await this.courseService.GetUserIdByCourse(courseId);
+
             if (currentUserId != ownerId)
             {
                 return this.NotFound();
@@ -44,9 +49,11 @@
             return this.RedirectToAction("Details", "Course", new { id = model.CourseId });
         }
 
-        public async Task<IActionResult> RemoveVideo(string videoId, string ownerId, int courseId)
+        public async Task<IActionResult> RemoveVideo(string videoId, int courseId)
         {
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var ownerId = await this.courseService.GetUserIdByCourse(courseId);
+
             if (currentUserId != ownerId)
             {
                 return this.NotFound();
@@ -66,8 +73,10 @@
             }
 
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var ownerId = await this.courseService.GetUserIdByCourse(model.CourseId);
 
-            if (currentUserId != model.OwnerId)
+
+            if (currentUserId != ownerId)
             {
                 return this.NotFound();
             }
@@ -77,11 +86,13 @@
             return this.RedirectToAction("Details", "Course", new { id = model.CourseId });
         }
 
-        public IActionResult Edit(EditVideoViewModel model)
+        public async Task<IActionResult> Edit(EditVideoViewModel model)
         {
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (currentUserId != model.OwnerId)
+            var ownerId = await this.courseService.GetUserIdByCourse(model.CourseId);
+
+            if (currentUserId != ownerId)
             {
                 return this.NotFound();
             }

@@ -19,5 +19,7 @@
         public const string LimitOfSelectedReviews = "Limit of the selected reviews is 5";
 
         public const string UserNotExists = "This user not exists!";
+
+        public const string UserNotHasPermission = "This user doesn't has permission";
     }
 }

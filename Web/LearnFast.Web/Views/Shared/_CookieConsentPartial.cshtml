@@ -16,9 +16,11 @@
     </div>
     <script>
         (function () {
+            var element = document.getElementById('cookieConsent')
             var button = document.querySelector("#cookieConsent button[data-cookie-string]");
             button.addEventListener("click", function () {
                 document.cookie = button.dataset.cookieString;
+                element.style.display = 'none';
             }, false);
         })();
     </script>
