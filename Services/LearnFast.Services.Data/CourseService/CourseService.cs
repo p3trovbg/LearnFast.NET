@@ -195,6 +195,32 @@
                 }
             }
 
+            coursesAsQuery = Filter(model, coursesAsQuery);
+
+            if (!string.IsNullOrEmpty(model.SorterArgument))
+            {
+                coursesAsQuery = Sorter(model, coursesAsQuery);
+            }
+
+            model.Courses = await coursesAsQuery.ToListAsync();
+
+            if (model.Difficulty != null)
+            {
+                var diffString = Enum.GetName(typeof(Difficulty), model.Difficulty);
+                model.Courses = model.Courses.Where(x => x.Difficulty == diffString);
+            }
+
+            model.Page = model.Page == null ? 1 : model.Page;
+            model.TotalCount = model.Courses.Count();
+            model.Courses = model.Courses
+                .Skip((int)((model.Page - 1) * model.ItemsPerPage))
+                .Take(model.ItemsPerPage);
+
+            await this.GetDefaultModelProps(model);
+        }
+
+        private static IQueryable<BaseCourseViewModel> Filter(SearchViewModel model, IQueryable<BaseCourseViewModel> coursesAsQuery)
+        {
             if (!string.IsNullOrEmpty(model.SearchString))
             {
                 coursesAsQuery = coursesAsQuery.Where(x => x.Title.ToLower().Contains(model.SearchString.ToLower()));
@@ -215,43 +241,31 @@
                 coursesAsQuery = coursesAsQuery.Where(x => x.Language.Id == model.LanguageId);
             }
 
-            if (!string.IsNullOrEmpty(model.SorterArgument))
+            return coursesAsQuery;
+        }
+
+        private static IQueryable<BaseCourseViewModel> Sorter(SearchViewModel model, IQueryable<BaseCourseViewModel> coursesAsQuery)
+        {
+            switch (model.SorterArgument)
             {
-                switch (model.SorterArgument)
-                {
-                    case OrderByTitle:
-                        coursesAsQuery = coursesAsQuery.OrderBy(x => x.Title);
-                        break;
-                    case OrderByPrice:
-                        coursesAsQuery = coursesAsQuery.OrderBy(x => x.Price);
-                        break;
-                    case OrderDescByPrice:
-                        coursesAsQuery = coursesAsQuery.OrderByDescending(x => x.Price);
-                        break;
-                    case OrderByNewestDate:
-                        coursesAsQuery = coursesAsQuery.OrderByDescending(x => x.CreatedOn);
-                        break;
-                    case OrderByOldestDate:
-                        coursesAsQuery = coursesAsQuery.OrderBy(x => x.CreatedOn);
-                        break;
-                }
+                case OrderByTitle:
+                    coursesAsQuery = coursesAsQuery.OrderBy(x => x.Title);
+                    break;
+                case OrderByPrice:
+                    coursesAsQuery = coursesAsQuery.OrderBy(x => x.Price);
+                    break;
+                case OrderDescByPrice:
+                    coursesAsQuery = coursesAsQuery.OrderByDescending(x => x.Price);
+                    break;
+                case OrderByNewestDate:
+                    coursesAsQuery = coursesAsQuery.OrderByDescending(x => x.CreatedOn);
+                    break;
+                case OrderByOldestDate:
+                    coursesAsQuery = coursesAsQuery.OrderBy(x => x.CreatedOn);
+                    break;
             }
 
-            model.Courses = await coursesAsQuery.ToListAsync();
-
-            if (model.Difficulty != null)
-            {
-                var diffString = Enum.GetName(typeof(Difficulty), model.Difficulty);
-                model.Courses = model.Courses.Where(x => x.Difficulty == diffString);
-            }
-
-            model.Page = model.Page == null ? 1 : model.Page;
-            model.TotalCount = model.Courses.Count();
-            model.Courses = model.Courses
-                .Skip((int)((model.Page - 1) * model.ItemsPerPage))
-                .Take(model.ItemsPerPage);
-
-            await this.GetDefaultModelProps(model);
+            return coursesAsQuery;
         }
 
         private IQueryable<Course> GetAllWithBasicInformationAsNoTracking()

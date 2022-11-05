@@ -84,6 +84,12 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
             public string LastName { get; set; }
 
             [Required]
+            [Display(Name = "Username")]
+            [RegularExpression(@"^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$", ErrorMessage = "Invalid username")]
+            [StringLength(15, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
+            public string UserName { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -121,7 +127,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
                 user.LastName = this.Input.LastName;
                 user.CountryId = int.Parse(this.Input.CountryId);
 
-                await this.userStore.SetUserNameAsync(user, this.Input.Email, CancellationToken.None);
+                await this.userStore.SetUserNameAsync(user, this.Input.UserName, CancellationToken.None);
                 await this.emailStore.SetEmailAsync(user, this.Input.Email, CancellationToken.None);
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);
 

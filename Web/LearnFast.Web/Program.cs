@@ -99,6 +99,7 @@ namespace LearnFast.Web
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
+
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICountryService, CountryService>();
 
@@ -149,6 +150,8 @@ namespace LearnFast.Web
 
             app.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            app.MapControllerRoute("users", "{username}", new { controller = "Profile", action = "Index", username=string.Empty });
+
             app.MapRazorPages();
         }
     }

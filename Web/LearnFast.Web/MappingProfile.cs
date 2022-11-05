@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using LearnFast.Data.Models;
+    using LearnFast.Web.ViewModels.ApplicationUser;
     using LearnFast.Web.ViewModels.Category;
     using LearnFast.Web.ViewModels.Content;
     using LearnFast.Web.ViewModels.Course;
@@ -13,6 +14,7 @@
         public MappingProfile()
         {
             this.CreateMap<ImportCourseModel, Course>();
+            this.CreateMap<ApplicationUser, UserViewModel>();
             this.CreateMap<Course, CourseViewModel>();
             this.CreateMap<Course, BaseCourseViewModel>();
             this.CreateMap<LanguageViewModel, Language>();

@@ -2,7 +2,6 @@
 {
     using System.Threading.Tasks;
 
-    using CloudinaryDotNet;
     using LearnFast.Data.Models;
     using Microsoft.AspNetCore.Http;
 

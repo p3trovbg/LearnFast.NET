@@ -1,0 +1,100 @@
+﻿@model LearnFast.Web.ViewModels.ApplicationUser.UserViewModel
+
+@{
+    this.ViewData["Title"] = "My profile";
+}
+
+<section style="background-color: rgb(13 108 253 / 25%);">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="@Model.MainImageUrl" alt="avatar"
+                             class="rounded-circle img-fluid" style="width: 150px;">
+                        <h5 class="my-3">@Model.FullName</h5>
+                        <p class="text-muted mb-6">
+                            <i class="bi bi-envelope-open-fill"></i>
+                            @Model.Email
+                        </p>
+                        <p class="text-muted mb-6"><i class="bi bi-browser-chrome"></i> @Model.WebsitePath</p>
+                        <p class="text-muted mb-6">
+                            <i class="bi bi-house-door"></i>
+                            @Model.Country.Name
+                        </p>
+                        @if (!Model.IsOwner)
+                        {
+                            <div class="d-flex justify-content-center mb-2">
+                                <button type="button" class="btn btn-outline-primary ms-1">Message</button>
+                            </div>
+                        }
+                        else 
+                        {
+                            <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Settings</a>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4 mb-md-0">
+                            <div class="card-body">
+                                <div class="accordion" id="own-courses">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="own-head">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#own-child" aria-expanded="true" aria-controls="own-child">
+                                                Own courses
+                                            </button>
+                                        </h2>
+                                        <div id="own-child" class="accordion-collapse collapse show" aria-labelledby="own-head" data-bs-parent="#own-courses">
+                                            <div class="accordion-body">
+                                                @foreach (var course in Model.OwnCourses)
+                                                {
+                                                    <a asp-area="" asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="list-group-item list-group-item-action">@course.Title</a>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-4 mb-md-0">
+                            <div class="card-body">
+                                <div class="accordion" id="enrolled-courses">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="enroll-head">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#enroll-child" aria-expanded="true" aria-controls="enroll-child">
+                                                Enrolled courses
+                                            </button>
+                                        </h2>
+                                        <div id="enroll-child" class="accordion-collapse collapse show" aria-labelledby="enroll-head" data-bs-parent="#enroll-courses">
+                                            <div class="accordion-body">
+                                                @foreach (var course in Model.BuyedCourses)
+                                                {
+                                                    <a asp-area="" asp-controller="Course" asp-action="Details" asp-route-id="@course.CourseId" class="list-group-item list-group-item-action">@course.Title</a>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

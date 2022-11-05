@@ -12,17 +12,17 @@
 
         public string MainImageUrl { get; set; }
 
-        public string Email { get; set; }
-
         public void CreateMappings(IProfileExpression configuration)
         {
             configuration.CreateMap<ApplicationUser, BaseUserViewModel>()
                 .ForMember(
                 d => d.FullName,
-                m => m.MapFrom(x => x.FirstName + " " + x.LastName))
+                m => m.MapFrom(x => x.FirstName + " " + x.LastName));
+
+            configuration.CreateMap<ApplicationUser, UserViewModel>()
                 .ForMember(
-                d => d.MainImageUrl,
-                m => m.MapFrom(x => x.MainImageUrl));
+                d => d.FullName,
+                m => m.MapFrom(x => x.FirstName + " " + x.LastName));
         }
     }
 }
