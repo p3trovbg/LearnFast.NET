@@ -6,7 +6,7 @@
         <div class="text-center review">
             @if (Model.CurrentUserId == review.User.Id && !Model.IsSelectedReviews)
             {
-                <div class="text-end">
+                <div class="text-end" id="@review.Id">
                     <span class="btn btn-info">
                         <a asp-area=""
                    asp-action="Edit"
