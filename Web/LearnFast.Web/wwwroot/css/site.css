@@ -77,3 +77,8 @@ nav {
 .account {
     padding-right: 50px;
 }
+
+.logo {
+    width: 130px;
+    max-width: 100%;
+}

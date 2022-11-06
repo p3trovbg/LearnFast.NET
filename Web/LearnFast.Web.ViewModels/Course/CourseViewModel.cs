@@ -8,6 +8,10 @@
 
     public class CourseViewModel : BaseCourseViewModel
     {
+        public bool IsOwner => this.Owner.Id == this.CurrentUserId;
+
+        public bool IsUserEnrolled { get; set; }
+
         public string Description { get; set; }
 
         public string Requirments { get; set; }

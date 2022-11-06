@@ -146,13 +146,9 @@
                .ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetEnrolledCoursesAsync<T>(string userId)
+        public bool IsUserEnrolledCourse(string userId)
         {
-            return await this.GetAllWithBasicInformationAsNoTracking()
-             .Include(x => x.CourseStudents)
-             .Where(x => x.CourseStudents.Any(x => x.UserId == userId))
-             .To<T>()
-             .ToListAsync();
+            return this.courseRepository.AllAsNoTracking().Any(x => x.CourseStudents.Any(x => x.UserId == userId));
         }
 
         public async Task<T> GetByIdAsync<T>(int courseId)

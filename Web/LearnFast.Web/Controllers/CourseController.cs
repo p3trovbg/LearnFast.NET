@@ -1,6 +1,7 @@
 ﻿namespace LearnFast.Web.Controllers
 {
     using System;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -137,7 +138,10 @@
             try
             {
                 var model = await this.filterCourse.GetByIdAsync<CourseViewModel>(id);
-                model.CurrentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await this.userManager.GetUserAsync(this.User);
+
+                model.IsUserEnrolled = this.filterCourse.IsUserEnrolledCourse(user.Id);
+                model.CurrentUserId = user.Id;
 
                 var sanitizer = new HtmlSanitizer();
                 model.Description = sanitizer.Sanitize(model.Description);

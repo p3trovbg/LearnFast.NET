@@ -44,7 +44,7 @@
         </p>
     </div>
     <div>
-        @if (Model.Owner.Id == Model.CurrentUserId)
+        @if (Model.IsOwner)
         {
             <a class="btn btn-success" asp-controller="Video"
            asp-action="AddVideo"
@@ -77,9 +77,16 @@
                         </h2>
                         <div id="flush-@i" class="accordion-collapse collapse" aria-labelledby="flush-@i + 1" data-bs-parent="#flush">
                             <div class="accordion-body">
-                                <video src="@video.UrlPath" controls></video>
+                                @if (Model.IsUserEnrolled || Model.IsOwner)
+                                {
+                                    <video src="@video.UrlPath" controls></video>
+                                }
+                                else
+                                {
+                                    <p class="alert alert-primary">You must enroll in this course!</p>
+                                }
                             </div>
-                            @if (Model.Owner.Id == Model.CurrentUserId)
+                            @if (Model.IsOwner)
                             {
                                 <div class="accordion-body text-end">
                                     <a asp-area=""
@@ -111,14 +118,17 @@
             <h4>
                 <a class="btn-outline-success" asp-area=""
                    asp-controller="Review"
-                   asp-action="All"             
+                   asp-action="All"
                    asp-route-CourseId="@Model.Id">All</a>/Top reviews
             </h4>
-            <a class="btn btn-success"
+            @if (!Model.IsOwner)
+            {
+                <a class="btn btn-success"
                asp-area=""
                asp-controller="Review"
                asp-action="Add"
                asp-route-courseId="@Model.Id">Add review</a>
+            }
         </div>
         <div class="reviews">
             <hr />
@@ -136,7 +146,8 @@
                             IsSelectedReviews = true,
                             CourseId = Model.Id,
                             CurrentUserId = Model.CurrentUserId,
-                            CourseOwnerId = Model.Owner.Id }" /> }
+                            CourseOwnerId = Model.Owner.Id }" />
+            }
         </div>
     </div>
 </section>

@@ -3,10 +3,12 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using LearnFast.Data.Models;
+    using LearnFast.Services.Mapping;
     using LearnFast.Services.Mapping.PropertyCopier;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
-    public class EditReviewViewModel
+    public class EditReviewViewModel : IMapFrom<Review>
     {
         [NotCopy]
         public string UserId { get; set; }

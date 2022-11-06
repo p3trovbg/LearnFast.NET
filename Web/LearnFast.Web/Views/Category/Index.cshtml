@@ -6,6 +6,8 @@
 }
 
 <section>
+    <h1>@this.ViewData["Title"]</h1>
+    <hr />
     <div class="row">
         <div class="col">
             <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
@@ -16,8 +18,6 @@
             </nav>
         </div>
     </div>
-    <h1>@this.ViewData["Title"]</h1>
-    <hr />
     <div>
         @foreach (var category in Model.Categories)
         {
