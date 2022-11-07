@@ -19,7 +19,7 @@
 
         Task UpdateAsync(ImportCourseModel model, string userId);
 
-        Task<string> GetUserIdByCourse(int courseId);
+        Task<string> GetOwnerCourseId(int courseId);
 
         Task<IEnumerable<T>> GetAllAsync<T>();
 

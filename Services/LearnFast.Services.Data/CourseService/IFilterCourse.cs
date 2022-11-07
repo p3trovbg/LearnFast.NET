@@ -9,6 +9,8 @@
     {
         Task<T> GetByIdAsync<T>(int courseId);
 
+        Task<IEnumerable<T>> GetTop12BestSellersCourses<T>();
+
         Task<IEnumerable<T>> GetOwnCoursesAsync<T>(string userId);
 
         bool IsUserEnrolledCourse(string userId);

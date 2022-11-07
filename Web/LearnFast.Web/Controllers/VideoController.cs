@@ -24,7 +24,7 @@
         public async Task<IActionResult> AddVideo(int courseId)
         {
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var ownerId = await this.courseService.GetUserIdByCourse(courseId);
+            var ownerId = await this.courseService.GetOwnerCourseId(courseId);
 
             if (currentUserId != ownerId)
             {
@@ -52,7 +52,7 @@
         public async Task<IActionResult> RemoveVideo(string videoId, int courseId)
         {
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var ownerId = await this.courseService.GetUserIdByCourse(courseId);
+            var ownerId = await this.courseService.GetOwnerCourseId(courseId);
 
             if (currentUserId != ownerId)
             {
@@ -73,7 +73,7 @@
             }
 
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var ownerId = await this.courseService.GetUserIdByCourse(model.CourseId);
+            var ownerId = await this.courseService.GetOwnerCourseId(model.CourseId);
 
 
             if (currentUserId != ownerId)
@@ -90,7 +90,7 @@
         {
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var ownerId = await this.courseService.GetUserIdByCourse(model.CourseId);
+            var ownerId = await this.courseService.GetOwnerCourseId(model.CourseId);
 
             if (currentUserId != ownerId)
             {

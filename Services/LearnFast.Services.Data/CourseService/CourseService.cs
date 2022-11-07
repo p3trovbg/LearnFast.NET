@@ -24,7 +24,6 @@
     public class CourseService : ICourseService, IFilterCourse
     {
         private const string BaseCourseImageUrl = "https://akm-img-a-in.tosshub.com/indiatoday/images/bodyeditor/202009/e-learning_digital_education-1200x1080.jpg?XjMNHsb4gLoU_cC7110HB7jVghJQROOj";
-        private const string ImageFolderName = "images";
 
         private const string OrderByTitle = "title";
         private const string OrderByPrice = "price";
@@ -61,7 +60,7 @@
 
             if (model.MainImage != null)
             {
-                var image = await this.imageService.UploadImage(model.MainImage, ImageFolderName);
+                var image = await this.imageService.UploadImage(model.MainImage, GlobalConstants.ImagesFolderName);
                 course.MainImageUrl = image.UrlPath;
             }
             else
@@ -124,7 +123,7 @@
 
             if (model.MainImage != null)
             {
-                var image = await this.imageService.UploadImage(model.MainImage, ImageFolderName);
+                var image = await this.imageService.UploadImage(model.MainImage, GlobalConstants.ImagesFolderName);
                 course.MainImageUrl = image.UrlPath;
             }
 
@@ -215,11 +214,21 @@
             await this.GetDefaultModelProps(model);
         }
 
-        public async Task<string> GetUserIdByCourse(int courseId)
+        public async Task<string> GetOwnerCourseId(int courseId)
         {
             var course = await this.courseRepository.AllAsNoTracking().Include(x => x.Owner).FirstOrDefaultAsync(x => x.Id == courseId);
 
             return course.Owner.Id;
+        }
+
+        public async Task<IEnumerable<T>> GetTop12BestSellersCourses<T>()
+        {
+            return await this.courseRepository
+                .AllAsNoTracking()
+                .OrderByDescending(x => x.Sells)
+                .Take(12)
+                .To<T>()
+                .ToListAsync();
         }
 
         private static IQueryable<BaseCourseViewModel> Filter(SearchViewModel model, IQueryable<BaseCourseViewModel> coursesAsQuery)
