@@ -3,7 +3,7 @@ namespace LearnFast.Web
     using System;
     using System.Linq;
     using System.Reflection;
-
+    using System.Runtime.CompilerServices;
     using AutoMapper;
     using CloudinaryDotNet;
     using LearnFast.Data;
@@ -23,9 +23,11 @@ namespace LearnFast.Web
     using LearnFast.Services.Data.VideoService;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Messaging;
+    using LearnFast.Web.Middlewares;
     using LearnFast.Web.ViewModels;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -59,10 +61,12 @@ namespace LearnFast.Web
             services.AddSingleton(new Cloudinary(new Account(cloudName, apiKey, apiSecret)));
 
             services.AddDbContext<ApplicationDbContext>(
-                options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options => options
+                .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-                .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddRoles<ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.Configure<CookiePolicyOptions>(
                 options =>
@@ -75,7 +79,8 @@ namespace LearnFast.Web
                 options =>
                 {
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-                }).AddRazorRuntimeCompilation();
+                })
+                .AddRazorRuntimeCompilation();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
@@ -147,6 +152,8 @@ namespace LearnFast.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<RedirectMiddleware>();
 
             app.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
