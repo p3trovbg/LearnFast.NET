@@ -16,14 +16,6 @@
                     </ol>
                 </nav>
             </div>
-            @if (Model.IsOwner)
-            {
-                <div class="col-12">
-                    <form class="text-end" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@this.Url.Action("Index", "Home", new { area = string.Empty })">
-                        <button type="submit" class="btn btn-primary text-dark">Logout</button>
-                    </form>
-                </div>
-            }
         </div>
         <div class="row">
             <div class="col-lg-4">
@@ -32,28 +24,27 @@
                         <img src="@Model.MainImageUrl" alt="avatar"
                              class="rounded-circle img-fluid" style="width: 150px;">
                         <h5 class="my-3">@Model.FullName</h5>
-                        <p class="text-muted mb-6">
+                        <p class="text-muted mb-3">
                             <i class="bi bi-envelope-open-fill"></i>
                             @Model.Email
                         </p>
-                        <p class="text-muted mb-6"><i class="bi bi-browser-chrome"></i> @Model.WebsitePath</p>
-                        <p class="text-muted mb-6">
+                        <p class="text-muted mb-3">
                             <i class="bi bi-house-door"></i>
                             @Model.Country.Name
                         </p>
-                        <p class="text-muted mb-6">
-                            <i class="bi bi-person-video2"></i>
-                            @Model.Biography
-                        </p>
+                        @if (@Model.WebsitePath != null) { <p class="text-muted mb-6"><i class="bi bi-browser-chrome"></i> @Model.WebsitePath</p> }
+                        @if (Model.Biography != null)
+                        {
+                            <p class="text-muted mb-3">
+                                <i class="bi bi-person-video2"></i>
+                                @Model.Biography
+                            </p>
+                        }
                         @if (!Model.IsOwner)
                         {
                             <div class="d-flex justify-content-center mb-2">
                                 <button type="button" class="btn btn-outline-primary ms-1">Message</button>
                             </div>
-                        }
-                        else
-                        {
-                            <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Settings</a>
                         }
                     </div>
                 </div>

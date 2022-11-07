@@ -9,16 +9,38 @@
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
     <div class="col-md-6">
-        <form id="profile-form" method="post">
+        <form id="profile-form" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-floating">
+                <div class="row">
+                    <img src="@Model.Input.ImageUrl" alt="avatar"
+                         class="rounded-circle img-fluid" style="width: 150px;">
+                    <div class="input-group-text col-xs-8 col-md-8 h-50">
+                        <input class="form-control" id="upload" asp-for="Input.ImageFile" multiple accept="image/gif, image/jpeg, image/png">
+                        <span asp-validation-for="Input.ImageFile" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
             <div class="form-floating">
                 <input asp-for="Username" class="form-control" disabled />
                 <label asp-for="Username" class="form-label"></label>
             </div>
             <div class="form-floating">
-                <input asp-for="Input.PhoneNumber" class="form-control" />
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                <textarea id="area" asp-for="Input.Biography" class="form-control"> </textarea>
+                <label asp-for="Input.Biography" class="form-label"></label>
+                <span asp-validation-for="Input.Biography" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Input.WebsiteUrl" class="form-control" />
+                <label asp-for="Input.WebsiteUrl" class="form-label"></label>
+                <span asp-validation-for="Input.WebsiteUrl" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <select asp-for="Input.CountryId" asp-items="Model.Input.Countries" class="form-select">
+                    <option disabled selected></option>
+                </select>
+                <label asp-for="Input.CountryId" class="form-label">Select category</label>
+                <span asp-validation-for="Input.CountryId" class="text-danger"></span>
             </div>
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
         </form>
@@ -28,3 +50,11 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+    <style>
+        #area {
+                width: 100%;
+                height: 150px;
+                padding: 30px 10px;
+        }
+    </style>
