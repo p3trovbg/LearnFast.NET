@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using LearnFast.Services.Messaging;
+using IEmailSender = LearnFast.Services.Messaging.IEmailSender;
 
 namespace LearnFast.Web.Areas.Identity.Pages.Account
 {

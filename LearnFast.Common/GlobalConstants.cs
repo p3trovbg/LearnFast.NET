@@ -4,6 +4,8 @@
     {
         public const string SystemName = "LearnFast";
 
+        public const string EmailSender = "p3trovsit@gmail.com";
+
         public const string AdministratorRoleName = "Administrator";
 
         public const int MaxBiographyLength = 500;

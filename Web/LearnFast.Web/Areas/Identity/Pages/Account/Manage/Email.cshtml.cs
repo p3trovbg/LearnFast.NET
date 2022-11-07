@@ -1,21 +1,25 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
-#nullable disable
-
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using LearnFast.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
-
 namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
 {
+#nullable disable
+
+    using System;
+    using System.ComponentModel.DataAnnotations;
+    using System.Text;
+    using System.Text.Encodings.Web;
+    using System.Threading.Tasks;
+    using LearnFast.Common;
+    using LearnFast.Data.Models;
+    using LearnFast.Services.Messaging;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.UI.Services;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+    using Microsoft.AspNetCore.WebUtilities;
+
+    using IEmailSender = LearnFast.Services.Messaging.IEmailSender;
+
     public class EmailModel : PageModel
     {
         private readonly UserManager<ApplicationUser> userManager;
@@ -125,6 +129,8 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
                     values: new { area = "Identity", userId = userId, email = this.Input.NewEmail, code = code },
                     protocol: this.Request.Scheme);
                 await this._emailSender.SendEmailAsync(
+                    GlobalConstants.EmailSender,
+                    "P3trov",
                     this.Input.NewEmail,
                     "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
@@ -161,9 +167,11 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
                 values: new { area = "Identity", userId = userId, code = code },
                 protocol: this.Request.Scheme);
             await this._emailSender.SendEmailAsync(
-                email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    GlobalConstants.EmailSender,
+                    "P3trov",
+                    this.Input.NewEmail,
+                    "Confirm your email",
+                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
             this.StatusMessage = "Verification email sent. Please check your email.";
             return this.RedirectToPage();

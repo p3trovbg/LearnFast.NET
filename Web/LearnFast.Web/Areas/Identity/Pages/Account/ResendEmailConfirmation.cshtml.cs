@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using LearnFast.Services.Messaging;
+using IEmailSender = LearnFast.Services.Messaging.IEmailSender;
+using LearnFast.Common;
 
 namespace LearnFast.Web.Areas.Identity.Pages.Account
 {
@@ -78,9 +81,11 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
                 values: new { userId = userId, code = code },
                 protocol: this.Request.Scheme);
             await this.emailSender.SendEmailAsync(
-                this.Input.Email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                  GlobalConstants.EmailSender,
+                  "p3trov",
+                  this.Input.Email,
+                  "Confirm your email",
+                  $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
             this.ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
             return this.Page();

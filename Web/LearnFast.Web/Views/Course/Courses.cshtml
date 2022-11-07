@@ -75,56 +75,59 @@
             <button class="btn btn-outline-success col-6" type="submit">Search</button>
         </form>
     </div>
-    <div class="courses">
-        @foreach (var course in Model.Courses)
-        {
-            <a class="course-element" asp-controller="Course" asp-action="Details" asp-route-id="@course.Id">
-                <div>
-                    <img src="@course.MainImageUrl" />
-                    <div class="title">@course.Title</div>
-                    <div class="difficulty">Difficulty: @course.Difficulty</div>
-                    @if (course.Price == 0)
-                    {
-                        <p class="price">Free course</p>
-                    }
-                    else
-                    {
-                        <div class="price">Price: @($"{course.Price:f2}")</div>
-                    }
-                </div>
-            </a>
-        }
-        @if (Model.PagesCount > 1)
-        {
-            <nav>
-                <ul class="pagination justify-content-between">
-                    @if (Model.HasPreviousPage)
-                    {
-                        <li class="page-item mx-auto">
-                            <a asp-action="Search"
+    @if (Model.Courses.Any())
+    {
+        <div class="courses">
+            @foreach (var course in Model.Courses)
+            {
+                <a class="course-element" asp-controller="Course" asp-action="Details" asp-route-id="@course.Id">
+                    <div>
+                        <img src="@course.MainImageUrl" />
+                        <div class="title">@course.Title</div>
+                        <div class="difficulty">Difficulty: @course.Difficulty</div>
+                        @if (course.Price == 0)
+                        {
+                            <p class="price">Free course</p>
+                        }
+                        else
+                        {
+                            <div class="price">Price: @($"{course.Price:f2}")</div>
+                        }
+                    </div>
+                </a>
+            }
+            @if (Model.PagesCount > 1)
+            {
+                <nav>
+                    <ul class="pagination justify-content-between">
+                        @if (Model.HasPreviousPage)
+                        {
+                            <li class="page-item mx-auto">
+                                <a asp-action="Search"
                        asp-all-route-data="@Model.Params"
                        asp-route-Page="@Model.PreviousPage">Previous</a>
-                        </li>
-                    }
-                    @if (Model.HasNextPage)
-                    {
-                        <li class="page-item mx-auto">
-                            <a asp-action="Search"
+                            </li>
+                        }
+                        @if (Model.HasNextPage)
+                        {
+                            <li class="page-item mx-auto">
+                                <a asp-action="Search"
                        asp-all-route-data="@Model.Params"
                        asp-route-Page="@Model.NextPage">Next</a>
-                        </li>
-                    }
-                    <li id="pageCounts" class="page-item">
-                        <a asp-action="Search"
+                            </li>
+                        }
+                        <li id="pageCounts" class="page-item">
+                            <a asp-action="Search"
                        asp-all-route-data="@Model.Params"
                        asp-route-Page="@Model.PagesCount">Last page: @Model.PagesCount</a>
-                    </li>
-                </ul>
-            </nav>
-        }
-    </div>
-</div>
+                        </li>
+                    </ul>
+                </nav>
+            }
 
+        </div>
+    }
+</div>
 @section Scripts {
     <script type="module" src="/js/filter.js" asp-append-version="true"></script>
 }

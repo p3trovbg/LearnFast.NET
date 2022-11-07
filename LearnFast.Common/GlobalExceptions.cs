@@ -21,5 +21,9 @@
         public const string UserNotExists = "This user not exists!";
 
         public const string UserNotHasPermission = "This user doesn't has permission";
+
+        public const string InvalidUsername = "Invalid username";
+
+        public const string ConfirmedPasswordNotMatch = "The password and confirmation password do not match.";
     }
 }

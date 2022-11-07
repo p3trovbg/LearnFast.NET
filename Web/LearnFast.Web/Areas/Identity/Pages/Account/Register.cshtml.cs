@@ -12,7 +12,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
     using System.Text.Encodings.Web;
     using System.Threading;
     using System.Threading.Tasks;
-
+    using LearnFast.Common;
     using LearnFast.Data.Models;
     using LearnFast.Services.Data.CountryService;
     using LearnFast.Web.ViewModels.Country;
@@ -85,7 +85,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Username")]
-            [RegularExpression(@"^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$", ErrorMessage = "Invalid username")]
+            [RegularExpression(@"^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$", ErrorMessage = GlobalExceptions.InvalidUsername)]
             [StringLength(15, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
             public string UserName { get; set; }
 
@@ -102,11 +102,11 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = GlobalExceptions.ConfirmedPasswordNotMatch)]
             public string ConfirmPassword { get; set; }
 
             [Required]
-            [Display(Name = "Country")]
+            [Display(Name = GlobalConstants.CountryLabel)]
             public string CountryId { get; set; }
         }
 

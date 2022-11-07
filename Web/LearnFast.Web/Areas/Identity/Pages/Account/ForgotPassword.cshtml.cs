@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using LearnFast.Services.Messaging;
+using IEmailSender = LearnFast.Services.Messaging.IEmailSender;
+using LearnFast.Common;
 
 namespace LearnFast.Web.Areas.Identity.Pages.Account
 {
@@ -72,6 +75,8 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
                     protocol: this.Request.Scheme);
 
                 await this.emailSender.SendEmailAsync(
+                    GlobalConstants.EmailSender,
+                    "p3trov",
                     this.Input.Email,
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

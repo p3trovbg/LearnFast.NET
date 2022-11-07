@@ -103,7 +103,7 @@ namespace LearnFast.Web
             services.AddHttpContextAccessor();
 
             // Application services
-            services.AddTransient<IEmailSender, NullMessageSender>();
+            services.AddTransient<IEmailSender>(x => new SendGridEmailSender(configuration["EmailSender:ApiKey"]));
 
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICountryService, CountryService>();
