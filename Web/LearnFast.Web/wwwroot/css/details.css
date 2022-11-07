@@ -1,0 +1,122 @@
+﻿section {
+    margin: 0 auto;
+}
+
+p {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    display: inline-block;
+}
+
+h1 {
+    font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
+    text-transform: uppercase;
+    color: #325170;
+    font-size: 30px;
+    text-decoration: none;
+    text-align: center;
+    text-shadow: 2px 2px rgb(13 110 253 / 25%);
+    text-emphasis-style: filled;
+}
+
+h3, h2, h4, span {
+    font-family: "Open Sans";
+    color: rgba(0, 35, 110, 0.9);
+}
+
+.description, .additional-info {
+    border: 5px inset rgb(13 110 253 / 25%);
+    box-shadow: 5px 5px 6px rgb(13 110 253 / 25%);
+}
+
+
+.description, .requirments {
+    margin-bottom: 40px;
+    margin-left: 0 auto;
+    max-width: 500px;
+    display: inline-block;
+    padding: 25px;
+}
+
+.overview {
+    display: inline-block;
+    font-family: Georgia, serif;
+    padding: 50px;
+}
+
+.main-image {
+    margin-top: 7em;
+    vertical-align: top;
+    display: inline-block;
+    box-shadow: 60px -16px rgb(13 110 253 / 25%);
+}
+
+    .main-image img {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+    }
+
+
+.additional-info {
+    padding: 20px;
+}
+
+.price {
+    color: darkgreen;
+    font-size: 30px;
+    text-decoration: none;
+    text-align: center;
+    text-shadow: 2px 2px rgb(13 110 253 / 25%);
+    border: 3px inset rgb(13 110 253 / 25%);
+}
+
+    .price i {
+        color: #325170;
+        margin-left: 5px;
+    }
+
+.requirments {
+    border-left: 3px inset rgb(13 110 253 / 25%);
+    border-bottom: 3px inset rgb(13 110 253 / 25%);
+}
+
+video {
+    width: 100%;
+    max-width: max-content;
+}
+
+.avatar {
+    vertical-align: middle;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.reviews {
+    display: inline-flex;
+    justify-content: space-between;
+    text-align: start;
+}
+
+.review {
+    display: block;
+}
+
+.star {
+    color: gold;
+}
+
+.name {
+    font-family: 'Agency FB';
+    text-transform: uppercase;
+    color: #325170;
+    font-size: 25px;
+    text-decoration: none;
+}
+
+.title {
+     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     text-decoration: underline;
+}
