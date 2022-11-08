@@ -14,6 +14,7 @@ namespace LearnFast.Web
     using LearnFast.Data.Seeding;
     using LearnFast.Services.Data;
     using LearnFast.Services.Data.CategoryService;
+    using LearnFast.Services.Data.ContactService;
     using LearnFast.Services.Data.CountryService;
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Services.Data.DifficultyService;
@@ -107,6 +108,7 @@ namespace LearnFast.Web
 
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICountryService, CountryService>();
+            services.AddTransient<IContactService, ContactService>();
 
             services.AddTransient<ICourseService, CourseService>();
             services.AddTransient<IFilterCourse, CourseService>();

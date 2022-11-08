@@ -8,9 +8,5 @@
     public class HomeViewModel
     {
         public IEnumerable<BaseCourseViewModel> Courses { get; set; }
-
-        public IEnumerable<BaseCourseViewModel> Users { get; set; }
-
-        public IEnumerable<CategoryViewModel> Categories { get; set; }
     }
 }

@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\LearnFast.Data.Models\LearnFast.Data.Models.csproj" />
+    <ProjectReference Include="..\..\LearnFast.Common\LearnFast.Common.csproj" />
     <ProjectReference Include="..\..\Services\LearnFast.Services.Mapping\LearnFast.Services.Mapping.csproj" />
   </ItemGroup>
 

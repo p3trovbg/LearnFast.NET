@@ -6,7 +6,15 @@
 
         public const string EmailSender = "p3trovsit@gmail.com";
 
+        public const string EmailTaker = "georgi1204g@gmail.com";
+
+        public const string SuccessfullySendMessage = "You sent successfully the message!";
+
         public const string AdministratorRoleName = "Administrator";
+
+        public const int MaxConctactMessage = 500;
+
+        public const int MinConctactMessage = 10;
 
         public const int MaxBiographyLength = 500;
 

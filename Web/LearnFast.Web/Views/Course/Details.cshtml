@@ -8,7 +8,18 @@
 
 <section>
     <h1>@this.ViewData["Title"]</h1>
-    <span>Category</span>
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-area="" asp-controller="Category" asp-action="Index">Categories</a></li>
+                    <li class="breadcrumb-item"><a asp-area="" asp-controller="Course" asp-action="Search" asp-route-categoryId="@Model.Category.Id">@Model.Category.Name</a></li>
+                    <li class="breadcrumb-item"><a asp-area="" asp-controller="Course" asp-action="Details" asp-route-id="@Model.Id">@Model.Title</a></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
     <h2>@Model.Category.Name / <span class="title">@Model.Title</span></h2>
     <hr />
     <div class="overview">
@@ -79,6 +90,8 @@
                             <div class="accordion-body">
                                 @if (Model.IsUserEnrolled || Model.IsOwner)
                                 {
+                                    <h5 class="border border-primary p-3">@video.Description</h5>
+                                    <hr />
                                     <video src="@video.UrlPath" controls></video>
                                 }
                                 else
@@ -90,20 +103,20 @@
                             {
                                 <div class="accordion-body text-end">
                                     <a asp-area=""
-                           asp-controller="Video"
-                           asp-action="Edit"
-                           asp-route-Title="@video.Title"
-                           asp-route-UrlPath="@video.UrlPath"
-                           asp-route-Id="@video.Id"
-                           asp-route-Description="@video.Description"
-                           asp-route-CourseId="@Model.Id" class="btn btn-outline-secondary">Edit video</a>
+                                       asp-controller="Video"
+                                       asp-action="Edit"
+                                       asp-route-Title="@video.Title"
+                                       asp-route-UrlPath="@video.UrlPath"
+                                       asp-route-Id="@video.Id"
+                                       asp-route-Description="@video.Description"
+                                       asp-route-CourseId="@Model.Id" class="btn btn-outline-secondary">Edit video</a>
                                 </div>
                                 <div class="accordion-body text-end">
                                     <a asp-area=""
-                           asp-controller="Video"
-                           asp-action="RemoveVideo"
-                           asp-route-videoId="@video.Id"
-                           asp-route-courseId="@Model.Id" class="btn btn-outline-danger">Delete video</a>
+                                       asp-controller="Video"
+                                       asp-action="RemoveVideo"
+                                       asp-route-videoId="@video.Id"
+                                       asp-route-courseId="@Model.Id" class="btn btn-outline-danger">Delete video</a>
                                 </div>
                             }
                         </div>

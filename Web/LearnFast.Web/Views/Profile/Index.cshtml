@@ -32,7 +32,10 @@
                             <i class="bi bi-house-door"></i>
                             @Model.Country.Name
                         </p>
-                        @if (@Model.WebsitePath != null) { <p class="text-muted mb-6"><i class="bi bi-browser-chrome"></i> @Model.WebsitePath</p> }
+                        @if (@Model.WebsitePath != null)
+                        {
+                            <p class="text-muted mb-6"><i class="bi bi-browser-chrome"></i> @Model.WebsitePath</p>
+                        }
                         @if (Model.Biography != null)
                         {
                             <p class="text-muted mb-3">
@@ -63,6 +66,10 @@
                                         </h2>
                                         <div id="own-child" class="accordion-collapse collapse show" aria-labelledby="own-head" data-bs-parent="#own-courses">
                                             <div class="accordion-body">
+                                                @if (Model.IsOwner)
+                                                {
+                                                    <a class="btn btn-success btn-sm mb-2" asp-area="" asp-controller="Course" asp-action="Create">Create course</a>
+                                                }
                                                 @if (Model.OwnCoursesCount == 0)
                                                 {
                                                     <a class="list-group-item list-group-item-action">There aren't own courses yet.'</a>

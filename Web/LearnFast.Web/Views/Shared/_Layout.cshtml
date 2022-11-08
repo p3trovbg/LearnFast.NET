@@ -41,9 +41,9 @@
                 <!-- Collapsible wrapper -->
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Navbar brand -->
-                    <a class="navbar-brand mt-2 mt-lg-0" asp-area="" asp-controller="Home" asp-action="Index">
-                        <img src="/images/LearnFast.png"
-                             height="30"
+                    <a class="navbar-brand ml-2 mt-lg-0" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="/images/logo.png"
+                             height="40"
                              alt="MDB Logo"
                              loading="lazy" />
                     </a>
@@ -53,11 +53,14 @@
                         <li class="nav-item">
                             <a asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
                         </li>
-                        <li class="nav-item">
-                            <a asp-area="" asp-controller="Home" asp-action="Index">Contact</a>
+                         <li class="nav-item">
+                            <a asp-area="" asp-controller="Course" asp-action="Search">Courses</a>
                         </li>
                         <li class="nav-item">
-                            <a asp-area="" asp-controller="Course" asp-action="Create">Create course</a>
+                            <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="" asp-controller="Home" asp-action="About">About us</a>
                         </li>
                     </ul>
                     <!-- Left links -->
@@ -109,6 +112,10 @@
                             aria-labelledby="navbarDropdownMenuAvatar">
                                 <li>
                                     <a class="dropdown-item" href="/@user.UserName">My profile</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Course" asp-action="Create">Create course</a>
+
                                 </li>
                                 <li>
                                     <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Settings</a>

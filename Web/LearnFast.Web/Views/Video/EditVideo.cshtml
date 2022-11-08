@@ -18,7 +18,7 @@
         </div>
         <div class="form-control">
             <label asp-for="Description"></label>
-            <textarea asp-for="Description"></textarea>
+            <textarea rows="10" cols="120" asp-for="Description"></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
         <button class="button"
@@ -33,15 +33,7 @@
 </section>
 
 
-<script asp-append-version="true">
-    document.getElementById('upload').addEventListener('change', function () {
-        if (this.files[0]) {
-            var video = new FileReader();
-            video.readAsDataURL(this.files[0]);
-            video.addEventListener('load', function (event) {
-                document.getElementById('uploadedVideo').setAttribute('src', event.target.result);
-                document.getElementById('uploadedVideo').style.display = 'block';
-            });
-        }
-    });
-</script>
+
+@section Scripts {
+    <script type="module" src="/js/edit_video.js" asp-append-version="true"></script>
+}

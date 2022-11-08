@@ -1,9 +1,11 @@
 ﻿namespace LearnFast.Web.Controllers
 {
+    using System;
     using System.Diagnostics;
     using System.Threading.Tasks;
     using LearnFast.Data.Models;
     using LearnFast.Services.Data.CategoryService;
+    using LearnFast.Services.Data.ContactService;
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Services.Data.ImageService;
     using LearnFast.Web.ViewModels;
@@ -18,25 +20,61 @@
         private readonly IFilterCourse filterCourse;
         private readonly ICategoryService categoryService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IContactService contactService;
 
         public HomeController(
             IFilterCourse filterCourse,
             ICategoryService categoryService,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IContactService contactService)
         {
             this.filterCourse = filterCourse;
             this.categoryService = categoryService;
             this.userManager = userManager;
+            this.contactService = contactService;
         }
 
         public async Task<IActionResult> Index()
         {
             var model = new HomeViewModel();
             model.Courses = await this.filterCourse.GetTop12BestSellersCourses<BaseCourseViewModel>();
-            model.Categories = await this.categoryService.GetAllAsync<CategoryViewModel>();
             return this.View(model);
         }
 
+        [Route("/Contacts")]
+        public IActionResult Contact()
+        {
+            var model = new InputContactViewModel();
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Sender(InputContactViewModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            try
+            {
+                await this.contactService.AcceptingMessage(model);
+
+                return this.View(nameof(this.Contact));
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(ex.Message);
+            }
+        }
+
+        [Route("/About")]
+        public IActionResult About()
+        {
+            return this.View();
+        }
+
+        [Route("/Privacy")]
         public IActionResult Privacy()
         {
             return this.View();
