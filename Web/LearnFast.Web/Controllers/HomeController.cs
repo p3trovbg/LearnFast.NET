@@ -41,15 +41,15 @@
             return this.View(model);
         }
 
-        [Route("/Contacts")]
-        public IActionResult Contact()
+        public IActionResult Contact(bool isSuccessfully)
         {
             var model = new InputContactViewModel();
+            model.IsSuccessfully = isSuccessfully;
             return this.View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Sender(InputContactViewModel model)
+        public async Task<IActionResult> Contact(InputContactViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -60,7 +60,7 @@
             {
                 await this.contactService.AcceptingMessage(model);
 
-                return this.View(nameof(this.Contact));
+                return this.RedirectToAction(nameof(this.Contact), new { isSuccessfully = true });
             }
             catch (Exception ex)
             {

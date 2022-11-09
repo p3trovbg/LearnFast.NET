@@ -7,6 +7,10 @@
 }
 
 <h1>@this.ViewData["Title"]</h1>
+@if (Model.IsSuccessfully)
+{
+    <p class="alert-success">@GlobalConstants.SuccessfullySendMessage</p>
+}
 <div class="row">
     <div class="col-md-6 align-middle">
         <div class="col-md-8 mb-2">
@@ -27,7 +31,7 @@
                     <label asp-for="Message"></label>
                 </div>
                 <div class="form-check-inline text-end col-12">
-                    <button type="submit" asp-area="" asp-controller="Home" asp-action="Sender" class="btn btn-success">Send</button>
+                    <button type="submit" asp-area="" asp-controller="Home" asp-action="Contact" class="btn btn-success">Send</button>
                 </div>
             </form>
         </div>
