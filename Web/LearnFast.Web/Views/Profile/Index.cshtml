@@ -79,6 +79,7 @@
                                                     @foreach (var course in Model.OwnCourses)
                                                     {
                                                         <a asp-area="" asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="list-group-item list-group-item-action">@course.Title</a>
+                                                        <hr />
                                                     }
                                                 }
                                             </div>
@@ -109,6 +110,7 @@
                                                     @foreach (var course in Model.BuyedCourses)
                                                     {
                                                         <a asp-area="" asp-controller="Course" asp-action="Details" asp-route-id="@course.CourseId" class="list-group-item list-group-item-action">@course.Title</a>
+                                                        <hr />
                                                     }
                                                 }
                                             </div>

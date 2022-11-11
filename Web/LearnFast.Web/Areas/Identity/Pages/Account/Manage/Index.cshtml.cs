@@ -126,7 +126,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await this.userManager.GetUserNameAsync(user);
-            var countries = this.countryService.GetAllOrderByAlphabetical<CountryViewModel>();
+            var countries = await this.countryService.GetAllOrderByAlphabeticalAsync<CountryViewModel>();
 
             this.Username = userName;
 

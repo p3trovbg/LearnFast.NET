@@ -12,6 +12,8 @@
 
         public const string AdministratorRoleName = "Administrator";
 
+        public const string AdministratorAreaName = "Administration";
+
         public const int MaxConctactMessage = 500;
 
         public const int MinConctactMessage = 10;

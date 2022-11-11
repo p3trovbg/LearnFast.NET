@@ -20,5 +20,7 @@
         Task Edit(EditReviewViewModel model);
 
         Task Selecting(SelectingReviewViewModel model);
+
+        Task<int> GetReviewsCountAsync();
     }
 }

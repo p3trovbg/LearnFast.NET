@@ -118,6 +118,11 @@
             return await this.reviewRepository.AllAsNoTracking().Where(x => x.Id == reviewId).To<T>().FirstOrDefaultAsync();
         }
 
+        public async Task<int> GetReviewsCountAsync()
+        {
+            return await this.reviewRepository.AllAsNoTracking().CountAsync();
+        }
+
         public async Task<IEnumerable<T>> GetSelectedReviewsByCourse<T>(int courseId)
         {
             return await this.reviewRepository.AllAsNoTracking()

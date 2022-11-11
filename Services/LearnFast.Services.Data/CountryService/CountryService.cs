@@ -2,10 +2,12 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using LearnFast.Data.Common.Repositories;
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
+    using Microsoft.EntityFrameworkCore;
 
     public class CountryService : ICountryService
     {
@@ -16,15 +18,14 @@
             this.countryRepository = countryRepository;
         }
 
-        public IEnumerable<T> GetAll<T>()
+        public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            return countryRepository.All().To<T>().ToList();
+            return await this.countryRepository.All().To<T>().ToListAsync();
         }
 
-        public IEnumerable<T> GetAllOrderByAlphabetical<T>()
+        public async Task<IEnumerable<T>> GetAllOrderByAlphabeticalAsync<T>()
         {
-            return countryRepository.All().OrderBy(x => x.Name).To<T>().ToList();
-
+            return await this.countryRepository.All().OrderBy(x => x.Name).To<T>().ToListAsync();
         }
     }
 }

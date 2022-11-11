@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace LearnFast.Services.Data.CountryService
+﻿namespace LearnFast.Services.Data.CountryService
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public interface ICountryService
     {
-        IEnumerable<T> GetAll<T>();
+        Task<IEnumerable<T>> GetAllAsync<T>();
 
-        IEnumerable<T> GetAllOrderByAlphabetical<T>();
+        Task<IEnumerable<T>> GetAllOrderByAlphabeticalAsync<T>();
     }
 }

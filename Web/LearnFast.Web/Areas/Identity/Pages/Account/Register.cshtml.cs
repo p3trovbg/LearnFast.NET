@@ -194,7 +194,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
         private List<SelectListItem> SelectAllCountries()
         {
             var list = new List<SelectListItem>();
-            var cities = this.countryService.GetAllOrderByAlphabetical<CountryViewModel>();
+            var cities = this.countryService.GetAllOrderByAlphabeticalAsync<CountryViewModel>().Result;
             foreach (var city in cities)
             {
                 list.Add(new SelectListItem
