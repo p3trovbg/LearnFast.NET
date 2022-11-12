@@ -4,6 +4,16 @@
     {
         public const string SystemName = "LearnFast";
 
+        public const string SystemMobileNumber = "+359 88 333 1111";
+
+        public const string SystemEmail = "learnfast@gmail.com";
+
+        public const string SystemGitHub = "https://github.com/p3trovbg";
+
+        public const string SystemLinkedIn = "https://www.linkedin.com/in/p3trov/";
+
+        public const string SystemAddress = "\"Dimitar Dobrovich\", 8801 Sliven Center, Sliven";
+
         public const string EmailSender = "p3trovsit@gmail.com";
 
         public const string EmailTaker = "georgi1204g@gmail.com";

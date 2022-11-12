@@ -3,8 +3,8 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using AutoMapper;
 
+    using AutoMapper;
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
     using LearnFast.Web.ViewModels.ApplicationUser;

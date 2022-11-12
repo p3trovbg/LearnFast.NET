@@ -170,27 +170,17 @@
             </div>
             <!-- Left -->
             <!-- Right -->
-            <div>
-                <a href="" class="me-4 text-reset">
-                    <i class="fab fa-facebook-f"></i>
+            <div">
+                <a href="@GlobalConstants.SystemGitHub" class="me-4 text-reset">
+                    <i class="bi bi-github"></i>
+                    GitHub
                 </a>
-                <a href="" class="me-4 text-reset">
-                    <i class="fab fa-twitter"></i>
+                <a href="@GlobalConstants.SystemLinkedIn" class="me-4 text-reset">
+                    <i class="bi bi-linkedin"></i>
+                    LinkedIn
                 </a>
-                <a href="" class="me-4 text-reset">
-                    <i class="fab fa-google"></i>
-                </a>
-                <a href="" class="me-4 text-reset">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="" class="me-4 text-reset">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="" class="me-4 text-reset">
-                    <i class="fab fa-github"></i>
-                </a>
-            </div>
-            <!-- Right -->
+                </div>
+                <!-- Right -->
         </section>
         <!-- Section: Social media -->
         <!-- Section: Links  -->
@@ -198,69 +188,61 @@
             <div class="container text-center text-md-start mt-5">
                 <!-- Grid row -->
                 <div class="row mt-3">
-                    <!-- Grid column -->
                     <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
                         <!-- Content -->
                         <h6 class="text-uppercase fw-bold mb-4">
-                            <i class="fas fa-gem me-3"></i>Company name
+                            <i class="fas fa-gem"></i>@GlobalConstants.SystemName
                         </h6>
                         <p>
-                            Here you can use rows and columns to organize your footer content. Lorem ipsum
-                            dolor sit amet, consectetur adipisicing elit.
+                            <a class="navbar-brand mt-lg-0" asp-area="" asp-controller="Home" asp-action="Index">
+                                <img src="/images/big-logo.png"
+                                     height="130"
+                                     alt="MDB Logo"
+                                     loading="lazy" />
+                            </a>
                         </p>
                     </div>
-                    <!-- Grid column -->
-                    <!-- Grid column -->
-                    <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <!-- Links -->
-                        <h6 class="text-uppercase fw-bold mb-4">
-                            Products
-                        </h6>
-                        <p>
-                            <a href="#!" class="text-reset">Angular</a>
-                        </p>
-                        <p>
-                            <a href="#!" class="text-reset">React</a>
-                        </p>
-                        <p>
-                            <a href="#!" class="text-reset">Vue</a>
-                        </p>
-                        <p>
-                            <a href="#!" class="text-reset">Laravel</a>
-                        </p>
-                    </div>
-                    <!-- Grid column -->
-                    <!-- Grid column -->
+                    <span class="vr vr-blurry line" style="height: 50px;"></span>
                     <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
                         <!-- Links -->
                         <h6 class="text-uppercase fw-bold mb-4">
                             Useful links
                         </h6>
                         <p>
-                            <a href="#!" class="text-reset">Pricing</a>
+                            <a asp-area="" asp-controller="Category" asp-action="Index" class="text-reset">Categories</a>
                         </p>
                         <p>
-                            <a href="#!" class="text-reset">Settings</a>
+                            <a asp-area="" asp-controller="Course" asp-action="Search" class="text-reset">Courses</a>
                         </p>
+                @if (isLogged)
+                {
+                            <p>
+                                <a href="/@user.UserName" class="text-reset">Profile</a>
+                            </p>
+                            <p>
+                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Settings</a>
+                            </p>
+                }
                         <p>
-                            <a href="#!" class="text-reset">Orders</a>
-                        </p>
-                        <p>
-                            <a href="#!" class="text-reset">Help</a>
+                            <a asp-area="" asp-controller="Home" asp-action="Contact" class="text-reset">Contact us</a>
                         </p>
                     </div>
-                    <!-- Grid column -->
-                    <!-- Grid column -->
-                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                    <span class="vr vr-blurry line" style="height: 50px;"></span>
+                    <div class="col-md-4 col-lg-3 col-xl-4 mx-auto mb-md-0 mb-3">
                         <!-- Links -->
                         <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
-                        <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
                         <p>
-                            <i class="fas fa-envelope me-3"></i>
-                            info@example.com
+                            <i class="bi bi-house-door"></i>
+                    @GlobalConstants.SystemAddress
                         </p>
-                        <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
-                        <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
+                        <p>
+                            <i class="bi bi-envelope"></i>
+                    @GlobalConstants.SystemEmail
+                        </p>
+                        <p>
+                            <i class="bi bi-earbuds"></i>
+                    @GlobalConstants.SystemMobileNumber
+                        </p>
                     </div>
                     <!-- Grid column -->
                 </div>
@@ -270,8 +252,8 @@
         <!-- Section: Links  -->
         <!-- Copyright -->
         <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-            © 2021 Copyright:
-            <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+            © @DateTime.UtcNow.Year Copyright:
+            <a class="text-reset fw-bold" asp-area="" asp-controller="Home" asp-action="Index">@GlobalConstants.SystemName</a>
         </div>
         <!-- Copyright -->
     </footer>
