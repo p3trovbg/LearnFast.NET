@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     using Ganss.Xss;
+    using LearnFast.Common;
     using LearnFast.Data.Models;
     using LearnFast.Services.Data.CategoryService;
     using LearnFast.Services.Data.CourseService;
@@ -47,11 +48,14 @@
             this.difficultyService = difficultyService;
         }
 
+        public static string CourseNameController => nameof(CourseController).Replace("Controller", string.Empty);
+
+        public static string DetailsActionName => nameof(Details);
+
         [Authorize]
         public async Task<IActionResult> Create()
         {
             var model = new ImportCourseModel();
-
             await this.LoadingBaseParameters(model);
 
             return this.View(model);
@@ -101,7 +105,7 @@
 
                 if (model.Owner.Id != userId)
                 {
-                    return this.NotFound();
+                    return this.Forbid();
                 }
 
                 await this.LoadingBaseParameters(model);
@@ -110,7 +114,7 @@
             }
             catch (Exception ex)
             {
-                return this.BadRequest(ex.Message);
+                return this.NotFound(ex.Message);
             }
         }
 
@@ -125,10 +129,16 @@
                 return this.View(model);
             }
 
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await this.courseService.UpdateAsync(model, userId);
-
-            return this.RedirectToAction(nameof(this.Details), new { id = model.Id });
+            try
+            {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await this.courseService.UpdateAsync(model, userId);
+                return this.RedirectToAction(nameof(this.Details), new { id = model.Id });
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(ex.Message);
+            }
         }
 
         [Authorize]
@@ -151,7 +161,7 @@
             }
             catch (Exception ex)
             {
-                return this.BadRequest(ex.Message);
+                return this.NotFound(ex.Message);
             }
         }
 
@@ -160,13 +170,12 @@
             try
             {
                 await this.courseService.GetAllWithFilter(model);
+                return this.View(CoursesView, model);
             }
             catch (Exception)
             {
                 return this.RedirectToAction(EmptyView, CategoryController);
             }
-
-            return this.View(CoursesView, model);
         }
 
         private async Task LoadingBaseParameters(ImportCourseModel model)

@@ -2,18 +2,19 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using LearnFast.Common;
     using Microsoft.AspNetCore.Http;
 
     public class ImportVideoModel
     {
         [Required]
-        [StringLength(100, MinimumLength = 5)]
+        [StringLength(GlobalConstants.MaxVideoTitle, MinimumLength = GlobalConstants.MinVideoTitle)]
         public string Title { get; set; }
 
         [Required]
         public int CourseId { get; set; }
 
-        [StringLength(150)]
+        [StringLength(GlobalConstants.MaxVideoDescription)]
         public string Description { get; set; }
 
         [Required]

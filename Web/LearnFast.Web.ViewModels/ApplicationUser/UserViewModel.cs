@@ -3,7 +3,8 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-
+    using System.Reflection.Metadata;
+    using LearnFast.Common;
     using LearnFast.Web.ViewModels.Country;
     using LearnFast.Web.ViewModels.Course;
     using LearnFast.Web.ViewModels.Review;
@@ -11,11 +12,9 @@
 
     public class UserViewModel : BaseUserViewModel
     {
-        [Display(Name = "Website")]
+        [Display(Name = GlobalConstants.WebsiteLabel)]
         [BindProperty(Name = "url")]
         public string WebsitePath { get; set; }
-
-        public string UserName { get; set; }
 
         public bool IsOwner { get; set; }
 

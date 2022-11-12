@@ -1,7 +1,7 @@
 ﻿namespace LearnFast.Web.ViewModels.Review
 {
-    using System;
     using AutoMapper;
+
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
     using LearnFast.Web.ViewModels.ApplicationUser;

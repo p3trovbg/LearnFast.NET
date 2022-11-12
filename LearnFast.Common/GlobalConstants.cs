@@ -22,7 +22,47 @@
 
         public const string AdministratorRoleName = "Administrator";
 
-        public const string AdministratorAreaName = "Administration";
+        public const string AdministrationAreaName = "Administration";
+
+        public const string CourseTitleLabel = "Course title";
+        
+        public const string UploadImageLabel = "Upload label";
+
+        public const string IsFreeLabel = "Is free";
+
+        public const string CountryLabel = "Country";
+
+        public const string BiographyLabel = "Biography";
+
+        public const string WebsiteLabel = "Website";
+
+        public const string ImagesFolderName = "images";
+
+        public const string VideoFolderName = "videos";
+
+        public const int MaxReviewRange = 6;
+
+        public const int MinReviewRange = 1;
+
+        public const int MaxReviewContentLength = 500;
+
+        public const int MinReviewContentLength = 5;
+
+        public const string MinCoursePrice = "0";
+
+        public const string MaxCoursePrice = "3000";
+
+        public const int MaxCourseDescriptionLength = 10_000;
+
+        public const int MinCourseDescriptionLength = 50;
+
+        public const int MaxCourseRequirmentsLength = 10_000;
+
+        public const int MinCourseRequirmentsLength = 50;
+
+        public const int MaxCourseTitleLength = 300;
+
+        public const int MinCourseTitleLength = 5;
 
         public const int MaxConctactMessage = 500;
 
@@ -34,14 +74,10 @@
 
         public const int MinWebsiteLength = 3;
 
-        public const string CountryLabel = "Country";
+        public const int MinVideoTitle = 5;
 
-        public const string BiographyLabel = "Biography";
+        public const int MaxVideoTitle = 150;
 
-        public const string WebsiteLabel = "Website";
-
-        public const string ImagesFolderName = "images";
-
-        public const string VideoFolderName = "videos";
+        public const int MaxVideoDescription = 200;
     }
 }

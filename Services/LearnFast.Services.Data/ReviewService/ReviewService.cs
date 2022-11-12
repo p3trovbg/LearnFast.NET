@@ -71,7 +71,7 @@
         {
             var review = await this.reviewRepository
                 .All()
-                .FirstOrDefaultAsync(x => x.Id == model.ReviewId);
+                .FirstOrDefaultAsync(x => x.Id == model.Id);
 
             if (review == null)
             {
@@ -97,11 +97,6 @@
                 .Where(x => x.CourseId == model.CourseId);
 
             int reviewsCount = await reviews.CountAsync();
-
-            if (reviewsCount == 0)
-            {
-                throw new NullReferenceException(GlobalExceptions.DoesNotExistReviews);
-            }
 
             model.Page = model.Page == null ? 1 : model.Page;
             model.TotalCount = reviewsCount;

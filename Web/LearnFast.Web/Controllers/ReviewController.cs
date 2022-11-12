@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Services.Data.ReviewService;
     using LearnFast.Web.ViewModels.Review;
@@ -18,7 +19,9 @@
         private readonly IReviewService reviewService;
         private readonly ICourseService courseService;
 
-        public ReviewController(IReviewService reviewService, ICourseService courseService)
+        public ReviewController(
+            IReviewService reviewService,
+            ICourseService courseService)
         {
             this.reviewService = reviewService;
             this.courseService = courseService;
@@ -29,6 +32,7 @@
             try
             {
                 await this.reviewService.GetAllReviewsByCourse(model);
+
                 model.CourseOwnerId = await this.courseService.GetOwnerCourseId(model.CourseId);
                 model.CurrentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -59,8 +63,7 @@
 
             try
             {
-                model.UserId = model.UserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+                model.UserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 await this.reviewService.Add(model);
             }
             catch (Exception ex)
@@ -95,20 +98,25 @@
             model.RatingList = LoadRatings();
             if (currentUserId != model.UserId)
             {
-                return this.NotFound();
+                return this.Forbid();
             }
 
             return this.View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditReview(EditReviewViewModel model)
+        public async Task<IActionResult> Edit(EditReviewViewModel model)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (currentUserId != model.UserId)
             {
-                return this.NotFound();
+                return this.Forbid();
             }
 
             await this.reviewService.Edit(model);
@@ -122,7 +130,7 @@
             {
                 await this.reviewService.Selecting(model);
 
-                return this.RedirectToAction("Details", "Course", new { id = model.CourseId });
+                return this.RedirectToAction(CourseController.DetailsActionName, CourseController.CourseNameController, new { id = model.CourseId });
             }
             catch (Exception ex)
             {

@@ -21,8 +21,8 @@
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
             <button class="btn btn-success" 
-            asp-action="EditReview" 
-            asp-route-ReviewId="@Model.ReviewId" 
+            asp-action="Edit" 
+            asp-route-Id="@Model.Id" 
             asp-route-CourseId="@Model.CourseId" 
             asp-route-UserId="@Model.UserId" type="submit">Edit review</button>
         </form>

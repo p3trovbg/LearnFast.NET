@@ -1,10 +1,12 @@
 ﻿namespace LearnFast.Web.ViewModels.Course
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Web.Mvc;
 
+    using LearnFast.Common;
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Mapping.PropertyCopier;
@@ -17,26 +19,28 @@
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Course title")]
+        [StringLength(GlobalConstants.MaxCourseTitleLength, MinimumLength = GlobalConstants.MinCourseTitleLength)]
+        [Display(Name = GlobalConstants.CourseTitleLabel)]
         public string Title { get; set; }
 
         [Required]
+        [Range(typeof(decimal), GlobalConstants.MinCoursePrice, GlobalConstants.MaxCoursePrice)]
         public decimal Price { get; set; }
 
         [Required]
         [AllowHtml]
-        [MaxLength(3000)]
+        [StringLength(GlobalConstants.MaxCourseDescriptionLength, MinimumLength = GlobalConstants.MinCourseDescriptionLength)]
         public string Description { get; set; }
 
-        [Display(Name = "Upload image")]
+        [Display(Name = GlobalConstants.UploadImageLabel)]
         public IFormFile MainImage { get; set; }
 
         [Required]
         [AllowHtml]
-        [MaxLength(3000)]
+        [StringLength(GlobalConstants.MaxCourseRequirmentsLength, MinimumLength = GlobalConstants.MinCourseRequirmentsLength)]
         public string Requirments { get; set; }
 
-        [Display(Name = "Is free")]
+        [Display(Name = GlobalConstants.IsFreeLabel)]
         public bool IsFree { get; set; }
 
         [Required]

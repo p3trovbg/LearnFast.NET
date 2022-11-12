@@ -2,7 +2,7 @@
 {
     using System.Security.Claims;
     using System.Threading.Tasks;
-    using LearnFast.Data.Models;
+
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Services.Data.VideoService;
     using LearnFast.Web.ViewModels.Content;
@@ -15,7 +15,9 @@
         private readonly IVideoService videoService;
         private readonly ICourseService courseService;
 
-        public VideoController(IVideoService videoService, ICourseService courseService)
+        public VideoController(
+            IVideoService videoService,
+            ICourseService courseService)
         {
             this.videoService = videoService;
             this.courseService = courseService;
@@ -28,7 +30,7 @@
 
             if (currentUserId != ownerId)
             {
-                return this.NotFound();
+                return this.Forbid();
             }
 
             var model = new ImportVideoModel();
@@ -42,11 +44,12 @@
         {
             if (!this.ModelState.IsValid)
             {
-                this.BadRequest();
+                this.View(model);
             }
 
             await this.videoService.UploadVideo(model);
-            return this.RedirectToAction("Details", "Course", new { id = model.CourseId });
+            return this.RedirectToAction(
+                CourseController.DetailsActionName, CourseController.CourseNameController, new { id = model.CourseId });
         }
 
         public async Task<IActionResult> RemoveVideo(string videoId, int courseId)
@@ -56,12 +59,13 @@
 
             if (currentUserId != ownerId)
             {
-                return this.NotFound();
+                return this.Forbid();
             }
 
             await this.videoService.RemoveVideo(videoId);
 
-            return this.RedirectToAction("Details", "Course", new { id = courseId });
+            return this.RedirectToAction(
+                CourseController.DetailsActionName, CourseController.CourseNameController, new { id = courseId });
         }
 
         [HttpPost]
@@ -69,12 +73,11 @@
         {
             if (!this.ModelState.IsValid)
             {
-                this.BadRequest();
+                this.View(nameof(this.Edit), model);
             }
 
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var ownerId = await this.courseService.GetOwnerCourseId(model.CourseId);
-
 
             if (currentUserId != ownerId)
             {
@@ -83,7 +86,8 @@
 
             await this.videoService.EditVideo(model);
 
-            return this.RedirectToAction("Details", "Course", new { id = model.CourseId });
+            return this.RedirectToAction(
+                CourseController.DetailsActionName, CourseController.CourseNameController, new { id = model.CourseId });
         }
 
         public async Task<IActionResult> Edit(EditVideoViewModel model)
@@ -97,7 +101,7 @@
                 return this.NotFound();
             }
 
-            return this.View("EditVideo", model);
+            return this.View(nameof(this.EditVideo), model);
         }
     }
 }
