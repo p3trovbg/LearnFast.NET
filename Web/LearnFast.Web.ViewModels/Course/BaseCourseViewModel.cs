@@ -44,7 +44,10 @@
                 m => m.MapFrom(x => x.Difficulty.ToString()))
                  .ForMember(
                 d => d.Reviews,
-                m => m.MapFrom(x => x.Reviews.Where(x => x.IsSelected)));
+                m => m.MapFrom(x => x.Reviews.Where(x => x.IsSelected)))
+                 .ForMember(
+                d => d.Videos,
+                m => m.MapFrom(x => x.Videos.OrderBy(x => x.CreatedOn)));
         }
     }
 }

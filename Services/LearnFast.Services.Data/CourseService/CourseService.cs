@@ -162,9 +162,7 @@
                 throw new NullReferenceException(GlobalExceptions.CourseIsNotExistExceptionMessage);
             }
 
-            var model = this.mapper.Map<T>(course);
-
-            return model;
+            return course;
         }
 
         public IQueryable<T> GetAllAsQueryAble<T>()
