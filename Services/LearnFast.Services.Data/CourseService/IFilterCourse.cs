@@ -13,6 +13,6 @@
 
         Task<IEnumerable<T>> GetOwnCoursesAsync<T>(string userId);
 
-        bool IsUserEnrolledCourse(string userId);
+        bool IsUserEnrolledCourse(string userId, int courseId);
     }
 }

@@ -5,13 +5,16 @@ namespace LearnFast.Web
     using System.Reflection;
     using System.Runtime.CompilerServices;
     using AutoMapper;
+    using Braintree;
     using CloudinaryDotNet;
+    using EllipticCurve;
     using LearnFast.Data;
     using LearnFast.Data.Common;
     using LearnFast.Data.Common.Repositories;
     using LearnFast.Data.Models;
     using LearnFast.Data.Repositories;
     using LearnFast.Data.Seeding;
+    using LearnFast.Services;
     using LearnFast.Services.Data;
     using LearnFast.Services.Data.CategoryService;
     using LearnFast.Services.Data.ContactService;
@@ -104,6 +107,18 @@ namespace LearnFast.Web
             services.AddHttpContextAccessor();
 
             // Application services
+            var newGateway = new BraintreeGateway()
+            {
+                MerchantId = configuration.GetValue<string>("BraintreeGateway:MerchantId"),
+                PublicKey = configuration.GetValue<string>("BraintreeGateway:PublicKey"),
+                PrivateKey = configuration.GetValue<string>("BraintreeGateway:PrivateKey"),
+            };
+
+            services.AddTransient<IBraintreeService>(x => new Services.BraintreeService(
+                configuration.GetValue<string>("BraintreeGateway:MerchantId"),
+                configuration.GetValue<string>("BraintreeGateway:PublicKey"),
+                configuration.GetValue<string>("BraintreeGateway:PrivateKey")));
+
             services.AddTransient<IEmailSender>(x => new SendGridEmailSender(configuration["EmailSender:ApiKey"]));
 
             services.AddTransient<ISettingsService, SettingsService>();

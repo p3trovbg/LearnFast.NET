@@ -24,5 +24,7 @@
         Task<IEnumerable<T>> GetAllAsync<T>();
 
         Task<int> GetCountAsync();
+
+        Task EnrollCourse(int courseId);
     }
 }

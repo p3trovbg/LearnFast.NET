@@ -64,15 +64,5 @@
 
             return this.RedirectToAction(nameof(this.Index), new { username = user.UserName });
         }
-
-        public async Task<IActionResult> EnrollingCourse(int courseId)
-        {
-            var user = await this.userManager.GetUserAsync(this.User);
-            user.BuyedCourses.Add(new StudentCourse { User = user, CourseId = courseId });
-
-            await this.userManager.UpdateAsync(user);
-
-            return this.RedirectToAction(nameof(this.Index), new { username = user.UserName });
-        }
     }
 }

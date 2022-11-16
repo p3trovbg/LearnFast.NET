@@ -1,13 +1,13 @@
 ﻿namespace LearnFast.Web.Controllers
 {
     using System;
-    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
+    using Braintree;
     using Ganss.Xss;
-    using LearnFast.Common;
     using LearnFast.Data.Models;
+    using LearnFast.Services;
     using LearnFast.Services.Data.CategoryService;
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Services.Data.DifficultyService;
@@ -18,6 +18,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize]
     public class CourseController : BaseController
     {
         private const string EmptyView = "Empty";
@@ -29,6 +30,7 @@
         private readonly ILanguageService languageService;
         private readonly ICategoryService categoryService;
         private readonly IDifficultyService difficultyService;
+        private readonly IBraintreeService braintreeService;
 
         private readonly UserManager<ApplicationUser> userManager;
 
@@ -38,7 +40,8 @@
             IFilterCourse filterCourse,
             ILanguageService languageService,
             ICategoryService categoryService,
-            IDifficultyService difficultyService)
+            IDifficultyService difficultyService,
+            IBraintreeService braintreeService)
         {
             this.courseService = courseService;
             this.userManager = userManager;
@@ -46,13 +49,13 @@
             this.languageService = languageService;
             this.categoryService = categoryService;
             this.difficultyService = difficultyService;
+            this.braintreeService = braintreeService;
         }
 
         public static string CourseNameController => nameof(CourseController).Replace("Controller", string.Empty);
 
         public static string DetailsActionName => nameof(Details);
 
-        [Authorize]
         public async Task<IActionResult> Create()
         {
             var model = new ImportCourseModel();
@@ -61,7 +64,6 @@
             return this.View(model);
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(ImportCourseModel model)
         {
@@ -78,7 +80,6 @@
             return this.RedirectToAction(nameof(this.Details), new { id = courseId });
         }
 
-        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -94,7 +95,6 @@
             return this.RedirectToAction("Index", "Home");
         }
 
-        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -118,7 +118,6 @@
             }
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit(ImportCourseModel model)
         {
@@ -141,8 +140,72 @@
             }
         }
 
-        [Authorize]
-        [HttpGet]
+        public async Task<IActionResult> EnrollFree(int courseId)
+        {
+            try
+            {
+                await this.courseService.EnrollCourse(courseId);
+
+                return this.RedirectToAction(nameof(this.Details), new { id = courseId });
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
+        }
+
+        public async Task<IActionResult> Buy(int id)
+        {
+            try
+            {
+                var course = await this.filterCourse.GetByIdAsync<PurchaseCourseViewModel>(id);
+
+                var gateway = this.braintreeService.GetGateway();
+                var clientToken = await gateway.ClientToken.GenerateAsync();
+                this.ViewData["ClientToken"] = clientToken;
+
+                return this.View(course);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Buy(PurchaseCourseViewModel model)
+        {
+            var gateway = this.braintreeService.GetGateway();
+            var request = new TransactionRequest
+            {
+                Amount = model.Price,
+                PaymentMethodNonce = model.Nonce,
+                Options = new TransactionOptionsRequest
+                {
+                    SubmitForSettlement = true,
+                },
+            };
+
+            var customer = await gateway.Customer.CreateAsync();
+            Result<Transaction> result = await gateway.Transaction.SaleAsync(request);
+
+            if (result.IsSuccess())
+            {
+                try
+                {
+                    await this.courseService.EnrollCourse(model.Id);
+
+                    return this.RedirectToAction(nameof(this.Details), new { id = model.Id });
+                }
+                catch (Exception ex)
+                {
+                    return this.BadRequest(ex.Message);
+                }
+            }
+
+            return this.View(model.Id);
+        }
+
         public async Task<IActionResult> Details(int id)
         {
             try
@@ -150,7 +213,7 @@
                 var model = await this.filterCourse.GetByIdAsync<CourseViewModel>(id);
                 var user = await this.userManager.GetUserAsync(this.User);
 
-                model.IsUserEnrolled = this.filterCourse.IsUserEnrolledCourse(user.Id);
+                model.IsUserEnrolled = this.filterCourse.IsUserEnrolledCourse(user.Id, id);
                 model.CurrentUserId = user.Id;
 
                 var sanitizer = new HtmlSanitizer();
@@ -165,6 +228,7 @@
             }
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Search(SearchViewModel model)
         {
             try

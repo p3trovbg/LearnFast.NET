@@ -18,6 +18,8 @@
     using LearnFast.Services.Mapping.PropertyMatcher;
     using LearnFast.Web.ViewModels.Course;
     using LearnFast.Web.ViewModels.Filter;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
 
@@ -37,6 +39,8 @@
         private readonly ILanguageService languageService;
         private readonly IDifficultyService difficultyService;
         private readonly IDeletableEntityRepository<Course> courseRepository;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IHttpContextAccessor httpContext;
 
         public CourseService(
             IMapper mapper,
@@ -44,7 +48,9 @@
             IImageService imageService,
             ICategoryService categoryService,
             ILanguageService languageService,
-            IDifficultyService difficultyService)
+            IDifficultyService difficultyService,
+            UserManager<ApplicationUser> userManager,
+            IHttpContextAccessor httpContext)
         {
             this.mapper = mapper;
             this.courseRepository = courseRepository;
@@ -52,6 +58,8 @@
             this.categoryService = categoryService;
             this.languageService = languageService;
             this.difficultyService = difficultyService;
+            this.userManager = userManager;
+            this.httpContext = httpContext;
         }
 
         public async Task<int> AddCourseAsync(ImportCourseModel model)
@@ -145,9 +153,10 @@
                .ToListAsync();
         }
 
-        public bool IsUserEnrolledCourse(string userId)
+        public bool IsUserEnrolledCourse(string userId, int courseId)
         {
-            return this.courseRepository.AllAsNoTracking().Any(x => x.CourseStudents.Any(x => x.UserId == userId));
+            return this.courseRepository.AllAsNoTracking()
+                .Any(x => x.CourseStudents.Any(x => x.UserId == userId && x.CourseId == courseId));
         }
 
         public async Task<T> GetByIdAsync<T>(int courseId)
@@ -217,6 +226,13 @@
             var course = await this.courseRepository.AllAsNoTracking().Include(x => x.Owner).FirstOrDefaultAsync(x => x.Id == courseId);
 
             return course.Owner.Id;
+        }
+
+        public async Task EnrollCourse(int courseId)
+        {
+            var user = await this.userManager.GetUserAsync(this.httpContext.HttpContext.User);
+            user.BuyedCourses.Add(new StudentCourse { CourseId = courseId, UserId = user.Id });
+            await this.userManager.UpdateAsync(user);
         }
 
         public async Task<IEnumerable<T>> GetTop12BestSellersCourses<T>()
@@ -304,5 +320,6 @@
                 new SelectListItem { Text = "The oldest", Value = OrderByOldestDate },
             };
         }
+
     }
 }

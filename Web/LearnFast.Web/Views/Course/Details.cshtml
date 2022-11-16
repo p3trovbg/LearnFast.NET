@@ -34,14 +34,41 @@
             <div>Created by: @Model.Owner.FullName</div>
             <div>Language: @Model.Language.Name</div>
             <div>Difficulty: @Model.Difficulty</div>
-            @if (Model.Price <= 0)
+            @if (1 == 1)
             {
-                <div class="price">Free course</div>
+
             }
-            else
+            @if (!Model.IsUserEnrolled && !Model.IsOwner)
             {
-                <div class="price">@($"${Model.Price:F2}")<a asp-controller="Home" asp-action="Index"><i class="bi bi-bag-fill"></i></a></div>
+                @if (Model.Price <= 0)
+                {
+
+                    <div class="price"><a data-bs-toggle="modal" href="" data-bs-target="#exampleModal">Free course</a></div>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Enrolling course</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Do you want to enrol on the course?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a class="btn btn-primary" asp-controller="Course" asp-action="EnrollFree" asp-route-courseId="@Model.Id">Yes</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="price">@($"${Model.Price:F2}")<a asp-controller="Course" asp-action="Buy" asp-route-id="@Model.Id"><i class="bi bi-bag-fill"></i></a></div>
+                }
             }
+
+            <!-- Modal -->
         </div>
     </div>
     <div class="main-image">
@@ -103,20 +130,20 @@
                             {
                                 <div class="accordion-body text-end">
                                     <a asp-area=""
-                                       asp-controller="Video"
-                                       asp-action="Edit"
-                                       asp-route-Title="@video.Title"
-                                       asp-route-UrlPath="@video.UrlPath"
-                                       asp-route-Id="@video.Id"
-                                       asp-route-Description="@video.Description"
-                                       asp-route-CourseId="@Model.Id" class="btn btn-outline-secondary">Edit video</a>
+                           asp-controller="Video"
+                           asp-action="Edit"
+                           asp-route-Title="@video.Title"
+                           asp-route-UrlPath="@video.UrlPath"
+                           asp-route-Id="@video.Id"
+                           asp-route-Description="@video.Description"
+                           asp-route-CourseId="@Model.Id" class="btn btn-outline-secondary">Edit video</a>
                                 </div>
                                 <div class="accordion-body text-end">
                                     <a asp-area=""
-                                       asp-controller="Video"
-                                       asp-action="RemoveVideo"
-                                       asp-route-videoId="@video.Id"
-                                       asp-route-courseId="@Model.Id" class="btn btn-outline-danger">Delete video</a>
+                           asp-controller="Video"
+                           asp-action="RemoveVideo"
+                           asp-route-videoId="@video.Id"
+                           asp-route-courseId="@Model.Id" class="btn btn-outline-danger">Delete video</a>
                                 </div>
                             }
                         </div>
