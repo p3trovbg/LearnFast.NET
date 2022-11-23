@@ -14,12 +14,19 @@
         public MappingProfile()
         {
             this.CreateMap<ImportCourseModel, Course>();
+
             this.CreateMap<ApplicationUser, UserViewModel>();
+
             this.CreateMap<Course, CourseViewModel>();
+
             this.CreateMap<Course, BaseCourseViewModel>();
+
             this.CreateMap<LanguageViewModel, Language>();
+
             this.CreateMap<CategoryViewModel, Category>();
+
             this.CreateMap<Video, ImportVideoModel>();
+
             this.CreateMap<ImportReviewViewModel, Review>();
         }
     }

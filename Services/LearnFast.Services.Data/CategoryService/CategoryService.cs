@@ -62,7 +62,7 @@
 
         public string GetCategoryName(int? id)
         {
-            return categoryRepository.AllAsNoTracking().FirstOrDefault(x => x.Id == id).Name;
+            return this.categoryRepository.AllAsNoTracking().FirstOrDefault(x => x.Id == id).Name;
         }
     }
 }

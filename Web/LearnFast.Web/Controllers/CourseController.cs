@@ -244,7 +244,7 @@
 
         private async Task LoadingBaseParameters(ImportCourseModel model)
         {
-            model.Languages = await this.languageService.GetLanguageListAsync();
+            model.Languages = await this.languageService.GetLanguagesAsSelectListItem();
             model.Categories = await this.categoryService.GetCategoryList();
             model.Difficulties = this.difficultyService.GetDifficultyList();
         }

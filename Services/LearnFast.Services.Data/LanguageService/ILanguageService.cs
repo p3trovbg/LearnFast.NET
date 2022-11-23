@@ -12,6 +12,6 @@
 
         Task<IEnumerable<T>> GetAllLanguageAsync<T>();
 
-        Task<IEnumerable<SelectListItem>> GetLanguageListAsync();
+        Task<IEnumerable<SelectListItem>> GetLanguagesAsSelectListItem();
     }
 }

@@ -38,9 +38,9 @@
         private readonly ICategoryService categoryService;
         private readonly ILanguageService languageService;
         private readonly IDifficultyService difficultyService;
-        private readonly IDeletableEntityRepository<Course> courseRepository;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IHttpContextAccessor httpContext;
+        private readonly IDeletableEntityRepository<Course> courseRepository;
 
         public CourseService(
             IMapper mapper,
@@ -231,6 +231,12 @@
         public async Task EnrollCourse(int courseId)
         {
             var user = await this.userManager.GetUserAsync(this.httpContext.HttpContext.User);
+
+            if (this.IsUserEnrolledCourse(user.Id, courseId))
+            {
+                throw new ArgumentException(GlobalExceptions.UserAlreadyHasEnrolledInCourse);
+            }
+
             user.BuyedCourses.Add(new StudentCourse { CourseId = courseId, UserId = user.Id });
             await this.userManager.UpdateAsync(user);
         }
@@ -310,7 +316,7 @@
         {
             model.Difficulties = this.difficultyService.GetDifficultyList();
             model.Categories = await this.categoryService.GetCategoryList();
-            model.Languages = await this.languageService.GetLanguageListAsync();
+            model.Languages = await this.languageService.GetLanguagesAsSelectListItem();
             model.Sorter = new List<SelectListItem>
             {
                 new SelectListItem { Text = "Order by price", Value = OrderByPrice },

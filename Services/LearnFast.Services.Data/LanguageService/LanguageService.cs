@@ -29,13 +29,14 @@
 
         public async Task<IEnumerable<T>> GetAllLanguageAsync<T>()
         {
-            return await languageRepository.AllAsNoTracking().To<T>().ToListAsync();
+            return await this.languageRepository.AllAsNoTracking().To<T>().ToListAsync();
         }
 
         public async Task<LanguageViewModel> GetLanguageByIdAsync(int id)
         {
-            var language = await languageRepository
+            var language = await this.languageRepository
                 .AllAsNoTracking()
+                .To<LanguageViewModel>()
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (language == null)
@@ -43,14 +44,12 @@
                 throw new NullReferenceException(GlobalExceptions.LanguageNullExceptionMessage);
             }
 
-            var model = mapper.Map<LanguageViewModel>(language);
-
-            return model;
+            return language;
         }
 
-        public async Task<IEnumerable<SelectListItem>> GetLanguageListAsync()
+        public async Task<IEnumerable<SelectListItem>> GetLanguagesAsSelectListItem()
         {
-            var list = await GetAllLanguageAsync<LanguageViewModel>();
+            var list = await this.GetAllLanguageAsync<LanguageViewModel>();
             return list.Select(x => new SelectListItem
             {
                 Text = x.Name,
