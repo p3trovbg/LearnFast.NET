@@ -19,12 +19,12 @@
 
     public class LanguageServiceTests
     {
-        private Mock<IDeletableEntityRepository<Language>> repository = new Mock<IDeletableEntityRepository<Language>>();
-        private Mock<IMapper> mockMapper = new Mock<IMapper>();
+        private Mock<IDeletableEntityRepository<Language>> repository;
 
         public LanguageServiceTests()
         {
             AutoMapperConfig.RegisterMappings(Assembly.Load("LearnFast.Web.ViewModels"));
+            this.repository = new Mock<IDeletableEntityRepository<Language>>();
         }
 
         [Fact]
@@ -48,7 +48,7 @@
             var mockLanguages = this.GetLanguages();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(mockLanguages.BuildMock());
 
-            var service = new LanguageService(this.repository.Object, this.mockMapper.Object);
+            var service = new LanguageService(this.repository.Object, null);
 
             var result = await service.GetLanguageByIdAsync(1);
 
@@ -78,7 +78,7 @@
             var mockLanguages = this.GetLanguages();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(mockLanguages.BuildMock());
 
-            var service = new LanguageService(this.repository.Object, this.mockMapper.Object);
+            var service = new LanguageService(this.repository.Object, null);
 
             var result = await service.GetLanguageByIdAsync(1);
 
