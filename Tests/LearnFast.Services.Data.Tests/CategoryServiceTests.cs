@@ -13,17 +13,17 @@ namespace LearnFast.Services.Data.Tests
     using LearnFast.Services.Data.CategoryService;
     using LearnFast.Services.Mapping;
     using LearnFast.Web.ViewModels.Category;
+    using Microsoft.EntityFrameworkCore;
     using MockQueryable.Moq;
     using Moq;
     using Xunit;
 
-    public class CategoryServiceTests
+    public class CategoryServiceTests : BaseServiceTests
     {
         private Mock<IDeletableEntityRepository<Category>> mockRepository;
 
         public CategoryServiceTests()
         {
-            AutoMapperConfig.RegisterMappings(Assembly.Load("LearnFast.Web.ViewModels"));
             this.mockRepository = new Mock<IDeletableEntityRepository<Category>>();
         }
 
@@ -32,7 +32,7 @@ namespace LearnFast.Services.Data.Tests
         {
             this.mockRepository.Setup(r => r.AllAsNoTracking()).Returns(GetCategoryList().AsQueryable());
 
-            var service = new CategoryService(this.mockRepository.Object, null);
+            var service = new CategoryService(this.mockRepository.Object);
 
             var category = service.GetCategoryName(1);
             var category1 = service.GetCategoryName(2);
@@ -43,17 +43,20 @@ namespace LearnFast.Services.Data.Tests
             Assert.Equal("Design", category2);
         }
 
-        [Fact]
-        public async Task GetCategoryByInvalidIdShouldThrowsException()
+        [Theory]
+        [InlineData(-5)]
+        [InlineData(-1)]
+        [InlineData(10)]
+        public async Task GetCategoryByInvalidIdShouldThrowsException(int id)
         {
             this.mockRepository.Setup(r => r.AllAsNoTracking()).Returns(GetCategoryList().AsQueryable().BuildMock());
 
-            var service = new CategoryService(this.mockRepository.Object, null);
+            var service = new CategoryService(this.mockRepository.Object);
 
-            var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetCategoryById<CategoryViewModel>(-5));
-            await Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetCategoryById<CategoryViewModel>(20));
-            await Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetCategoryById<CategoryViewModel>(0));
-            await Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetCategoryById<CategoryViewModel>(1));
+            var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetCategoryById<CategoryViewModel>(id));
+            await Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetCategoryById<CategoryViewModel>(id));
+            await Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetCategoryById<CategoryViewModel>(id));
+            await Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetCategoryById<CategoryViewModel>(id));
 
             Assert.Equal(GlobalExceptions.CategoryNullExceptionMessage, ex.Message);
         }
@@ -69,7 +72,7 @@ namespace LearnFast.Services.Data.Tests
             var categoryList = GetCategoryList();
             this.mockRepository.Setup(r => r.AllAsNoTracking()).Returns(categoryList.AsQueryable().BuildMock());
 
-            var service = new CategoryService(this.mockRepository.Object, null);
+            var service = new CategoryService(this.mockRepository.Object);
             var result = await service.GetCategoryById<CategoryViewModel>(id);
 
             var expectedCategory = categoryList.First(x => x.Id == id);
@@ -83,7 +86,7 @@ namespace LearnFast.Services.Data.Tests
             var categoryList = GetCategoryList();
             this.mockRepository.Setup(r => r.AllAsNoTracking()).Returns(categoryList.AsQueryable().BuildMock());
 
-            var service = new CategoryService(this.mockRepository.Object, null);
+            var service = new CategoryService(this.mockRepository.Object);
             var result = await service.GetAllAsync<CategoryViewModel>();
 
             Assert.Equal(categoryList.Count(), result.Count());
@@ -96,9 +99,9 @@ namespace LearnFast.Services.Data.Tests
         public async Task GetCategoriesAsSelectListItems()
         {
             var categoryList = GetCategoryList();
-            this.mockRepository.Setup(r => r.AllAsNoTracking()).Returns(categoryList.BuildMock());
+            this.mockRepository.Setup(r => r.AllAsNoTracking()).Returns(categoryList.AsQueryable().BuildMock());
 
-            var service = new CategoryService(this.mockRepository.Object, null);
+            var service = new CategoryService(this.mockRepository.Object);
 
             var result = await service.GetCategoryList();
 

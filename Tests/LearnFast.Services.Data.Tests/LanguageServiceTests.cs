@@ -17,13 +17,12 @@
     using Moq;
     using Xunit;
 
-    public class LanguageServiceTests
+    public class LanguageServiceTests : BaseServiceTests
     {
         private Mock<IDeletableEntityRepository<Language>> repository;
 
         public LanguageServiceTests()
         {
-            AutoMapperConfig.RegisterMappings(Assembly.Load("LearnFast.Web.ViewModels"));
             this.repository = new Mock<IDeletableEntityRepository<Language>>();
         }
 
@@ -32,9 +31,9 @@
         {
             var mockLanguages = this.GetLanguages();
 
-            this.repository.Setup(r => r.AllAsNoTracking()).Returns(mockLanguages.BuildMock());
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(mockLanguages.AsQueryable().BuildMock());
 
-            var service = new LanguageService(this.repository.Object, null);
+            var service = new LanguageService(this.repository.Object);
 
             var result = await service.GetAllLanguageAsync<LanguageViewModel>();
 
@@ -48,7 +47,7 @@
             var mockLanguages = this.GetLanguages();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(mockLanguages.BuildMock());
 
-            var service = new LanguageService(this.repository.Object, null);
+            var service = new LanguageService(this.repository.Object);
 
             var result = await service.GetLanguageByIdAsync(1);
 
@@ -63,7 +62,7 @@
             var mockLanguages = this.GetLanguages();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(mockLanguages.BuildMock());
 
-            var service = new LanguageService(this.repository.Object, null);
+            var service = new LanguageService(this.repository.Object);
 
             var result = await service.GetLanguagesAsSelectListItem();
 
@@ -78,7 +77,7 @@
             var mockLanguages = this.GetLanguages();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(mockLanguages.BuildMock());
 
-            var service = new LanguageService(this.repository.Object, null);
+            var service = new LanguageService(this.repository.Object);
 
             var result = await service.GetLanguageByIdAsync(1);
 
