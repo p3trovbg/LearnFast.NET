@@ -10,12 +10,14 @@
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Mapping.PropertyCopier;
+    using LearnFast.Web.ViewModels.ApplicationUser;
     using Microsoft.AspNetCore.Http;
 
     using SelectListItem = Microsoft.AspNetCore.Mvc.Rendering.SelectListItem;
 
     public class ImportCourseModel : IMapFrom<Course>
     {
+        [NotCopy]
         public int Id { get; set; }
 
         [Required]
@@ -53,7 +55,7 @@
         public int CategoryId { get; set; }
 
         [NotCopy]
-        public ApplicationUser Owner { get; set; }
+        public BaseUserViewModel Owner { get; set; }
 
         public string MainImageUrl { get; set; }
 

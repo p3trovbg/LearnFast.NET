@@ -17,14 +17,11 @@
     public class LanguageService : ILanguageService
     {
         private readonly IDeletableEntityRepository<Language> languageRepository;
-        private readonly IMapper mapper;
 
         public LanguageService(
-            IDeletableEntityRepository<Language> languageRepository,
-            IMapper mapper)
+            IDeletableEntityRepository<Language> languageRepository)
         {
             this.languageRepository = languageRepository;
-            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<T>> GetAllLanguageAsync<T>()

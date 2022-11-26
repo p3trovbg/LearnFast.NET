@@ -18,24 +18,21 @@
     public class CategoryService : ICategoryService
     {
         private readonly IDeletableEntityRepository<Category> categoryRepository;
-        private readonly IMapper mapper;
 
         public CategoryService(
-            IDeletableEntityRepository<Category> categoryRepository,
-            IMapper mapper)
+            IDeletableEntityRepository<Category> categoryRepository)
         {
             this.categoryRepository = categoryRepository;
-            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            return await categoryRepository.AllAsNoTracking().To<T>().ToListAsync();
+            return await this.categoryRepository.AllAsNoTracking().To<T>().ToListAsync();
         }
 
         public async Task<T> GetCategoryById<T>(int id)
         {
-            var category = await categoryRepository
+            var category = await this.categoryRepository
                 .AllAsNoTracking()
                 .Where(x => x.Id == id)
                 .To<T>()
@@ -46,12 +43,12 @@
                 throw new NullReferenceException(GlobalExceptions.CategoryNullExceptionMessage);
             }
 
-            return mapper.Map<T>(category);
+            return category;
         }
 
         public async Task<IEnumerable<SelectListItem>> GetCategoryList()
         {
-            var categories = await GetAllAsync<CategoryViewModel>();
+            var categories = await this.GetAllAsync<CategoryViewModel>();
 
             return categories.Select(x => new SelectListItem()
             {

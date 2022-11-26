@@ -17,6 +17,8 @@
 
             this.CreateMap<ApplicationUser, UserViewModel>();
 
+            this.CreateMap<BaseUserViewModel, ApplicationUser>();
+
             this.CreateMap<Course, CourseViewModel>();
 
             this.CreateMap<Course, BaseCourseViewModel>();
