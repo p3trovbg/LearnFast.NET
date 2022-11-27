@@ -326,6 +326,41 @@
             Assert.False(result);
         }
 
+        [Theory]
+        [InlineData(2)]
+        [InlineData(4)]
+        [InlineData(6)]
+        public async Task GetCourseByIdShouldReturnCurrentCourse(int courseId)
+        {
+            var courses = this.GetCollection();
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
+            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+
+            var result = await service.GetCourseByIdAsync<BaseCourseViewModel>(courseId);
+
+            this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+            var selectCourse = courses.FirstOrDefault(x => x.Id == courseId);
+
+            Assert.Equal(selectCourse.Title, result.Title);
+            Assert.Equal(selectCourse.Id, result.Id);
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(20)]
+        [InlineData(10000000)]
+        public async Task GetCourseByInvalidIdShouldThrowsException(int courseId)
+        {
+            var courses = this.GetCollection();
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
+            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+
+            var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetCourseByIdAsync<BaseCourseViewModel>(courseId));
+            Assert.Equal(GlobalExceptions.CourseIsNotExistExceptionMessage, ex.Message);
+
+            this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+        }
+
         private List<Course> GetCollection()
         {
             var courses = new List<Course>();
