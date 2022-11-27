@@ -23,6 +23,8 @@
 
             this.CreateMap<Course, BaseCourseViewModel>();
 
+            this.CreateMap<CourseViewModel, Course>();
+
             this.CreateMap<LanguageViewModel, Language>();
 
             this.CreateMap<CategoryViewModel, Category>();

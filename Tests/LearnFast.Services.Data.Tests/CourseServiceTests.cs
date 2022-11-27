@@ -10,6 +10,7 @@
     using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
     using LearnFast.Data.Models;
+    using LearnFast.Data.Models.Enums;
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Web.ViewModels.ApplicationUser;
     using LearnFast.Web.ViewModels.Course;
@@ -257,6 +258,153 @@
             Assert.True(course.Price > 0);
         }
 
+        [Fact]
+        public async Task GetAllShouldReturnsAllCourses()
+        {
+            var courses = this.GetCollection();
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+
+            var result = await service.GetAllAsync<CourseViewModel>();
+            Assert.Equal(courses.Count(), result.Count());
+            this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+            Assert.Equal(courses[0].Title, result.Where(x => x.Id == courses[0].Id).Select(x => x.Title).FirstOrDefault());
+            Assert.Equal(courses[1].Requirments, result.Where(x => x.Id == courses[1].Id).Select(x => x.Requirments).FirstOrDefault());
+        }
+
+        [Fact]
+        public async Task GetOwnedCoursesShouldReturnsOnlyCoursesOwnedByTheirOwner()
+        {
+            var courses = this.GetCollection();
+
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
+            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+
+            var owner = courses.Select(x => x.Owner).FirstOrDefault(x => x.Nickname == "peter");
+
+            var result = await service.GetOwnCoursesAsync<BaseCourseViewModel>(owner.Id);
+
+            var ownerCourses = courses.Where(x => x.Owner.Id == owner.Id).ToList();
+
+            this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+            Assert.Equal(ownerCourses[0].Title, result.Where(x => x.Id == ownerCourses[0].Id).Select(x => x.Title).FirstOrDefault());
+            Assert.Equal(ownerCourses[0].IsFree, result.Where(x => x.Id == ownerCourses[0].Id).Select(x => x.IsFree).FirstOrDefault());
+        }
+
+        private List<Course> GetCollection()
+        {
+            var courses = new List<Course>();
+            var user1 = new ApplicationUser() { FirstName = "Peter", Nickname = "peter" };
+            var user2 = new ApplicationUser() { FirstName = "Gosho", Nickname = "gosho" };
+
+            courses.Add(new Course
+            {
+                Owner = user2,
+                Id = 1,
+                Title = "Test1",
+                Price = 20,
+                MainImageUrl = null,
+                IsFree = false,
+                CategoryId = 1,
+                Difficulty = Difficulty.Beginner,
+                LanguageId = 1,
+                Requirments = "test1",
+                Description = "test1",
+            });
+            courses.Add(new Course
+            {
+                Owner = new ApplicationUser() { FirstName = "Pesho", Nickname = "pesho" },
+                Id = 2,
+                Title = "Test2",
+                Price = 100,
+                MainImageUrl = null,
+                IsFree = false,
+                CategoryId = 2,
+                Difficulty = Difficulty.Intermediate,
+                LanguageId = 2,
+                Requirments = "test2",
+                Description = "test2",
+            });
+            courses.Add(new Course
+            {
+                Owner = new ApplicationUser() { FirstName = "Iwan", Nickname = "ivan" },
+                Id = 3,
+                Title = "Test3",
+                Price = 150,
+                MainImageUrl = null,
+                IsFree = false,
+                CategoryId = 3,
+                Difficulty = Difficulty.Advanced,
+                LanguageId = 3,
+                Requirments = "test3",
+                Description = "test3",
+            });
+            courses.Add(new Course
+            {
+                Owner = new ApplicationUser() { FirstName = "Marto", Nickname = "marto" },
+                Id = 4,
+                Title = "Test4",
+                Price = 0,
+                MainImageUrl = null,
+                IsFree = true,
+                CategoryId = 4,
+                Difficulty = Difficulty.Advanced,
+                LanguageId = 4,
+                Requirments = "test4",
+                Description = "test4",
+                CourseStudents = new HashSet<StudentCourse>()
+                {
+                    new StudentCourse { CourseId = 4, UserId = user1.Id },
+                    new StudentCourse { CourseId = 4, UserId = user2.Id },
+                },
+            });
+            courses.Add(new Course
+            {
+                Owner = new ApplicationUser() { FirstName = "Dani", Nickname = "dani" },
+                Id = 5,
+                Title = "Test5",
+                Price = 0,
+                MainImageUrl = null,
+                IsFree = true,
+                CategoryId = 5,
+                Difficulty = Difficulty.Advanced,
+                LanguageId = 5,
+                Requirments = "test5",
+                Description = "test5",
+            })
+            courses.Add(new Course
+            {
+                Owner = user1,
+                Id = 6,
+                Title = "Test7",
+                Price = 0,
+                MainImageUrl = null,
+                IsFree = true,
+                CategoryId = 5,
+                Difficulty = Difficulty.Advanced,
+                LanguageId = 5,
+                Requirments = "test6",
+                Description = "test6",
+            });
+            courses.Add(new Course
+            {
+                Owner = user1,
+                Id = 7,
+                Title = "Test8",
+                Price = 300,
+                MainImageUrl = null,
+                IsFree = false,
+                CategoryId = 5,
+                Difficulty = Difficulty.Advanced,
+                LanguageId = 5,
+                Requirments = "test6",
+                Description = "test6",
+            });
+
+            return courses;
+        }
+
         private ImportCourseModel CreateModel()
         {
             var owner = new BaseUserViewModel { Id = "22" };
@@ -264,7 +412,7 @@
             {
                 Owner = owner,
                 Id = 5,
-                Title = "Test",
+                Title = "Test4",
                 Price = 20,
                 MainImageUrl = null,
                 IsFree = false,

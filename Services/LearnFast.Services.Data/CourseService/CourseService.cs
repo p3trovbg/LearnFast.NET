@@ -142,12 +142,16 @@
 
         public async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            return await this.GetAllWithBasicInformationAsNoTracking().To<T>().ToListAsync();
+            return await this.courseRepository
+               .AllAsNoTracking()
+               .To<T>()
+               .ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetOwnCoursesAsync<T>(string userId)
         {
-            return await this.GetAllWithBasicInformationAsNoTracking()
+            return await this.courseRepository
+               .AllAsNoTracking()
                .Where(x => x.Owner.Id == userId)
                .To<T>()
                .ToListAsync();
@@ -161,7 +165,8 @@
 
         public async Task<T> GetByIdAsync<T>(int courseId)
         {
-            var course = await this.GetWithAllInformationAsNoTracking()
+            var course = await this.courseRepository
+                .AllAsNoTracking()
                 .Where(x => x.Id == courseId)
                 .To<T>()
                 .FirstOrDefaultAsync();
@@ -176,7 +181,8 @@
 
         public IQueryable<T> GetAllAsQueryAble<T>()
         {
-            return this.GetAllWithBasicInformationAsNoTracking().To<T>();
+            return this.courseRepository
+               .AllAsNoTracking().To<T>();
         }
 
         public async Task GetAllWithFilter(SearchViewModel model)
@@ -298,18 +304,6 @@
             }
 
             return coursesAsQuery;
-        }
-
-        private IQueryable<Course> GetAllWithBasicInformationAsNoTracking()
-        {
-            return this.courseRepository
-               .AllAsNoTracking();
-        }
-
-        private IQueryable<Course> GetWithAllInformationAsNoTracking()
-        {
-            return this.courseRepository
-               .AllAsNoTracking();
         }
 
         private async Task GetDefaultModelProps(SearchViewModel model)
