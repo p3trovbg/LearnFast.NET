@@ -9,6 +9,7 @@
     using EllipticCurve;
     using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
+    using LearnFast.Data.Migrations;
     using LearnFast.Data.Models;
     using LearnFast.Data.Models.Enums;
     using LearnFast.Services.Data.CourseService;
@@ -292,6 +293,39 @@
             Assert.Equal(ownerCourses[0].IsFree, result.Where(x => x.Id == ownerCourses[0].Id).Select(x => x.IsFree).FirstOrDefault());
         }
 
+        [Fact]
+        public void IsEnrolledCourseShouldReturnsTrueIfUserIsEnrolled()
+        {
+            var courses = this.GetCollection();
+
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
+            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+
+            var user = courses.Select(x => x.Owner).FirstOrDefault(x => x.Nickname == "peter");
+            var courseId = 4;
+            var result = service.IsUserEnrolledCourse(user.Id, courseId);
+
+            this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void IsEnrolledCourseShouldReturnsFalseIfUserIsNotEnrolled()
+        {
+            var courses = this.GetCollection();
+
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
+            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+
+            var user = courses.Select(x => x.Owner).FirstOrDefault(x => x.Nickname == "peter");
+
+            var courseId = 10;
+            var result = service.IsUserEnrolledCourse(user.Id, courseId);
+
+            this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+            Assert.False(result);
+        }
+
         private List<Course> GetCollection()
         {
             var courses = new List<Course>();
@@ -372,7 +406,7 @@
                 LanguageId = 5,
                 Requirments = "test5",
                 Description = "test5",
-            })
+            });
             courses.Add(new Course
             {
                 Owner = user1,
