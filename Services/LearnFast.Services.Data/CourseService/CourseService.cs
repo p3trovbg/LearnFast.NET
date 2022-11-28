@@ -163,7 +163,7 @@
                 .Any(x => x.CourseStudents.Any(x => x.UserId == userId && x.CourseId == courseId));
         }
 
-        public async Task<T> GetByIdAsync<T>(int courseId)
+        public async Task<T> GetCourseByIdAsync<T>(int courseId)
         {
             var course = await this.courseRepository
                 .AllAsNoTracking()
@@ -204,11 +204,7 @@
             }
 
             coursesAsQuery = Filter(model, coursesAsQuery);
-
-            if (!string.IsNullOrEmpty(model.SorterArgument))
-            {
-                coursesAsQuery = Sorter(model, coursesAsQuery);
-            }
+            coursesAsQuery = Sorter(model.SorterArgument, coursesAsQuery);
 
             model.Courses = await coursesAsQuery.ToListAsync();
 
@@ -282,9 +278,14 @@
             return coursesAsQuery;
         }
 
-        private static IQueryable<BaseCourseViewModel> Sorter(SearchViewModel model, IQueryable<BaseCourseViewModel> coursesAsQuery)
+        private static IQueryable<BaseCourseViewModel> Sorter(string sorterAgument, IQueryable<BaseCourseViewModel> coursesAsQuery)
         {
-            switch (model.SorterArgument)
+            if (string.IsNullOrEmpty(sorterAgument))
+            {
+                return coursesAsQuery;
+            }
+
+            switch (sorterAgument)
             {
                 case OrderByTitle:
                     coursesAsQuery = coursesAsQuery.OrderBy(x => x.Title);

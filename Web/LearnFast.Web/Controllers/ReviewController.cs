@@ -93,15 +93,22 @@
         {
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var model = await this.reviewService.GetReviewById<EditReviewViewModel>(reviewId);
-
-            model.RatingList = LoadRatings();
-            if (currentUserId != model.UserId)
+            try
             {
-                return this.Forbid();
+                var model = await this.reviewService.GetReviewById<EditReviewViewModel>(reviewId);
+                model.RatingList = LoadRatings();
+                if (currentUserId != model.UserId)
+                {
+                    return this.Forbid();
+                }
+
+                return this.View(model);
+            }
+            catch (Exception ex)
+            {
+                return this.NotFound(ex.Message);
             }
 
-            return this.View(model);
         }
 
         [HttpPost]

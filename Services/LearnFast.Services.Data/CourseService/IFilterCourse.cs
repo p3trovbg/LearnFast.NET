@@ -7,7 +7,7 @@
 
     public interface IFilterCourse
     {
-        Task<T> GetByIdAsync<T>(int courseId);
+        Task<T> GetCourseByIdAsync<T>(int courseId);
 
         Task<IEnumerable<T>> GetTop12BestSellersCourses<T>();
 

@@ -102,7 +102,7 @@
 
             try
             {
-                var model = await this.filterCourse.GetByIdAsync<ImportCourseModel>(id);
+                var model = await this.filterCourse.GetCourseByIdAsync<ImportCourseModel>(id);
 
                 if (model.Owner.Id != userId)
                 {
@@ -159,7 +159,7 @@
         {
             try
             {
-                var course = await this.filterCourse.GetByIdAsync<PurchaseCourseViewModel>(id);
+                var course = await this.filterCourse.GetCourseByIdAsync<PurchaseCourseViewModel>(id);
 
                 var gateway = this.braintreeService.GetGateway();
                 var clientToken = await gateway.ClientToken.GenerateAsync();
@@ -211,7 +211,7 @@
         {
             try
             {
-                var model = await this.filterCourse.GetByIdAsync<CourseViewModel>(id);
+                var model = await this.filterCourse.GetCourseByIdAsync<CourseViewModel>(id);
                 var user = await this.userManager.GetUserAsync(this.User);
 
                 model.IsUserEnrolled = this.filterCourse.IsUserEnrolledCourse(user.Id, id);

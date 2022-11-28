@@ -15,6 +15,7 @@
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Web.ViewModels.ApplicationUser;
     using LearnFast.Web.ViewModels.Course;
+    using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.VisualBasic.Syntax;
     using Microsoft.VisualStudio.TestPlatform.ObjectModel;
     using MockQueryable.Moq;
@@ -357,6 +358,22 @@
 
             var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetCourseByIdAsync<BaseCourseViewModel>(courseId));
             Assert.Equal(GlobalExceptions.CourseIsNotExistExceptionMessage, ex.Message);
+
+            this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+        }
+
+        [Fact]
+        public void GetAllAsQueryableShouldReturnQueryableCollection()
+        {
+            var courses = this.GetCollection();
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
+            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+
+            var result = service.GetAllAsQueryAble<BaseCourseViewModel>();
+
+            Assert.IsAssignableFrom<IQueryable>(result);
+            Assert.Equal(courses[0].Title, courses.Where(x => x.Id == courses[0].Id).Select(x => x.Title).FirstOrDefault());
+            Assert.Equal(courses.Count(), result.Count());
 
             this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
         }

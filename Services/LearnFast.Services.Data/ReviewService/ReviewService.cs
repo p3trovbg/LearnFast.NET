@@ -35,7 +35,7 @@
 
         public async Task Add(ImportReviewViewModel model)
         {
-            var course = await this.filterCourse.GetByIdAsync<BaseCourseViewModel>(model.CourseId);
+            var course = await this.filterCourse.GetCourseByIdAsync<BaseCourseViewModel>(model.CourseId);
 
             if (course == null)
             {
@@ -85,7 +85,7 @@
 
         public async Task GetAllReviewsByCourse(ReviewListViewModel model)
         {
-            var course = await this.filterCourse.GetByIdAsync<BaseCourseViewModel>(model.CourseId);
+            var course = await this.filterCourse.GetCourseByIdAsync<BaseCourseViewModel>(model.CourseId);
 
             if (course == null)
             {
@@ -110,7 +110,14 @@
 
         public async Task<T> GetReviewById<T>(int reviewId)
         {
-            return await this.reviewRepository.AllAsNoTracking().Where(x => x.Id == reviewId).To<T>().FirstOrDefaultAsync();
+            var review = await this.reviewRepository.AllAsNoTracking().Where(x => x.Id == reviewId).To<T>().FirstOrDefaultAsync();
+
+            if (review == null)
+            {
+                throw new NullReferenceException(GlobalExceptions.DoesNotExistReview);
+            }
+
+            return review;
         }
 
         public async Task<int> GetReviewsCountAsync()

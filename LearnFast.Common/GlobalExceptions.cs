@@ -27,5 +27,7 @@
         public const string ConfirmedPasswordNotMatch = "The password and confirmation password do not match.";
 
         public const string UserAlreadyHasEnrolledInCourse = "This user already has enrolled in the course.";
+
+        public const string ReviewIsNotExist = "This review is not exist!";
     }
 }
