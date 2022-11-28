@@ -15,6 +15,8 @@
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Web.ViewModels.ApplicationUser;
     using LearnFast.Web.ViewModels.Course;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.VisualBasic.Syntax;
     using Microsoft.VisualStudio.TestPlatform.ObjectModel;
@@ -43,7 +45,7 @@
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             Assert.Equal(courses.Count(), await service.GetCountAsync());
 
@@ -62,7 +64,7 @@
             this.repository.Setup(m => m.SaveChangesAsync()).Callback(() => { return; });
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(this.Mapper, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(this.Mapper, this.repository.Object, null, null, null, null);
             var result = await service.AddCourseAsync(course);
 
             this.repository.Verify(m => m.AddAsync(It.IsAny<Course>()), Times.Once());
@@ -83,7 +85,7 @@
             this.repository.Setup(m => m.SaveChangesAsync()).Callback(() => { return; });
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(this.Mapper, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(this.Mapper, this.repository.Object, null, null, null, null);
             var result = await service.GetCountAsync();
             Assert.Equal(list.Count(), result);
 
@@ -108,7 +110,7 @@
             this.repository.Setup(m => m.SaveChangesAsync()).Callback(() => { return; });
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             await service.DeleteCourseByIdAsync(course.Id, course.Owner.Id);
 
@@ -128,7 +130,7 @@
 
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.DeleteCourseByIdAsync(3, course.Owner.Id));
             await Assert.ThrowsAsync<NullReferenceException>(async () => await service.DeleteCourseByIdAsync(4, course.Owner.Id));
@@ -145,7 +147,7 @@
             list.Add(course);
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await service.DeleteCourseByIdAsync(course.Id, "100"));
             await Assert.ThrowsAsync<ArgumentException>(async () => await service.DeleteCourseByIdAsync(course.Id, "30"));
@@ -164,7 +166,7 @@
 
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.UpdateAsync(updatedCourse, course.Owner.Id));
             await Assert.ThrowsAsync<NullReferenceException>(async () => await service.UpdateAsync(updatedCourse, course.Owner.Id));
@@ -183,7 +185,7 @@
 
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await service.UpdateAsync(updatedCourse, "3"));
             await Assert.ThrowsAsync<ArgumentException>(async () => await service.UpdateAsync(updatedCourse, "6"));
@@ -203,7 +205,7 @@
 
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             await service.UpdateAsync(updatedCourse, course.Owner.Id);
 
@@ -230,7 +232,7 @@
 
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             await service.UpdateAsync(updatedCourse, course.Owner.Id);
 
@@ -252,7 +254,7 @@
 
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             await service.UpdateAsync(updatedCourse, course.Owner.Id);
 
@@ -266,7 +268,7 @@
             var courses = this.GetCollection();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             var result = await service.GetAllAsync<CourseViewModel>();
             Assert.Equal(courses.Count(), result.Count());
@@ -281,7 +283,7 @@
             var courses = this.GetCollection();
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             var owner = courses.Select(x => x.Owner).FirstOrDefault(x => x.Nickname == "peter");
 
@@ -300,7 +302,7 @@
             var courses = this.GetCollection();
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             var user = courses.Select(x => x.Owner).FirstOrDefault(x => x.Nickname == "peter");
             var courseId = 4;
@@ -316,7 +318,7 @@
             var courses = this.GetCollection();
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             var user = courses.Select(x => x.Owner).FirstOrDefault(x => x.Nickname == "peter");
 
@@ -335,7 +337,7 @@
         {
             var courses = this.GetCollection();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             var result = await service.GetCourseByIdAsync<BaseCourseViewModel>(courseId);
 
@@ -354,7 +356,7 @@
         {
             var courses = this.GetCollection();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetCourseByIdAsync<BaseCourseViewModel>(courseId));
             Assert.Equal(GlobalExceptions.CourseDoesNotExistExceptionMessage, ex.Message);
@@ -367,7 +369,7 @@
         {
             var courses = this.GetCollection();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             var result = service.GetAllAsQueryAble<BaseCourseViewModel>();
 
@@ -382,11 +384,11 @@
         public async Task GetOwnerIdOfCourseShouldReturnsOwnerId()
         {
             var courses = this.GetCollection();
-            var course = courses[0];
+            var course = courses.FirstOrDefault();
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             var result = await service.GetOwnerIdByCourse(course.Id);
 
@@ -398,15 +400,76 @@
         public async Task GetOwnerIdOfCourseByInvalidCourseIdShouldThrowsException()
         {
             var courses = this.GetCollection();
-            var course = courses[0];
+            var course = courses.FirstOrDefault();
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await service.GetOwnerIdByCourse(-1));
             Assert.Equal(GlobalExceptions.CourseDoesNotExistExceptionMessage, ex.Message);
 
+            this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+        }
+
+        [Fact]
+        public async Task EnrollingInCourseByUser()
+        {
+            var courses = this.GetCollection();
+            var course = courses.FirstOrDefault(x => x.Id == 4);
+            var candidate = new ApplicationUser() { FirstName = "Dragan", Nickname = "dragan" };
+
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
+            this.repository.Setup(r => r.All()).Returns(courses.BuildMock());
+            this.repository.Setup(m => m.SaveChangesAsync()).Callback(()
+                =>
+                {
+                    course.CourseStudents.Add(new StudentCourse { CourseId = course.Id, UserId = candidate.Id });
+                });
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+
+            await service.EnrollCourse(course.Id, candidate.Id);
+
+            Assert.True(service.IsUserEnrolledCourse(candidate.Id, course.Id));
+            this.repository.Verify(x => x.AllAsNoTracking(), Times.Exactly(2));
+            this.repository.Verify(x => x.All(), Times.Once);
+            this.repository.Verify(x => x.SaveChangesAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async Task EnrollingInNotExistCourseShouldThrowException()
+        {
+            var courses = this.GetCollection();
+            var course = courses.FirstOrDefault(x => x.Id == 4);
+            var candidate = new ApplicationUser() { FirstName = "Dragan", Nickname = "dragan" };
+
+            this.repository.Setup(r => r.All()).Returns(courses.BuildMock());
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+
+            var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.EnrollCourse(-1, candidate.Id));
+
+            Assert.Equal(GlobalExceptions.CourseDoesNotExistExceptionMessage, ex.Message);
+            this.repository.Verify(x => x.All(), Times.Once);
+        }
+
+        [Fact]
+        public async Task EnrollingInCourseByUserThatAlreadyIsEnrolledShouldThrowException()
+        {
+            var courses = this.GetCollection();
+            var course = courses.FirstOrDefault(x => x.Id == 4);
+            var candidate = course.CourseStudents.Select(x => x.User).FirstOrDefault(x => x.Nickname == "gosho");
+
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
+            this.repository.Setup(r => r.All()).Returns(courses.BuildMock());
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await service.EnrollCourse(course.Id, candidate.Id));
+
+            Assert.Equal(GlobalExceptions.UserAlreadyHasEnrolledInCourse, ex.Message);
+            this.repository.Verify(x => x.All(), Times.Once);
             this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
         }
 
@@ -473,8 +536,8 @@
                 Description = "test4",
                 CourseStudents = new HashSet<StudentCourse>()
                 {
-                    new StudentCourse { CourseId = 4, UserId = user1.Id },
-                    new StudentCourse { CourseId = 4, UserId = user2.Id },
+                    new StudentCourse { CourseId = 4, UserId = user1.Id, User = user1 },
+                    new StudentCourse { CourseId = 4, UserId = user2.Id, User = user2 },
                 },
             });
             courses.Add(new Course

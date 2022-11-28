@@ -25,6 +25,6 @@
 
         Task<int> GetCountAsync();
 
-        Task EnrollCourse(int courseId);
+        Task EnrollCourse(int courseId, string userId);
     }
 }

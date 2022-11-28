@@ -151,7 +151,8 @@
         {
             try
             {
-                await this.courseService.EnrollCourse(courseId);
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await this.courseService.EnrollCourse(courseId, userId);
 
                 return this.RedirectToAction(nameof(this.Details), new { id = courseId });
             }
@@ -201,7 +202,7 @@
                 try
                 {
                     var userId = this.userManager.GetUserId(this.User);
-                    await this.courseService.EnrollCourse(model.Id, user);
+                    await this.courseService.EnrollCourse(model.Id, userId);
 
                     return this.RedirectToAction(nameof(this.Details), new { id = model.Id });
                 }

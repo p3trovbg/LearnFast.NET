@@ -38,8 +38,6 @@
         private readonly ICategoryService categoryService;
         private readonly ILanguageService languageService;
         private readonly IDifficultyService difficultyService;
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly IHttpContextAccessor httpContext;
         private readonly IDeletableEntityRepository<Course> courseRepository;
 
         public CourseService(
@@ -48,9 +46,7 @@
             IImageService imageService,
             ICategoryService categoryService,
             ILanguageService languageService,
-            IDifficultyService difficultyService,
-            UserManager<ApplicationUser> userManager,
-            IHttpContextAccessor httpContext)
+            IDifficultyService difficultyService)
         {
             this.mapper = mapper;
             this.courseRepository = courseRepository;
@@ -58,8 +54,6 @@
             this.categoryService = categoryService;
             this.languageService = languageService;
             this.difficultyService = difficultyService;
-            this.userManager = userManager;
-            this.httpContext = httpContext;
         }
 
         public async Task<int> AddCourseAsync(ImportCourseModel model)
