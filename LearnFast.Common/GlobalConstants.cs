@@ -16,7 +16,7 @@
 
         public const string EmailSender = "p3trovsit@gmail.com";
 
-        public const string EmailTaker = "georgi1204g@gmail.com";
+        public const string EmailTaker = "p3trovsit@gmail.com";
 
         public const string SuccessfullySendMessage = "You sent successfully the message!";
 
@@ -25,7 +25,7 @@
         public const string AdministrationAreaName = "Administration";
 
         public const string CourseTitleLabel = "Course title";
-        
+
         public const string UploadImageLabel = "Upload label";
 
         public const string IsFreeLabel = "Is free";

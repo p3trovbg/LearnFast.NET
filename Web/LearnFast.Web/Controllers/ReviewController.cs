@@ -33,7 +33,7 @@
             {
                 await this.reviewService.GetAllReviewsByCourse(model);
 
-                model.CourseOwnerId = await this.courseService.GetOwnerCourseId(model.CourseId);
+                model.CourseOwnerId = await this.courseService.GetOwnerIdByCourse(model.CourseId);
                 model.CurrentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
                 return this.View(model);

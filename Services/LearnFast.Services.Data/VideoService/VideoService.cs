@@ -38,7 +38,7 @@
 
             if (targetVideo == null)
             {
-                throw new ArgumentException(GlobalExceptions.VideoIsNotExistExceptionMessage);
+                throw new ArgumentException(GlobalExceptions.VideoDoesNotExistExceptionMessage);
             }
 
             PropertyCopier<EditVideoViewModel, Video>.CopyPropertiesFrom(model, targetVideo);
@@ -67,7 +67,7 @@
 
             if (targetVideo == null)
             {
-                throw new ArgumentException(GlobalExceptions.VideoIsNotExistExceptionMessage);
+                throw new ArgumentException(GlobalExceptions.VideoDoesNotExistExceptionMessage);
             }
 
             this.videoRepository.Delete(targetVideo);

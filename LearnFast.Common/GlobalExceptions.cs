@@ -6,9 +6,9 @@
 
         public const string CategoryNullExceptionMessage = "This category does not exist!";
 
-        public const string CourseIsNotExistExceptionMessage = "This course does not exist!";
+        public const string CourseDoesNotExistExceptionMessage = "This course does not exist!";
 
-        public const string VideoIsNotExistExceptionMessage = "This video does not exist!";
+        public const string VideoDoesNotExistExceptionMessage = "This video does not exist!";
 
         public const string DoesNotOwnThisCourseExceptionMessage = "You do not own this course!";
 

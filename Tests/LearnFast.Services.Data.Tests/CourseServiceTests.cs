@@ -133,7 +133,7 @@
             var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.DeleteCourseByIdAsync(3, course.Owner.Id));
             await Assert.ThrowsAsync<NullReferenceException>(async () => await service.DeleteCourseByIdAsync(4, course.Owner.Id));
 
-            Assert.Equal(GlobalExceptions.CourseIsNotExistExceptionMessage, ex.Message);
+            Assert.Equal(GlobalExceptions.CourseDoesNotExistExceptionMessage, ex.Message);
         }
 
         [Fact]
@@ -169,7 +169,7 @@
             var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.UpdateAsync(updatedCourse, course.Owner.Id));
             await Assert.ThrowsAsync<NullReferenceException>(async () => await service.UpdateAsync(updatedCourse, course.Owner.Id));
 
-            Assert.Equal(GlobalExceptions.CourseIsNotExistExceptionMessage, ex.Message);
+            Assert.Equal(GlobalExceptions.CourseDoesNotExistExceptionMessage, ex.Message);
         }
 
         [Fact]
@@ -357,7 +357,7 @@
             var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
 
             var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetCourseByIdAsync<BaseCourseViewModel>(courseId));
-            Assert.Equal(GlobalExceptions.CourseIsNotExistExceptionMessage, ex.Message);
+            Assert.Equal(GlobalExceptions.CourseDoesNotExistExceptionMessage, ex.Message);
 
             this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
         }
@@ -374,6 +374,38 @@
             Assert.IsAssignableFrom<IQueryable>(result);
             Assert.Equal(courses[0].Title, courses.Where(x => x.Id == courses[0].Id).Select(x => x.Title).FirstOrDefault());
             Assert.Equal(courses.Count(), result.Count());
+
+            this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetOwnerIdOfCourseShouldReturnsOwnerId()
+        {
+            var courses = this.GetCollection();
+            var course = courses[0];
+
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+
+            var result = await service.GetOwnerIdByCourse(course.Id);
+
+            Assert.Equal(course.Owner.Id, result);
+            this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetOwnerIdOfCourseByInvalidCourseIdShouldThrowsException()
+        {
+            var courses = this.GetCollection();
+            var course = courses[0];
+
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null, null, null);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await service.GetOwnerIdByCourse(-1));
+            Assert.Equal(GlobalExceptions.CourseDoesNotExistExceptionMessage, ex.Message);
 
             this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
         }

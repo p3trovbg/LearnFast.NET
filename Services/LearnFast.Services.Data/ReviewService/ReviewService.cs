@@ -39,7 +39,7 @@
 
             if (course == null)
             {
-                throw new ArgumentException(GlobalExceptions.CourseIsNotExistExceptionMessage);
+                throw new ArgumentException(GlobalExceptions.CourseDoesNotExistExceptionMessage);
             }
 
             var review = this.mapper.Map<Review>(model);
@@ -89,7 +89,7 @@
 
             if (course == null)
             {
-                throw new ArgumentException(GlobalExceptions.CourseIsNotExistExceptionMessage);
+                throw new ArgumentException(GlobalExceptions.CourseDoesNotExistExceptionMessage);
             }
 
             var reviews = this.reviewRepository

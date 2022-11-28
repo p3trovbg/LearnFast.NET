@@ -98,7 +98,7 @@
 
             if (course == null)
             {
-                throw new NullReferenceException(GlobalExceptions.CourseIsNotExistExceptionMessage);
+                throw new NullReferenceException(GlobalExceptions.CourseDoesNotExistExceptionMessage);
             }
 
             if (course.Owner.Id != userId)
@@ -119,7 +119,7 @@
 
             if (course == null)
             {
-                throw new NullReferenceException(GlobalExceptions.CourseIsNotExistExceptionMessage);
+                throw new NullReferenceException(GlobalExceptions.CourseDoesNotExistExceptionMessage);
             }
 
             if (userId != course.Owner.Id)
@@ -173,7 +173,7 @@
 
             if (course == null)
             {
-                throw new NullReferenceException(GlobalExceptions.CourseIsNotExistExceptionMessage);
+                throw new NullReferenceException(GlobalExceptions.CourseDoesNotExistExceptionMessage);
             }
 
             return course;
@@ -183,6 +183,31 @@
         {
             return this.courseRepository
                .AllAsNoTracking().To<T>();
+        }
+
+        public async Task<string> GetOwnerIdByCourse(int courseId)
+        {
+            var course = await this.courseRepository.AllAsNoTracking().Include(x => x.Owner).FirstOrDefaultAsync(x => x.Id == courseId);
+
+            if (course == null)
+            {
+                throw new ArgumentException(GlobalExceptions.CourseDoesNotExistExceptionMessage);
+            }
+
+            return course.Owner.Id;
+        }
+
+        public async Task EnrollCourse(int courseId)
+        {
+            var user = await this.userManager.GetUserAsync(this.httpContext.HttpContext.User);
+
+            if (this.IsUserEnrolledCourse(user.Id, courseId))
+            {
+                throw new ArgumentException(GlobalExceptions.UserAlreadyHasEnrolledInCourse);
+            }
+
+            user.BuyedCourses.Add(new StudentCourse { CourseId = courseId, UserId = user.Id });
+            await this.userManager.UpdateAsync(user);
         }
 
         public async Task GetAllWithFilter(SearchViewModel model)
@@ -223,25 +248,6 @@
             await this.GetDefaultModelProps(model);
         }
 
-        public async Task<string> GetOwnerCourseId(int courseId)
-        {
-            var course = await this.courseRepository.AllAsNoTracking().Include(x => x.Owner).FirstOrDefaultAsync(x => x.Id == courseId);
-
-            return course.Owner.Id;
-        }
-
-        public async Task EnrollCourse(int courseId)
-        {
-            var user = await this.userManager.GetUserAsync(this.httpContext.HttpContext.User);
-
-            if (this.IsUserEnrolledCourse(user.Id, courseId))
-            {
-                throw new ArgumentException(GlobalExceptions.UserAlreadyHasEnrolledInCourse);
-            }
-
-            user.BuyedCourses.Add(new StudentCourse { CourseId = courseId, UserId = user.Id });
-            await this.userManager.UpdateAsync(user);
-        }
 
         public async Task<IEnumerable<T>> GetTop12BestSellersCourses<T>()
         {
