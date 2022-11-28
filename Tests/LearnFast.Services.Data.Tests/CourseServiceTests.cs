@@ -13,6 +13,7 @@
     using LearnFast.Data.Migrations;
     using LearnFast.Data.Models;
     using LearnFast.Data.Models.Enums;
+    using LearnFast.Data.Seeding.DTOs;
     using LearnFast.Services.Data.CategoryService;
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Web.ViewModels.ApplicationUser;
@@ -627,6 +628,86 @@
             var result = service.Filter(searchModel, mappedCourses.AsQueryable());
 
             Assert.All(result, x => Assert.Equal(languageId, x.Language.Id));
+        }
+
+        [Fact]
+        public void SorterCoursesOrderByTitle()
+        {
+            string sorter = GlobalConstants.OrderByTitle;
+            var courses = GetCoursesCollection();
+
+            var mappedCourses = this.Mapper.Map<List<BaseCourseViewModel>>(courses);
+
+            var sortedCourses = mappedCourses.OrderBy(x => x.Title);
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var result = service.Sorter(sorter, mappedCourses.AsQueryable());
+
+            Assert.Equal(sortedCourses, result);
+        }
+
+        [Fact]
+        public void SorterCoursesOrderByPrice()
+        {
+            string sorter = GlobalConstants.OrderByPrice;
+            var courses = GetCoursesCollection();
+
+            var mappedCourses = this.Mapper.Map<List<BaseCourseViewModel>>(courses);
+
+            var sortedCourses = mappedCourses.OrderBy(x => x.Price);
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var result = service.Sorter(sorter, mappedCourses.AsQueryable());
+
+            Assert.Equal(sortedCourses, result);
+        }
+
+        [Fact]
+        public void SorterCoursesOrderByDescPrice()
+        {
+            string sorter = GlobalConstants.OrderDescByPrice;
+            var courses = GetCoursesCollection();
+
+            var mappedCourses = this.Mapper.Map<List<BaseCourseViewModel>>(courses);
+
+            var sortedCourses = mappedCourses.OrderByDescending(x => x.Price);
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var result = service.Sorter(sorter, mappedCourses.AsQueryable());
+
+            Assert.Equal(sortedCourses, result);
+        }
+
+        [Fact]
+        public void SorterCoursesOrderByNewestDate()
+        {
+            string sorter = GlobalConstants.OrderByNewestDate;
+            var courses = GetCoursesCollection();
+
+            var mappedCourses = this.Mapper.Map<List<BaseCourseViewModel>>(courses);
+
+            var sortedCourses = mappedCourses.OrderByDescending(x => x.CreatedOn);
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var result = service.Sorter(sorter, mappedCourses.AsQueryable());
+
+            Assert.Equivalent(sortedCourses, result, strict: true);
+        }
+
+        [Fact]
+        public void SorterCoursesOrderByOldestDate()
+        {
+            string sorter = GlobalConstants.OrderByOldestDate;
+            var courses = GetCoursesCollection();
+
+            var mappedCourses = this.Mapper.Map<List<BaseCourseViewModel>>(courses);
+
+            var sortedCourses = mappedCourses.OrderBy(x => x.CreatedOn);
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var result = service.Sorter(sorter, mappedCourses.AsQueryable());
+
+            Assert.Equivalent(sortedCourses, result, strict: true);
         }
 
         public static List<Course> GetCoursesCollection()

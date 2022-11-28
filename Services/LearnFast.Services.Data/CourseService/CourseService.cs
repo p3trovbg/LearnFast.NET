@@ -27,12 +27,6 @@
     {
         private const string BaseCourseImageUrl = "https://akm-img-a-in.tosshub.com/indiatoday/images/bodyeditor/202009/e-learning_digital_education-1200x1080.jpg?XjMNHsb4gLoU_cC7110HB7jVghJQROOj";
 
-        private const string OrderByTitle = "title";
-        private const string OrderByPrice = "price";
-        private const string OrderDescByPrice = "desc_price";
-        private const string OrderByNewestDate = "newest";
-        private const string OrderByOldestDate = "oldest";
-
         private readonly IMapper mapper;
         private readonly IImageService imageService;
         private readonly ICategoryService categoryService;
@@ -247,7 +241,7 @@
                 .Skip((int)((model.Page - 1) * model.ItemsPerPage))
                 .Take(model.ItemsPerPage);
 
-            await this.GetDefaultModelProps(model);
+            this.GetDefaultModelProps(model);
         }
 
         public async Task<IEnumerable<T>> GetTop12BestSellersCourses<T>()
@@ -294,19 +288,19 @@
 
             switch (sorterAgument)
             {
-                case OrderByTitle:
+                case GlobalConstants.OrderByTitle:
                     coursesAsQuery = coursesAsQuery.OrderBy(x => x.Title);
                     break;
-                case OrderByPrice:
+                case GlobalConstants.OrderByPrice:
                     coursesAsQuery = coursesAsQuery.OrderBy(x => x.Price);
                     break;
-                case OrderDescByPrice:
+                case GlobalConstants.OrderDescByPrice:
                     coursesAsQuery = coursesAsQuery.OrderByDescending(x => x.Price);
                     break;
-                case OrderByNewestDate:
+                case GlobalConstants.OrderByNewestDate:
                     coursesAsQuery = coursesAsQuery.OrderByDescending(x => x.CreatedOn);
                     break;
-                case OrderByOldestDate:
+                case GlobalConstants.OrderByOldestDate:
                     coursesAsQuery = coursesAsQuery.OrderBy(x => x.CreatedOn);
                     break;
             }
@@ -314,15 +308,15 @@
             return coursesAsQuery;
         }
 
-        private async Task GetDefaultModelProps(SearchViewModel model)
+        private void GetDefaultModelProps(SearchViewModel model)
         {
             model.Sorter = new List<SelectListItem>
             {
-                new SelectListItem { Text = "Order by price", Value = OrderByPrice },
-                new SelectListItem { Text = "Order by desc price", Value = OrderDescByPrice },
-                new SelectListItem { Text = "Order by name", Value = OrderByTitle },
-                new SelectListItem { Text = "The newest", Value = OrderByNewestDate },
-                new SelectListItem { Text = "The oldest", Value = OrderByOldestDate },
+                new SelectListItem { Text = "Order by price", Value = GlobalConstants.OrderByPrice },
+                new SelectListItem { Text = "Order by desc price", Value = GlobalConstants.OrderDescByPrice },
+                new SelectListItem { Text = "Order by name", Value = GlobalConstants.OrderByTitle },
+                new SelectListItem { Text = "The newest", Value = GlobalConstants.OrderByNewestDate },
+                new SelectListItem { Text = "The oldest", Value = GlobalConstants.OrderByOldestDate },
             };
         }
 

@@ -40,6 +40,16 @@
 
         public const string VideoFolderName = "videos";
 
+        public const string OrderByTitle = "title";
+
+        public const string OrderByPrice = "price";
+
+        public const string OrderDescByPrice = "desc_price";
+
+        public const string OrderByNewestDate = "newest";
+
+        public const string OrderByOldestDate = "oldest";
+
         public const int MaxReviewRange = 6;
 
         public const int MinReviewRange = 1;
