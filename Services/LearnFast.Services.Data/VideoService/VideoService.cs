@@ -49,6 +49,12 @@
                 inputModel.VideoFile = model.VideoFile;
 
                 var result = await this.RemoteUpload(inputModel, model.Id);
+
+                if (result.Error != null)
+                {
+                    throw new InvalidOperationException(result.Error.Message);
+                }
+
                 targetVideo.UrlPath = result.Url.ToString();
             }
 
@@ -75,6 +81,12 @@
             video.Description = model.Description;
 
             var result = await this.RemoteUpload(model, video.Id);
+
+            if (result.Error != null)
+            {
+                throw new InvalidOperationException(result.Error.Message);
+            }
+
             video.UrlPath = result.Url.ToString();
 
             video.CourseId = model.CourseId;

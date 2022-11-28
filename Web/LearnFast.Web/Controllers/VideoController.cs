@@ -1,5 +1,6 @@
 ﻿namespace LearnFast.Web.Controllers
 {
+    using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -47,9 +48,16 @@
                 this.View(model);
             }
 
-            await this.videoService.UploadVideo(model);
-            return this.RedirectToAction(
-                CourseController.DetailsActionName, CourseController.CourseNameController, new { id = model.CourseId });
+            try
+            {
+                await this.videoService.UploadVideo(model);
+                return this.RedirectToAction(
+                    CourseController.DetailsActionName, CourseController.CourseNameController, new { id = model.CourseId });
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
         }
 
         public async Task<IActionResult> RemoveVideo(string videoId, int courseId)
@@ -62,10 +70,17 @@
                 return this.Forbid();
             }
 
-            await this.videoService.RemoveVideo(videoId);
+            try
+            {
+                await this.videoService.RemoveVideo(videoId);
 
-            return this.RedirectToAction(
-                CourseController.DetailsActionName, CourseController.CourseNameController, new { id = courseId });
+                return this.RedirectToAction(
+                    CourseController.DetailsActionName, CourseController.CourseNameController, new { id = courseId });
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
@@ -84,10 +99,17 @@
                 return this.NotFound();
             }
 
-            await this.videoService.EditVideo(model);
+            try
+            {
+                await this.videoService.EditVideo(model);
 
-            return this.RedirectToAction(
-                CourseController.DetailsActionName, CourseController.CourseNameController, new { id = model.CourseId });
+                return this.RedirectToAction(
+                    CourseController.DetailsActionName, CourseController.CourseNameController, new { id = model.CourseId });
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
         }
 
         public async Task<IActionResult> Edit(EditVideoViewModel model)
