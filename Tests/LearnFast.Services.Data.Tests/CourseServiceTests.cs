@@ -6,15 +6,18 @@
     using System.Net.Sockets;
     using System.Threading.Tasks;
     using AngleSharp.Text;
+    using CloudinaryDotNet;
     using EllipticCurve;
     using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
     using LearnFast.Data.Migrations;
     using LearnFast.Data.Models;
     using LearnFast.Data.Models.Enums;
+    using LearnFast.Services.Data.CategoryService;
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Web.ViewModels.ApplicationUser;
     using LearnFast.Web.ViewModels.Course;
+    using LearnFast.Web.ViewModels.Filter;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.CodeAnalysis.CSharp;
@@ -265,7 +268,7 @@
         [Fact]
         public async Task GetAllShouldReturnsAllCourses()
         {
-            var courses = this.GetCollection();
+            var courses = GetCoursesCollection();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
 
             var service = new CourseService(null, this.repository.Object, null, null, null, null);
@@ -280,7 +283,7 @@
         [Fact]
         public async Task GetOwnedCoursesShouldReturnsOnlyCoursesOwnedByTheirOwner()
         {
-            var courses = this.GetCollection();
+            var courses = GetCoursesCollection();
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
             var service = new CourseService(null, this.repository.Object, null, null, null, null);
@@ -299,7 +302,7 @@
         [Fact]
         public void IsEnrolledCourseShouldReturnsTrueIfUserIsEnrolled()
         {
-            var courses = this.GetCollection();
+            var courses = GetCoursesCollection();
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
             var service = new CourseService(null, this.repository.Object, null, null, null, null);
@@ -315,7 +318,7 @@
         [Fact]
         public void IsEnrolledCourseShouldReturnsFalseIfUserIsNotEnrolled()
         {
-            var courses = this.GetCollection();
+            var courses = GetCoursesCollection();
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
             var service = new CourseService(null, this.repository.Object, null, null, null, null);
@@ -335,7 +338,7 @@
         [InlineData(6)]
         public async Task GetCourseByIdShouldReturnCurrentCourse(int courseId)
         {
-            var courses = this.GetCollection();
+            var courses = GetCoursesCollection();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
             var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
@@ -354,7 +357,7 @@
         [InlineData(10000000)]
         public async Task GetCourseByInvalidIdShouldThrowsException(int courseId)
         {
-            var courses = this.GetCollection();
+            var courses = GetCoursesCollection();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
             var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
@@ -367,7 +370,7 @@
         [Fact]
         public void GetAllAsQueryableShouldReturnQueryableCollection()
         {
-            var courses = this.GetCollection();
+            var courses = GetCoursesCollection();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
             var service = new CourseService(null, this.repository.Object, null, null, null, null);
 
@@ -383,7 +386,7 @@
         [Fact]
         public async Task GetOwnerIdOfCourseShouldReturnsOwnerId()
         {
-            var courses = this.GetCollection();
+            var courses = GetCoursesCollection();
             var course = courses.FirstOrDefault();
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
@@ -399,7 +402,7 @@
         [Fact]
         public async Task GetOwnerIdOfCourseByInvalidCourseIdShouldThrowsException()
         {
-            var courses = this.GetCollection();
+            var courses = GetCoursesCollection();
             var course = courses.FirstOrDefault();
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
@@ -415,7 +418,7 @@
         [Fact]
         public async Task EnrollingInCourseByUser()
         {
-            var courses = this.GetCollection();
+            var courses = GetCoursesCollection();
             var course = courses.FirstOrDefault(x => x.Id == 4);
             var candidate = new ApplicationUser() { FirstName = "Dragan", Nickname = "dragan" };
 
@@ -440,7 +443,7 @@
         [Fact]
         public async Task EnrollingInNotExistCourseShouldThrowException()
         {
-            var courses = this.GetCollection();
+            var courses = GetCoursesCollection();
             var course = courses.FirstOrDefault(x => x.Id == 4);
             var candidate = new ApplicationUser() { FirstName = "Dragan", Nickname = "dragan" };
 
@@ -457,7 +460,7 @@
         [Fact]
         public async Task EnrollingInCourseByUserThatAlreadyIsEnrolledShouldThrowException()
         {
-            var courses = this.GetCollection();
+            var courses = GetCoursesCollection();
             var course = courses.FirstOrDefault(x => x.Id == 4);
             var candidate = course.CourseStudents.Select(x => x.User).FirstOrDefault(x => x.Nickname == "gosho");
 
@@ -465,7 +468,6 @@
             this.repository.Setup(r => r.All()).Returns(courses.BuildMock());
 
             var service = new CourseService(null, this.repository.Object, null, null, null, null);
-
             var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await service.EnrollCourse(course.Id, candidate.Id));
 
             Assert.Equal(GlobalExceptions.UserAlreadyHasEnrolledInCourse, ex.Message);
@@ -473,11 +475,167 @@
             this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
         }
 
-        private List<Course> GetCollection()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(3)]
+        [InlineData(5)]
+        public async Task SearchCoursesByCategoryId(int categoryId)
+        {
+            var mockCategoryRepository = new Mock<IDeletableEntityRepository<Category>>();
+            mockCategoryRepository.Setup(r => r.AllAsNoTracking())
+                .Returns(CategoryServiceTests.GetCategoryList().BuildMock());
+
+            var courses = GetCoursesCollection();
+            var coursesByCategory = courses.Where(x => x.CategoryId == categoryId);
+
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.AsQueryable().BuildMock());
+
+            var mappedCourses = this.Mapper.Map<List<BaseCourseViewModel>>(courses);
+
+            var searchModel = new SearchViewModel()
+            {
+                CategoryId = categoryId,
+                Courses = mappedCourses,
+            };
+
+            var categoryService = new CategoryService(mockCategoryRepository.Object);
+            var service = new CourseService(null, this.repository.Object, null, categoryService, null, null);
+
+            await service.SearchCourses(searchModel);
+
+            Assert.Equal(coursesByCategory.Count(), searchModel.Courses.Count());
+            Assert.All(searchModel.Courses, x => Assert.Equal(categoryId, x.Category.Id));
+            this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(3000)]
+        public async Task SearchCoursesByInvalidCategoryIdShouldThrowsException(int categoryId)
+        {
+            var courses = GetCoursesCollection();
+            var coursesByCategory = courses.Where(x => x.CategoryId == categoryId);
+
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.AsQueryable().BuildMock());
+
+            var mappedCourses = this.Mapper.Map<List<BaseCourseViewModel>>(courses);
+
+            var searchModel = new SearchViewModel()
+            {
+                CategoryId = categoryId,
+                Courses = mappedCourses,
+            };
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+
+            await Assert.ThrowsAsync<NullReferenceException>(async () => await service.SearchCourses(searchModel));
+        }
+
+        [Theory]
+        [InlineData("Test")]
+        [InlineData("Test1")]
+        [InlineData("Test5")]
+        public async Task FilterCoursesBySearchString(string searchString)
+        {
+            var courses = GetCoursesCollection();
+            var coursesBySearchString = courses.Where(x => x.Title.Contains(searchString));
+
+            var mappedCourses = this.Mapper.Map<List<BaseCourseViewModel>>(courses);
+
+            var searchModel = new SearchViewModel()
+            {
+                SearchString = searchString,
+                Courses = mappedCourses,
+            };
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+
+            var result = service.Filter(searchModel, mappedCourses.AsQueryable());
+
+            Assert.Equal(coursesBySearchString.Count(), result.Count());
+            Assert.All(result, x => Assert.Contains(searchString, x.Title));
+        }
+
+        [Theory]
+        [InlineData(50, 100)]
+        [InlineData(100, 300)]
+        public void FilterCoursesByPriceWithUpAndDownLimit(int minPrice, int maxPrice)
+        {
+            var courses = GetCoursesCollection();
+            var coursesBySearchString = courses.Where(x => x.Price >= minPrice && x.Price <= maxPrice);
+
+            var mappedCourses = this.Mapper.Map<List<BaseCourseViewModel>>(courses);
+
+            var searchModel = new SearchViewModel()
+            {
+                InitialPrice = minPrice,
+                FinalPrice = maxPrice,
+                Courses = mappedCourses,
+            };
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+
+            var result = service.Filter(searchModel, mappedCourses.AsQueryable());
+
+            Assert.Equal(coursesBySearchString.Count(), result.Count());
+            Assert.All(result, x => Assert.True(x.Price >= minPrice && x.Price <= maxPrice));
+        }
+
+        [Theory]
+        [InlineData(50, 100)]
+        public void FilterCoursesByPriceWithUpAndDownLimitShouldReturnsOnlyFreeCoursesIfIsFreeIsTrue(int minPrice, int maxPrice)
+        {
+            var courses = GetCoursesCollection();
+            var coursesBySearchString = courses.Where(x => x.Price >= minPrice && x.Price <= maxPrice);
+
+            var mappedCourses = this.Mapper.Map<List<BaseCourseViewModel>>(courses);
+
+            var searchModel = new SearchViewModel()
+            {
+                InitialPrice = minPrice,
+                FinalPrice = maxPrice,
+                Courses = mappedCourses,
+                IsFree = true,
+            };
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+
+            var result = service.Filter(searchModel, mappedCourses.AsQueryable());
+
+            Assert.All(result, x => Assert.True(x.IsFree));
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(3)]
+        [InlineData(5)]
+        public void FilterCoursesByLanguage(int languageId)
+        {
+            var courses = GetCoursesCollection();
+            var coursesByLanguage = courses.Where(x => x.LanguageId == languageId);
+
+            var mappedCourses = this.Mapper.Map<List<BaseCourseViewModel>>(courses);
+
+            var searchModel = new SearchViewModel()
+            {
+                LanguageId = languageId,
+                Courses = mappedCourses,
+            };
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+
+            var result = service.Filter(searchModel, mappedCourses.AsQueryable());
+
+            Assert.All(result, x => Assert.Equal(languageId, x.Language.Id));
+        }
+
+        public static List<Course> GetCoursesCollection()
         {
             var courses = new List<Course>();
             var user1 = new ApplicationUser() { FirstName = "Peter", Nickname = "peter" };
             var user2 = new ApplicationUser() { FirstName = "Gosho", Nickname = "gosho" };
+            var categories = CategoryServiceTests.GetCategoryList();
+            var languages = LanguageServiceTests.GetLanguages();
 
             courses.Add(new Course
             {
@@ -488,8 +646,10 @@
                 MainImageUrl = null,
                 IsFree = false,
                 CategoryId = 1,
+                Category = categories[0],
                 Difficulty = Difficulty.Beginner,
                 LanguageId = 1,
+                Language = languages[0],
                 Requirments = "test1",
                 Description = "test1",
             });
@@ -502,8 +662,10 @@
                 MainImageUrl = null,
                 IsFree = false,
                 CategoryId = 2,
+                Category = categories[1],
                 Difficulty = Difficulty.Intermediate,
                 LanguageId = 2,
+                Language = languages[1],
                 Requirments = "test2",
                 Description = "test2",
             });
@@ -516,8 +678,10 @@
                 MainImageUrl = null,
                 IsFree = false,
                 CategoryId = 3,
+                Category = categories[2],
                 Difficulty = Difficulty.Advanced,
                 LanguageId = 3,
+                Language = languages[2],
                 Requirments = "test3",
                 Description = "test3",
             });
@@ -530,8 +694,10 @@
                 MainImageUrl = null,
                 IsFree = true,
                 CategoryId = 4,
+                Category = categories[3],
                 Difficulty = Difficulty.Advanced,
                 LanguageId = 4,
+                Language = languages[3],
                 Requirments = "test4",
                 Description = "test4",
                 CourseStudents = new HashSet<StudentCourse>()
@@ -549,8 +715,10 @@
                 MainImageUrl = null,
                 IsFree = true,
                 CategoryId = 5,
+                Category = categories[4],
                 Difficulty = Difficulty.Advanced,
                 LanguageId = 5,
+                Language = languages[4],
                 Requirments = "test5",
                 Description = "test5",
             });
@@ -563,8 +731,10 @@
                 MainImageUrl = null,
                 IsFree = true,
                 CategoryId = 5,
+                Category = categories[4],
                 Difficulty = Difficulty.Advanced,
                 LanguageId = 5,
+                Language = languages[4],
                 Requirments = "test6",
                 Description = "test6",
             });
@@ -577,8 +747,10 @@
                 MainImageUrl = null,
                 IsFree = false,
                 CategoryId = 5,
+                Category = categories[4],
                 Difficulty = Difficulty.Advanced,
                 LanguageId = 5,
+                Language = languages[4],
                 Requirments = "test6",
                 Description = "test6",
             });

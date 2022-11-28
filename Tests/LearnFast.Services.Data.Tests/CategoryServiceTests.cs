@@ -112,7 +112,7 @@ namespace LearnFast.Services.Data.Tests
             Assert.Null(result.FirstOrDefault(x => x.Text == "BG"));
         }
 
-        private static List<Category> GetCategoryList()
+        public static List<Category> GetCategoryList()
         {
             return new List<Category>
                                                         {

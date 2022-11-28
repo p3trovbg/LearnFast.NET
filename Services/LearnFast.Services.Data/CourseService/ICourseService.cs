@@ -11,7 +11,7 @@
     {
         IQueryable<T> GetAllAsQueryAble<T>();
 
-        Task GetAllWithFilter(SearchViewModel model);
+        Task SearchCourses(SearchViewModel model);
 
         Task<int> AddCourseAsync(ImportCourseModel course);
 

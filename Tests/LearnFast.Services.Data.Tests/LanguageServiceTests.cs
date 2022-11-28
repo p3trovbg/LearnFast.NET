@@ -29,7 +29,7 @@
         [Fact]
         public async Task GetAllShouldReturnsAllLanguages()
         {
-            var mockLanguages = this.GetLanguages();
+            var mockLanguages = GetLanguages();
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(mockLanguages.AsQueryable().BuildMock());
 
@@ -44,7 +44,7 @@
         [Fact]
         public async Task GetLanguageByIdShouldReturnLanguageViewModelObject()
         {
-            var mockLanguages = this.GetLanguages();
+            var mockLanguages = GetLanguages();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(mockLanguages.BuildMock());
 
             var service = new LanguageService(this.repository.Object);
@@ -59,7 +59,7 @@
         [Fact]
         public async Task GetLanguageAsSelectListItem()
         {
-            var mockLanguages = this.GetLanguages();
+            var mockLanguages = GetLanguages();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(mockLanguages.BuildMock());
 
             var service = new LanguageService(this.repository.Object);
@@ -74,7 +74,7 @@
         [Fact]
         public async Task GetLanguageByInvalidIdShouldThrowException()
         {
-            var mockLanguages = this.GetLanguages();
+            var mockLanguages = GetLanguages();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(mockLanguages.BuildMock());
 
             var service = new LanguageService(this.repository.Object);
@@ -87,13 +87,15 @@
             Assert.Equal(GlobalExceptions.LanguageNullExceptionMessage, ex.Message);
         }
 
-        private List<Language> GetLanguages()
+        public static List<Language> GetLanguages()
         {
             return new List<Language>
                                         {
                                             new Language { Id = 1, Name = "Bulgarian" },
                                             new Language { Id = 2, Name = "English" },
                                             new Language { Id = 3, Name = "Spanish" },
+                                            new Language { Id = 4, Name = "Turkey" },
+                                            new Language { Id = 5, Name = "Russian" },
                                         };
         }
     }

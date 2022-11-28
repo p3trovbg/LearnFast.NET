@@ -242,7 +242,8 @@
         {
             try
             {
-                await this.courseService.GetAllWithFilter(model);
+                await this.courseService.SearchCourses(model);
+                await LoadingBaseParameters(model);
                 return this.View(CoursesView, model);
             }
             catch (Exception)
@@ -252,6 +253,13 @@
         }
 
         private async Task LoadingBaseParameters(ImportCourseModel model)
+        {
+            model.Languages = await this.languageService.GetLanguagesAsSelectListItem();
+            model.Categories = await this.categoryService.GetCategoryList();
+            model.Difficulties = this.difficultyService.GetDifficultyList();
+        }
+
+        private async Task LoadingBaseParameters(SearchViewModel model)
         {
             model.Languages = await this.languageService.GetLanguagesAsSelectListItem();
             model.Categories = await this.categoryService.GetCategoryList();

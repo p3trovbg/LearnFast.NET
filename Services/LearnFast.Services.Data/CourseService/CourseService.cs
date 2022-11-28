@@ -212,7 +212,7 @@
             await this.courseRepository.SaveChangesAsync();
         }
 
-        public async Task GetAllWithFilter(SearchViewModel model)
+        public async Task SearchCourses(SearchViewModel model)
         {
             var coursesAsQuery = this.GetAllAsQueryAble<BaseCourseViewModel>();
 
@@ -230,8 +230,8 @@
                 }
             }
 
-            coursesAsQuery = Filter(model, coursesAsQuery);
-            coursesAsQuery = Sorter(model.SorterArgument, coursesAsQuery);
+            coursesAsQuery = this.Filter(model, coursesAsQuery);
+            coursesAsQuery = this.Sorter(model.SorterArgument, coursesAsQuery);
 
             model.Courses = await coursesAsQuery.ToListAsync();
 
@@ -260,7 +260,7 @@
                 .ToListAsync();
         }
 
-        private static IQueryable<BaseCourseViewModel> Filter(SearchViewModel model, IQueryable<BaseCourseViewModel> coursesAsQuery)
+        public IQueryable<BaseCourseViewModel> Filter(SearchViewModel model, IQueryable<BaseCourseViewModel> coursesAsQuery)
         {
             if (!string.IsNullOrEmpty(model.SearchString))
             {
@@ -285,7 +285,7 @@
             return coursesAsQuery;
         }
 
-        private static IQueryable<BaseCourseViewModel> Sorter(string sorterAgument, IQueryable<BaseCourseViewModel> coursesAsQuery)
+        public IQueryable<BaseCourseViewModel> Sorter(string sorterAgument, IQueryable<BaseCourseViewModel> coursesAsQuery)
         {
             if (string.IsNullOrEmpty(sorterAgument))
             {
@@ -316,9 +316,6 @@
 
         private async Task GetDefaultModelProps(SearchViewModel model)
         {
-            model.Difficulties = this.difficultyService.GetDifficultyList();
-            model.Categories = await this.categoryService.GetCategoryList();
-            model.Languages = await this.languageService.GetLanguagesAsSelectListItem();
             model.Sorter = new List<SelectListItem>
             {
                 new SelectListItem { Text = "Order by price", Value = OrderByPrice },

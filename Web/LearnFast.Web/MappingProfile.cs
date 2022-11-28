@@ -8,6 +8,7 @@
     using LearnFast.Web.ViewModels.Course;
     using LearnFast.Web.ViewModels.Language;
     using LearnFast.Web.ViewModels.Review;
+    using System.Collections.Generic;
 
     public class MappingProfile : Profile
     {
@@ -16,6 +17,10 @@
             this.CreateMap<ImportCourseModel, Course>();
 
             this.CreateMap<ApplicationUser, UserViewModel>();
+
+            this.CreateMap<ApplicationUser, BaseUserViewModel>();
+
+            this.CreateMap<Category, CategoryViewModel>();
 
             this.CreateMap<BaseUserViewModel, ApplicationUser>();
 
@@ -30,6 +35,8 @@
             this.CreateMap<CategoryViewModel, Category>();
 
             this.CreateMap<Video, ImportVideoModel>();
+
+            this.CreateMap<Language, LanguageViewModel>();
 
             this.CreateMap<ImportReviewViewModel, Review>();
         }
