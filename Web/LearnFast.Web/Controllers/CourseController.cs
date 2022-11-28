@@ -200,7 +200,8 @@
             {
                 try
                 {
-                    await this.courseService.EnrollCourse(model.Id);
+                    var userId = this.userManager.GetUserId(this.User);
+                    await this.courseService.EnrollCourse(model.Id, user);
 
                     return this.RedirectToAction(nameof(this.Details), new { id = model.Id });
                 }
