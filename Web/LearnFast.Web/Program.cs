@@ -3,11 +3,11 @@ namespace LearnFast.Web
     using System;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
+
     using AutoMapper;
+
     using Braintree;
     using CloudinaryDotNet;
-    using EllipticCurve;
     using LearnFast.Data;
     using LearnFast.Data.Common;
     using LearnFast.Data.Common.Repositories;
@@ -124,17 +124,13 @@ namespace LearnFast.Web
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<IContactService, ContactService>();
-
             services.AddTransient<ICourseService, CourseService>();
             services.AddTransient<IFilterCourse, CourseService>();
-
             services.AddTransient<ILanguageService, LanguageService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IDifficultyService, DifficultyService>();
-
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IVideoService, VideoService>();
-
             services.AddTransient<IReviewService, ReviewService>();
         }
 

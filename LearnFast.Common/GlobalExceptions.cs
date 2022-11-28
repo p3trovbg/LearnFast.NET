@@ -2,23 +2,23 @@
 {
     public static class GlobalExceptions
     {
-        public const string LanguageNullExceptionMessage = "This language is not exist!";
+        public const string LanguageNullExceptionMessage = "This language does not exist!";
 
-        public const string CategoryNullExceptionMessage = "This category is not exist!";
+        public const string CategoryNullExceptionMessage = "This category does not exist!";
 
-        public const string CourseIsNotExistExceptionMessage = "This course is not exist!";
+        public const string CourseIsNotExistExceptionMessage = "This course does not exist!";
 
-        public const string VideoIsNotExistExceptionMessage = "This video is not exist!";
+        public const string VideoIsNotExistExceptionMessage = "This video does not exist!";
 
         public const string DoesNotOwnThisCourseExceptionMessage = "You do not own this course!";
 
         public const string DoesNotExistReviews = "Not have reviews yet.";
 
-        public const string DoesNotExistReview = "This review is not exist!";
+        public const string DoesNotExistReview = "This review does not exist!";
 
         public const string LimitOfSelectedReviews = "Limit of the selected reviews is 5";
 
-        public const string UserNotExists = "This user not exists!";
+        public const string UserNotExists = "This user does not exist!";
 
         public const string UserNotHasPermission = "This user doesn't has permission";
 
@@ -27,7 +27,5 @@
         public const string ConfirmedPasswordNotMatch = "The password and confirmation password do not match.";
 
         public const string UserAlreadyHasEnrolledInCourse = "This user already has enrolled in the course.";
-
-        public const string ReviewIsNotExist = "This review is not exist!";
     }
 }

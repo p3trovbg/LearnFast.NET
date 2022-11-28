@@ -2,10 +2,8 @@
 {
     using System;
     using System.Linq;
-    using System.Security.Claims;
     using System.Threading.Tasks;
 
-    using AutoMapper;
     using LearnFast.Common;
     using LearnFast.Data.Models;
     using LearnFast.Services.Mapping;

@@ -74,11 +74,18 @@
                 return this.View(model);
             }
 
-            var user = await this.userManager.GetUserAsync(this.User);
-            model.Owner.Id = user.Id;
-            var courseId = await this.courseService.AddCourseAsync(model);
+            try
+            {
+                var user = await this.userManager.GetUserAsync(this.User);
+                model.Owner.Id = user.Id;
+                var courseId = await this.courseService.AddCourseAsync(model);
 
-            return this.RedirectToAction(nameof(this.Details), new { id = courseId });
+                return this.RedirectToAction(nameof(this.Details), new { id = courseId });
+            }
+            catch (Exception ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
         }
 
         public async Task<IActionResult> Delete(int id)
@@ -87,13 +94,12 @@
             try
             {
                 await this.courseService.DeleteCourseByIdAsync(id, userId);
+                return this.RedirectToAction("Index", "Home");
             }
             catch (Exception ex)
             {
                 return this.BadRequest(ex.Message);
             }
-
-            return this.RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> Edit(int id)
