@@ -235,13 +235,18 @@
                 model.Courses = model.Courses.Where(x => x.Difficulty == diffString);
             }
 
+            Pagination(model);
+
+            this.GetDefaultModelProps(model);
+        }
+
+        public static void Pagination(SearchViewModel model) 
+        {
             model.Page = model.Page == null ? 1 : model.Page;
             model.TotalCount = model.Courses.Count();
             model.Courses = model.Courses
                 .Skip((int)((model.Page - 1) * model.ItemsPerPage))
                 .Take(model.ItemsPerPage);
-
-            this.GetDefaultModelProps(model);
         }
 
         public async Task<IEnumerable<T>> GetTop12BestSellersCourses<T>()

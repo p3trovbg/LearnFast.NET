@@ -737,6 +737,26 @@
             Assert.All(searchModel.Courses, x => Assert.Equal(difficulty.ToString(), x.Difficulty));
         }
 
+        [Fact]
+        public async Task SearchCoursesShouldTakeOnlyNineElementsOfPage()
+        {
+            var courses = GetCoursesCollection();
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
+            var mappedCourses = this.Mapper.Map<List<BaseCourseViewModel>>(courses);
+
+            var searchModel = new SearchViewModel()
+            {
+                Courses = mappedCourses,
+            };
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+
+            await service.SearchCourses(searchModel);
+
+            this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+            Assert.Equal(9, searchModel.Courses.Count());
+        }
+
         public static List<Course> GetCoursesCollection()
         {
             var courses = new List<Course>();
