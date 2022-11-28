@@ -710,6 +710,33 @@
             Assert.Equivalent(sortedCourses, result, strict: true);
         }
 
+        [Theory]
+        [InlineData(Difficulty.Beginner)]
+        [InlineData(Difficulty.Intermediate)]
+        [InlineData(Difficulty.Advanced)]
+        public async Task SearchCoursesByDifficulty(Difficulty difficulty)
+        {
+            var courses = GetCoursesCollection();
+            var coursesByDifficulty = courses.Where(x => x.Difficulty == difficulty);
+
+            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
+            var mappedCourses = this.Mapper.Map<List<BaseCourseViewModel>>(courses);
+
+            var searchModel = new SearchViewModel()
+            {
+                Difficulty = (int)difficulty,
+                Courses = mappedCourses,
+            };
+
+            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+
+            await service.SearchCourses(searchModel);
+
+            this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+            Assert.Equal(coursesByDifficulty.Count(), searchModel.Courses.Count());
+            Assert.All(searchModel.Courses, x => Assert.Equal(difficulty.ToString(), x.Difficulty));
+        }
+
         public static List<Course> GetCoursesCollection()
         {
             var courses = new List<Course>();
@@ -813,7 +840,7 @@
                 IsFree = true,
                 CategoryId = 5,
                 Category = categories[4],
-                Difficulty = Difficulty.Advanced,
+                Difficulty = Difficulty.Beginner,
                 LanguageId = 5,
                 Language = languages[4],
                 Requirments = "test6",
@@ -830,6 +857,70 @@
                 CategoryId = 5,
                 Category = categories[4],
                 Difficulty = Difficulty.Advanced,
+                LanguageId = 5,
+                Language = languages[4],
+                Requirments = "test6",
+                Description = "test6",
+            });
+            courses.Add(new Course
+            {
+                Owner = user1,
+                Id = 8,
+                Title = "Test9",
+                Price = 230,
+                MainImageUrl = null,
+                IsFree = false,
+                CategoryId = 5,
+                Category = categories[4],
+                Difficulty = Difficulty.Advanced,
+                LanguageId = 5,
+                Language = languages[4],
+                Requirments = "test6",
+                Description = "test6",
+            });
+            courses.Add(new Course
+            {
+                Owner = user1,
+                Id = 9,
+                Title = "Test10",
+                Price = 135,
+                MainImageUrl = null,
+                IsFree = false,
+                CategoryId = 5,
+                Category = categories[4],
+                Difficulty = Difficulty.Intermediate,
+                LanguageId = 5,
+                Language = languages[4],
+                Requirments = "test6",
+                Description = "test6",
+            });
+            courses.Add(new Course
+            {
+                Owner = user2,
+                Id = 10,
+                Title = "Test11",
+                Price = 135,
+                MainImageUrl = null,
+                IsFree = false,
+                CategoryId = 5,
+                Category = categories[4],
+                Difficulty = Difficulty.Advanced,
+                LanguageId = 5,
+                Language = languages[4],
+                Requirments = "test6",
+                Description = "test6",
+            });
+            courses.Add(new Course
+            {
+                Owner = user2,
+                Id = 11,
+                Title = "Test12",
+                Price = 56,
+                MainImageUrl = null,
+                IsFree = false,
+                CategoryId = 5,
+                Category = categories[4],
+                Difficulty = Difficulty.Beginner,
                 LanguageId = 5,
                 Language = languages[4],
                 Requirments = "test6",
