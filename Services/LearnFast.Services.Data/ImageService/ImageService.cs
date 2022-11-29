@@ -31,6 +31,12 @@
             };
 
             var result = await this.cloudinary.UploadAsync(uploadParams);
+
+            if (result.Error != null)
+            {
+                throw new InvalidOperationException(result.Error.Message);
+            }
+
             image.UrlPath = result.Url.ToString();
 
             await this.imageRepository.AddAsync(image);

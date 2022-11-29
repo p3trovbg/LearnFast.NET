@@ -16,6 +16,8 @@
         {
             this.CreateMap<ImportCourseModel, Course>();
 
+            this.CreateMap<Course, ImportCourseModel>();
+
             this.CreateMap<ApplicationUser, UserViewModel>();
 
             this.CreateMap<ApplicationUser, BaseUserViewModel>();
@@ -38,7 +40,6 @@
 
             this.CreateMap<Language, LanguageViewModel>();
 
-            this.CreateMap<ImportReviewViewModel, Review>();
-        }
+            this.CreateMap<ImportReviewViewModel, Review>();        }
     }
 }

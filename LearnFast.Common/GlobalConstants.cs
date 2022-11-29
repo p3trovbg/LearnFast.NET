@@ -18,6 +18,8 @@
 
         public const string EmailTaker = "p3trovsit@gmail.com";
 
+        public const string BaseCourseImageUrl = "https://akm-img-a-in.tosshub.com/indiatoday/images/bodyeditor/202009/e-learning_digital_education-1200x1080.jpg?XjMNHsb4gLoU_cC7110HB7jVghJQROOj";
+
         public const string SuccessfullySendMessage = "You sent successfully the message!";
 
         public const string AdministratorRoleName = "Administrator";

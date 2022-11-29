@@ -25,32 +25,24 @@
 
     public class CourseService : ICourseService, IFilterCourse
     {
-        private const string BaseCourseImageUrl = "https://akm-img-a-in.tosshub.com/indiatoday/images/bodyeditor/202009/e-learning_digital_education-1200x1080.jpg?XjMNHsb4gLoU_cC7110HB7jVghJQROOj";
-
         private readonly IMapper mapper;
         private readonly IImageService imageService;
         private readonly ICategoryService categoryService;
-        private readonly ILanguageService languageService;
-        private readonly IDifficultyService difficultyService;
         private readonly IDeletableEntityRepository<Course> courseRepository;
 
         public CourseService(
             IMapper mapper,
             IDeletableEntityRepository<Course> courseRepository,
             IImageService imageService,
-            ICategoryService categoryService,
-            ILanguageService languageService,
-            IDifficultyService difficultyService)
+            ICategoryService categoryService)
         {
             this.mapper = mapper;
             this.courseRepository = courseRepository;
             this.imageService = imageService;
             this.categoryService = categoryService;
-            this.languageService = languageService;
-            this.difficultyService = difficultyService;
         }
 
-        public async Task<int> AddCourseAsync(ImportCourseModel model)
+        public async Task<ImportCourseModel> AddCourseAsync(ImportCourseModel model)
         {
             var course = this.mapper.Map<Course>(model);
 
@@ -61,7 +53,7 @@
             }
             else
             {
-                course.MainImageUrl = BaseCourseImageUrl;
+                course.MainImageUrl = GlobalConstants.BaseCourseImageUrl;
             }
 
             _ = course.Price == 0 ? course.IsFree = true : course.IsFree = false;
@@ -69,7 +61,7 @@
             await this.courseRepository.AddAsync(course);
             await this.courseRepository.SaveChangesAsync();
 
-            return course.Id;
+            return this.mapper.Map<ImportCourseModel>(course);
         }
 
         public async Task<int> GetCountAsync()
@@ -235,12 +227,11 @@
                 model.Courses = model.Courses.Where(x => x.Difficulty == diffString);
             }
 
-            Pagination(model);
-
-            this.GetDefaultModelProps(model);
+            this.Pagination(model);
+            this.GetSorters(model);
         }
 
-        public static void Pagination(SearchViewModel model) 
+        public void Pagination(SearchViewModel model)
         {
             model.Page = model.Page == null ? 1 : model.Page;
             model.TotalCount = model.Courses.Count();
@@ -313,7 +304,7 @@
             return coursesAsQuery;
         }
 
-        private void GetDefaultModelProps(SearchViewModel model)
+        private void GetSorters(SearchViewModel model)
         {
             model.Sorter = new List<SelectListItem>
             {

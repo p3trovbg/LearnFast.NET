@@ -78,7 +78,8 @@
             {
                 var user = await this.userManager.GetUserAsync(this.User);
                 model.Owner.Id = user.Id;
-                var courseId = await this.courseService.AddCourseAsync(model);
+                var course = await this.courseService.AddCourseAsync(model);
+                var courseId = course.Id;
 
                 return this.RedirectToAction(nameof(this.Details), new { id = courseId });
             }

@@ -13,7 +13,7 @@
 
         Task SearchCourses(SearchViewModel model);
 
-        Task<int> AddCourseAsync(ImportCourseModel course);
+        Task<ImportCourseModel> AddCourseAsync(ImportCourseModel course);
 
         Task DeleteCourseByIdAsync(int courseId, string userId);
 

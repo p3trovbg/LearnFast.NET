@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Net.Sockets;
     using System.Threading.Tasks;
@@ -16,6 +17,7 @@
     using LearnFast.Data.Seeding.DTOs;
     using LearnFast.Services.Data.CategoryService;
     using LearnFast.Services.Data.CourseService;
+    using LearnFast.Services.Data.ImageService;
     using LearnFast.Web.ViewModels.ApplicationUser;
     using LearnFast.Web.ViewModels.Course;
     using LearnFast.Web.ViewModels.Filter;
@@ -49,7 +51,7 @@
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             Assert.Equal(courses.Count(), await service.GetCountAsync());
 
@@ -64,17 +66,17 @@
             var list = new List<Course>();
 
             this.repository.Setup(m => m.AddAsync(It.IsAny<Course>()))
-            .Callback(() => { list.Add(this.Mapper.Map<Course>(course)); });
+            .Callback(() => { return; });
             this.repository.Setup(m => m.SaveChangesAsync()).Callback(() => { return; });
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(this.Mapper, this.repository.Object, null, null, null, null);
+            var service = new CourseService(this.Mapper, this.repository.Object, null, null);
             var result = await service.AddCourseAsync(course);
 
             this.repository.Verify(m => m.AddAsync(It.IsAny<Course>()), Times.Once());
             this.repository.Verify(m => m.SaveChangesAsync(), Times.Once());
 
-            Assert.Equal(result, course.Id);
+            Assert.Equal(result.Id, course.Id);
         }
 
         [Fact]
@@ -89,7 +91,7 @@
             this.repository.Setup(m => m.SaveChangesAsync()).Callback(() => { return; });
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(this.Mapper, this.repository.Object, null, null, null, null);
+            var service = new CourseService(this.Mapper, this.repository.Object, null, null);
             var result = await service.GetCountAsync();
             Assert.Equal(list.Count(), result);
 
@@ -97,6 +99,28 @@
             var secondResult = await service.GetCountAsync();
 
             Assert.Equal(list.Count(), secondResult);
+        }
+
+        [Fact]
+        public async Task AddCourseWithoutMainImageShouldAddDefaultImage()
+        {
+            var course = this.CreateModel();
+
+            var list = new List<Course>();
+
+            this.repository.Setup(m => m.AddAsync(It.IsAny<Course>()))
+            .Callback(() => { return; });
+            this.repository.Setup(m => m.SaveChangesAsync())
+                .Callback(() => { return;  });
+            this.repository.Setup(r => r.AllAsNoTracking())
+                .Returns(list.AsQueryable().BuildMock());
+
+            var service = new CourseService(this.Mapper, this.repository.Object, null, null);
+            var result = await service.AddCourseAsync(course);
+
+            Assert.Equal(GlobalConstants.BaseCourseImageUrl, result.MainImageUrl);
+            this.repository.Verify(m => m.AddAsync(It.IsAny<Course>()), Times.Once());
+            this.repository.Verify(m => m.SaveChangesAsync(), Times.Once());
         }
 
         [Fact]
@@ -114,7 +138,7 @@
             this.repository.Setup(m => m.SaveChangesAsync()).Callback(() => { return; });
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             await service.DeleteCourseByIdAsync(course.Id, course.Owner.Id);
 
@@ -134,7 +158,7 @@
 
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.DeleteCourseByIdAsync(3, course.Owner.Id));
             await Assert.ThrowsAsync<NullReferenceException>(async () => await service.DeleteCourseByIdAsync(4, course.Owner.Id));
@@ -151,7 +175,7 @@
             list.Add(course);
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await service.DeleteCourseByIdAsync(course.Id, "100"));
             await Assert.ThrowsAsync<ArgumentException>(async () => await service.DeleteCourseByIdAsync(course.Id, "30"));
@@ -170,7 +194,7 @@
 
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.UpdateAsync(updatedCourse, course.Owner.Id));
             await Assert.ThrowsAsync<NullReferenceException>(async () => await service.UpdateAsync(updatedCourse, course.Owner.Id));
@@ -189,7 +213,7 @@
 
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await service.UpdateAsync(updatedCourse, "3"));
             await Assert.ThrowsAsync<ArgumentException>(async () => await service.UpdateAsync(updatedCourse, "6"));
@@ -209,7 +233,7 @@
 
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             await service.UpdateAsync(updatedCourse, course.Owner.Id);
 
@@ -235,8 +259,8 @@
             list.Add(course);
 
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
-
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+                
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             await service.UpdateAsync(updatedCourse, course.Owner.Id);
 
@@ -258,7 +282,7 @@
 
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             await service.UpdateAsync(updatedCourse, course.Owner.Id);
 
@@ -272,7 +296,7 @@
             var courses = GetCoursesCollection();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var result = await service.GetAllAsync<CourseViewModel>();
             Assert.Equal(courses.Count(), result.Count());
@@ -287,7 +311,7 @@
             var courses = GetCoursesCollection();
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var owner = courses.Select(x => x.Owner).FirstOrDefault(x => x.Nickname == "peter");
 
@@ -306,7 +330,7 @@
             var courses = GetCoursesCollection();
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var user = courses.Select(x => x.Owner).FirstOrDefault(x => x.Nickname == "peter");
             var courseId = 4;
@@ -322,7 +346,7 @@
             var courses = GetCoursesCollection();
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var user = courses.Select(x => x.Owner).FirstOrDefault(x => x.Nickname == "peter");
 
@@ -341,7 +365,7 @@
         {
             var courses = GetCoursesCollection();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var result = await service.GetCourseByIdAsync<BaseCourseViewModel>(courseId);
 
@@ -360,7 +384,7 @@
         {
             var courses = GetCoursesCollection();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.GetCourseByIdAsync<BaseCourseViewModel>(courseId));
             Assert.Equal(GlobalExceptions.CourseDoesNotExistExceptionMessage, ex.Message);
@@ -373,7 +397,7 @@
         {
             var courses = GetCoursesCollection();
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var result = service.GetAllAsQueryAble<BaseCourseViewModel>();
 
@@ -392,7 +416,7 @@
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var result = await service.GetOwnerIdByCourse(course.Id);
 
@@ -408,7 +432,7 @@
 
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await service.GetOwnerIdByCourse(-1));
             Assert.Equal(GlobalExceptions.CourseDoesNotExistExceptionMessage, ex.Message);
@@ -431,7 +455,7 @@
                     course.CourseStudents.Add(new StudentCourse { CourseId = course.Id, UserId = candidate.Id });
                 });
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             await service.EnrollCourse(course.Id, candidate.Id);
 
@@ -450,7 +474,7 @@
 
             this.repository.Setup(r => r.All()).Returns(courses.BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.EnrollCourse(-1, candidate.Id));
 
@@ -468,7 +492,7 @@
             this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
             this.repository.Setup(r => r.All()).Returns(courses.BuildMock());
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
             var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await service.EnrollCourse(course.Id, candidate.Id));
 
             Assert.Equal(GlobalExceptions.UserAlreadyHasEnrolledInCourse, ex.Message);
@@ -500,7 +524,7 @@
             };
 
             var categoryService = new CategoryService(mockCategoryRepository.Object);
-            var service = new CourseService(null, this.repository.Object, null, categoryService, null, null);
+            var service = new CourseService(null, this.repository.Object, null, categoryService);
 
             await service.SearchCourses(searchModel);
 
@@ -527,7 +551,7 @@
                 Courses = mappedCourses,
             };
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             await Assert.ThrowsAsync<NullReferenceException>(async () => await service.SearchCourses(searchModel));
         }
@@ -549,7 +573,7 @@
                 Courses = mappedCourses,
             };
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var result = service.Filter(searchModel, mappedCourses.AsQueryable());
 
@@ -574,7 +598,7 @@
                 Courses = mappedCourses,
             };
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var result = service.Filter(searchModel, mappedCourses.AsQueryable());
 
@@ -599,7 +623,7 @@
                 IsFree = true,
             };
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var result = service.Filter(searchModel, mappedCourses.AsQueryable());
 
@@ -623,7 +647,7 @@
                 Courses = mappedCourses,
             };
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             var result = service.Filter(searchModel, mappedCourses.AsQueryable());
 
@@ -640,7 +664,7 @@
 
             var sortedCourses = mappedCourses.OrderBy(x => x.Title);
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
             var result = service.Sorter(sorter, mappedCourses.AsQueryable());
 
             Assert.Equal(sortedCourses, result);
@@ -656,7 +680,7 @@
 
             var sortedCourses = mappedCourses.OrderBy(x => x.Price);
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
             var result = service.Sorter(sorter, mappedCourses.AsQueryable());
 
             Assert.Equal(sortedCourses, result);
@@ -672,7 +696,7 @@
 
             var sortedCourses = mappedCourses.OrderByDescending(x => x.Price);
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
             var result = service.Sorter(sorter, mappedCourses.AsQueryable());
 
             Assert.Equal(sortedCourses, result);
@@ -688,7 +712,7 @@
 
             var sortedCourses = mappedCourses.OrderByDescending(x => x.CreatedOn);
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
             var result = service.Sorter(sorter, mappedCourses.AsQueryable());
 
             Assert.Equivalent(sortedCourses, result, strict: true);
@@ -704,7 +728,7 @@
 
             var sortedCourses = mappedCourses.OrderBy(x => x.CreatedOn);
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
             var result = service.Sorter(sorter, mappedCourses.AsQueryable());
 
             Assert.Equivalent(sortedCourses, result, strict: true);
@@ -728,7 +752,7 @@
                 Courses = mappedCourses,
             };
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
             await service.SearchCourses(searchModel);
 
@@ -738,10 +762,9 @@
         }
 
         [Fact]
-        public async Task SearchCoursesShouldTakeOnlyNineElementsOfPage()
+        public async Task PaginationShouldTakeOnlyNineElementsOfPage()
         {
             var courses = GetCoursesCollection();
-            this.repository.Setup(r => r.AllAsNoTracking()).Returns(courses.BuildMock());
             var mappedCourses = this.Mapper.Map<List<BaseCourseViewModel>>(courses);
 
             var searchModel = new SearchViewModel()
@@ -749,11 +772,9 @@
                 Courses = mappedCourses,
             };
 
-            var service = new CourseService(null, this.repository.Object, null, null, null, null);
+            var service = new CourseService(null, this.repository.Object, null, null);
 
-            await service.SearchCourses(searchModel);
-
-            this.repository.Verify(x => x.AllAsNoTracking(), Times.Once);
+            service.Pagination(searchModel);
             Assert.Equal(9, searchModel.Courses.Count());
         }
 
