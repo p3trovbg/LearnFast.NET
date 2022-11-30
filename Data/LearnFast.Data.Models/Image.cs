@@ -2,7 +2,7 @@
 namespace LearnFast.Data.Models
 {
     using System;
-    using System.Runtime;
+
     using LearnFast.Data.Common.Models;
 
     public class Image : IDeletableEntity

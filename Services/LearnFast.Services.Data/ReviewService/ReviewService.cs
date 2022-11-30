@@ -52,7 +52,6 @@
         {
             var currentReview = await this.reviewRepository.All().Include(x => x.User).Where(x => x.Id == reviewId).FirstOrDefaultAsync();
 
-
             if (currentReview == null)
             {
                 throw new ArgumentException(GlobalExceptions.DoesNotExistReview);

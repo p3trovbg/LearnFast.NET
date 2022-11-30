@@ -25,6 +25,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.VisualBasic.Syntax;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.VisualStudio.TestPlatform.ObjectModel;
     using MockQueryable.Moq;
     using Moq;
