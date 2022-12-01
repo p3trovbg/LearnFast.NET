@@ -12,27 +12,21 @@
     public class ImageService : IImageService
     {
         private readonly IDeletableEntityRepository<Image> imageRepository;
-        private readonly Cloudinary cloudinary;
+        private readonly ICloudinaryService cloudinaryService;
 
         public ImageService(
             IDeletableEntityRepository<Image> imageRepository,
-            Cloudinary cloudinary)
+            ICloudinaryService cloudinaryService)
         {
             this.imageRepository = imageRepository;
-            this.cloudinary = cloudinary;
+            this.cloudinaryService = cloudinaryService;
         }
 
         public async Task<Image> UploadImage(IFormFile imageFile, string nameFolder)
         {
-            using var stream = imageFile.OpenReadStream();
             var image = new Image();
-            var uploadParams = new ImageUploadParams()
-            {
-                File = new FileDescription(image.Id, stream),
-                Folder = nameFolder,
-            };
 
-            var result = await this.cloudinary.UploadAsync(uploadParams);
+            var result = await this.cloudinaryService.UploadImageAsync(imageFile, image);
 
             if (result.Error != null)
             {
