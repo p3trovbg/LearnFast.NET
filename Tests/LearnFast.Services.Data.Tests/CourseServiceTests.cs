@@ -154,7 +154,6 @@
 
             this.repository.Setup(r => r.All()).Returns(list.AsQueryable().BuildMock());
 
-
             var service = new CourseService(null, this.repository.Object, null, null, null);
 
             var ex = await Assert.ThrowsAsync<NullReferenceException>(async () => await service.DeleteCourseByIdAsync(3, course.Owner.Id));

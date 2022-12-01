@@ -58,9 +58,51 @@
             this.repository.Verify(m => m.SaveChangesAsync(), Times.Once());
         }
 
+        [Fact]
+        public async Task DeleteReview()
+        {
+            var reviews = GetReviews();
+            var targetReview = reviews.FirstOrDefault(x => x.Id == 1);
+
+            this.repository.Setup(x => x.All()).Returns(reviews.AsQueryable().BuildMock());
+            var service = new ReviewService(this.repository.Object, this.filterCourse.Object, this.Mapper);
+
+            await service.Delete(targetReview.Id, targetReview.User.Id);
+
+            this.repository.Verify(m => m.Delete(It.IsAny<Review>()), Times.Once());
+            this.repository.Verify(m => m.SaveChangesAsync(), Times.Once());
+        }
+
+        [Fact]
+        public async Task DeleteNotExistReviewShouldThrowException()
+        {
+            var reviews = GetReviews();
+            var targetReview = reviews.FirstOrDefault(x => x.Id == 1);
+
+            this.repository.Setup(x => x.All()).Returns(reviews.AsQueryable().BuildMock());
+            var service = new ReviewService(this.repository.Object, this.filterCourse.Object, this.Mapper);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await service.Delete(-1, targetReview.User.Id));
+            Assert.Equal(GlobalExceptions.DoesNotExistReview, ex.Message);
+        }
+
+        [Fact]
+        public async Task DeleteReviewByUserThatIsNotOwnerShouldThrowException()
+        {
+            var reviews = GetReviews();
+            var targetReview = reviews.FirstOrDefault(x => x.Id == 1);
+
+            this.repository.Setup(x => x.All()).Returns(reviews.AsQueryable().BuildMock());
+            var service = new ReviewService(this.repository.Object, this.filterCourse.Object, this.Mapper);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await service.Delete(targetReview.Id, "testId"));
+            Assert.Equal(GlobalExceptions.UserNotHasPermission, ex.Message);
+        }
+
         private void Setup()
         {
             this.repository.Setup(x => x.AddAsync(It.IsAny<Review>())).Callback(() => { return; });
+            this.repository.Setup(x => x.Delete(It.IsAny<Review>())).Callback(() => { return; });
             this.repository.Setup(x => x.SaveChangesAsync()).Callback(() => { return; });
             this.repository.Setup(x => x.All()).Returns(GetReviews().AsQueryable().BuildMock());
             this.repository.Setup(x => x.AllAsNoTracking()).Returns(GetReviews().AsQueryable().BuildMock());
@@ -73,14 +115,14 @@
         {
             return new List<Review>()
             {
-                new Review { Content = "Test", CourseId = 1, Rating = 5, UserId = "test1" },
-                new Review { Content = "Test", CourseId = 1, Rating = 3, UserId = "test2" },
-                new Review { Content = "Test", CourseId = 2, Rating = 4, UserId = "test3" },
-                new Review { Content = "Test", CourseId = 3, Rating = 6, UserId = "test5" },
-                new Review { Content = "Test", CourseId = 4, Rating = 2, UserId = "test5" },
-                new Review { Content = "Test", CourseId = 4, Rating = 1, UserId = "test6" },
-                new Review { Content = "SELECTED", CourseId = 5, Rating = 6, UserId = "test7", IsSelected = true },
-                new Review { Content = "SELECTED", CourseId = 5, Rating = 6, UserId = "test8" , IsSelected = true },
+                new Review { Id = 1, Content = "Test", CourseId = 1, Rating = 5, User = new ApplicationUser() },
+                new Review { Id = 2, Content = "Test", CourseId = 1, Rating = 3, User = new ApplicationUser() },
+                new Review { Id = 3, Content = "Test", CourseId = 2, Rating = 4, User = new ApplicationUser() },
+                new Review { Id = 4, Content = "Test", CourseId = 3, Rating = 6, User = new ApplicationUser() },
+                new Review { Id = 5, Content = "Test", CourseId = 4, Rating = 2, User = new ApplicationUser() },
+                new Review { Id = 6, Content = "Test", CourseId = 4, Rating = 1, User = new ApplicationUser() },
+                new Review { Id = 7, Content = "SELECTED", CourseId = 5, Rating = 6, IsSelected = true, User = new ApplicationUser() },
+                new Review { Id = 8, Content = "SELECTED", CourseId = 5, Rating = 6, IsSelected = true, User = new ApplicationUser() },
             };
         }
     }
