@@ -99,6 +99,35 @@
             Assert.Equal(GlobalExceptions.UserNotHasPermission, ex.Message);
         }
 
+        [Fact]
+        public async Task EditReviewShouldUpdatePropoertiesThatIsChanged()
+        {
+            var reviews = GetReviews();
+            var targetReview = new EditReviewViewModel { Id = 1, Content = "TestUpdate", Rating = 6 };
+
+            this.repository.Setup(x => x.All()).Returns(reviews.AsQueryable().BuildMock());
+
+            var service = new ReviewService(this.repository.Object, this.filterCourse.Object, this.Mapper);
+
+            await service.Edit(targetReview);
+
+            var updatedReview = reviews.FirstOrDefault(x => x.Id == 1);
+
+            Assert.Equal(targetReview.Content, updatedReview.Content);
+            Assert.Equal(targetReview.Rating, updatedReview.Rating);
+            this.repository.Verify(m => m.SaveChangesAsync(), Times.Once());
+        }
+
+        [Fact]
+        public async Task EditReviewShouldThrowsExceptionIfReviewIdIsInvalid()
+        {
+            var targetReview = new EditReviewViewModel { Id = -1, Content = "TestUpdate", Rating = 6 };
+            var service = new ReviewService(this.repository.Object, this.filterCourse.Object, this.Mapper);
+         
+            var ex = await Assert.ThrowsAsync<ArgumentException>(async () => await service.Edit(targetReview));
+            Assert.Equal(GlobalExceptions.DoesNotExistReview, ex.Message);
+        }
+
         private void Setup()
         {
             this.repository.Setup(x => x.AddAsync(It.IsAny<Review>())).Callback(() => { return; });
@@ -110,6 +139,8 @@
             this.filterCourse
                 .Setup(x => x.GetCourseByIdAsync<BaseCourseViewModel>(It.IsAny<int>())).ReturnsAsync(new BaseCourseViewModel { Id = 1 });
         }
+
+
 
         private static List<Review> GetReviews()
         {
