@@ -12,6 +12,7 @@
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Services.Data.DifficultyService;
     using LearnFast.Services.Data.LanguageService;
+    using LearnFast.Web.ViewModels.ApplicationUser;
     using LearnFast.Web.ViewModels.Course;
     using LearnFast.Web.ViewModels.Filter;
     using Microsoft.AspNetCore.Authorization;
@@ -76,8 +77,6 @@
 
             try
             {
-                var user = await this.userManager.GetUserAsync(this.User);
-                model.Owner.Id = user.Id;
                 var course = await this.courseService.AddCourseAsync(model);
                 var courseId = course.Id;
 

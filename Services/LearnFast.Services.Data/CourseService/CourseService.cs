@@ -26,6 +26,7 @@
     public class CourseService : ICourseService, IFilterCourse
     {
         private readonly IMapper mapper;
+        private readonly IUserService userService;
         private readonly IImageService imageService;
         private readonly ICategoryService categoryService;
         private readonly IDeletableEntityRepository<Course> courseRepository;
@@ -34,12 +35,14 @@
             IMapper mapper,
             IDeletableEntityRepository<Course> courseRepository,
             IImageService imageService,
-            ICategoryService categoryService)
+            ICategoryService categoryService,
+            IUserService userService)
         {
             this.mapper = mapper;
             this.courseRepository = courseRepository;
             this.imageService = imageService;
             this.categoryService = categoryService;
+            this.userService = userService;
         }
 
         public async Task<ImportCourseModel> AddCourseAsync(ImportCourseModel model)
@@ -57,6 +60,8 @@
             }
 
             _ = course.Price == 0 ? course.IsFree = true : course.IsFree = false;
+
+            course.Owner = await this.userService.GetLoggedUserAsync();
 
             await this.courseRepository.AddAsync(course);
             await this.courseRepository.SaveChangesAsync();

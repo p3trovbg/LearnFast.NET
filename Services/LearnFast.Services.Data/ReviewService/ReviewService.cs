@@ -95,10 +95,8 @@
                 .AllAsNoTracking()
                 .Where(x => x.CourseId == model.CourseId);
 
-            int reviewsCount = await reviews.CountAsync();
-
             model.Page = model.Page == null ? 1 : model.Page;
-            model.TotalCount = reviewsCount;
+            model.TotalCount = await reviews.CountAsync();
             model.Reviews = await reviews
             .OrderByDescending(x => x.CreatedOn)
             .Skip((int)((model.Page - 1) * model.ItemsPerPage))
@@ -109,7 +107,11 @@
 
         public async Task<T> GetReviewById<T>(int reviewId)
         {
-            var review = await this.reviewRepository.AllAsNoTracking().Where(x => x.Id == reviewId).To<T>().FirstOrDefaultAsync();
+            var review = await this.reviewRepository
+                .AllAsNoTracking()
+                .Where(x => x.Id == reviewId)
+                .To<T>()
+                .FirstOrDefaultAsync();
 
             if (review == null)
             {
@@ -126,7 +128,15 @@
 
         public async Task<IEnumerable<T>> GetSelectedReviewsByCourse<T>(int courseId)
         {
-            return await this.reviewRepository.AllAsNoTracking()
+            var course = await this.filterCourse.GetCourseByIdAsync<BaseCourseViewModel>(courseId);
+
+            if (course == null)
+            {
+                throw new ArgumentException(GlobalExceptions.CourseDoesNotExistExceptionMessage);
+            }
+
+            return await this.reviewRepository
+                .AllAsNoTracking()
                 .Where(x => x.CourseId == courseId && x.IsSelected)
                 .To<T>()
                 .ToListAsync();
@@ -134,13 +144,14 @@
 
         public async Task Selecting(SelectingReviewViewModel model)
         {
-            var selectedReviews = this.reviewRepository.All().Where(x => x.CourseId == model.CourseId);
+            var course = await this.filterCourse.GetCourseByIdAsync<BaseCourseViewModel>(model.CourseId);
 
-            if (await selectedReviews.CountAsync() == 5)
+            if (course == null)
             {
-                throw new ArgumentOutOfRangeException(GlobalExceptions.LimitOfSelectedReviews);
+                throw new ArgumentException(GlobalExceptions.CourseDoesNotExistExceptionMessage);
             }
 
+            var selectedReviews = this.reviewRepository.All().Where(x => x.CourseId == model.CourseId);
             var review = await selectedReviews.Where(x => x.Id == model.ReviewId).FirstOrDefaultAsync();
 
             if (review == null)
@@ -154,6 +165,11 @@
             }
             else
             {
+                if (await selectedReviews.CountAsync() >= 5)
+                {
+                    throw new ArgumentOutOfRangeException(GlobalExceptions.LimitOfSelectedReviews);
+                }
+
                 review.IsSelected = true;
             }
 

@@ -6,11 +6,10 @@
     using AutoMapper;
     using LearnFast.Common;
     using LearnFast.Data.Common.Repositories;
+    using LearnFast.Data.Models;
     using LearnFast.Services.Mapping.PropertyMatcher;
     using LearnFast.Web.ViewModels.Content;
     using Microsoft.EntityFrameworkCore;
-
-    using Video = LearnFast.Data.Models.Video;
 
     public class VideoService : IVideoService
     {

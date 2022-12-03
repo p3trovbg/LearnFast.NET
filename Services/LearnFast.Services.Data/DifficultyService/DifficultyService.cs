@@ -17,7 +17,7 @@
 
         public IEnumerable<SelectListItem> GetDifficultyList()
         {
-            return GetAll()
+            return this.GetAll()
                 .Select(keyValuePair => new SelectListItem()
                 {
                     Text = keyValuePair.Value.ToString(),

@@ -2,9 +2,6 @@
 {
     using System;
     using System.Threading.Tasks;
-
-    using CloudinaryDotNet;
-    using CloudinaryDotNet.Actions;
     using LearnFast.Data.Common.Repositories;
     using LearnFast.Data.Models;
     using Microsoft.AspNetCore.Http;
@@ -26,7 +23,7 @@
         {
             var image = new Image();
 
-            var result = await this.cloudinaryService.UploadImageAsync(imageFile, image);
+            var result = await this.cloudinaryService.UploadImageAsync(imageFile, image.Id);
 
             if (result.Error != null)
             {

@@ -20,26 +20,26 @@
             this.cloudinary = cloudinary;
         }
 
-        public async Task<ImageUploadResult> UploadImageAsync(IFormFile image, Image entity)
+        public async Task<ImageUploadResult> UploadImageAsync(IFormFile image, string imageId)
         {
             using var stream = image.OpenReadStream();
 
             var uploadParams = new ImageUploadParams()
             {
-                File = new FileDescription(entity.Id, stream),
+                File = new FileDescription(imageId, stream),
                 Folder = GlobalConstants.ImagesFolderName,
             };
 
             return await this.cloudinary.UploadAsync(uploadParams);
         }
 
-        public async Task<VideoUploadResult> UploadVideoAsync(IFormFile video, Video entity)
+        public async Task<VideoUploadResult> UploadVideoAsync(IFormFile video, string videoId)
         {
             using var stream = video.OpenReadStream();
 
             var uploadParams = new VideoUploadParams()
             {
-                File = new FileDescription(entity.Id, stream),
+                File = new FileDescription(videoId, stream),
                 Folder = GlobalConstants.VideoFolderName,
             };
 

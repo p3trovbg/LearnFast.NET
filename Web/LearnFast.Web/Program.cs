@@ -132,6 +132,8 @@ namespace LearnFast.Web
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IVideoService, VideoService>();
             services.AddTransient<IReviewService, ReviewService>();
+            services.AddTransient<ICloudinaryService, CloudinaryService>();
+            services.AddTransient<IUserService, UserService>();
         }
 
         private static void Configure(WebApplication app)
