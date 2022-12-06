@@ -126,6 +126,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
                 user.FirstName = this.Input.FirstName;
                 user.LastName = this.Input.LastName;
                 user.CountryId = int.Parse(this.Input.CountryId);
+                user.MainImageUrl = GlobalConstants.BaseUserImageUrl;
 
                 await this.userStore.SetUserNameAsync(user, this.Input.UserName, CancellationToken.None);
                 await this.emailStore.SetEmailAsync(user, this.Input.Email, CancellationToken.None);
