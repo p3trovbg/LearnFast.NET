@@ -21,7 +21,7 @@
                     </span>
                 </div>
             }
-            <p class="name">@review.User.FullName</p>
+            <p class="name"><a href="/@review.User.UserName">@review.User.FullName</a></p>
             <img class="avatar" src="@review.User.MainImageUrl" />
             <p>@Html.Raw(review.Content)</p>
             <div>

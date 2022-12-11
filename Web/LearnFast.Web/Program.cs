@@ -161,7 +161,7 @@ namespace LearnFast.Web
                 app.UseHsts();
             }
 
-            app.UseStatusCodePagesWithRedirects("/Home/Error"); // Attaches the status code after the error
+            app.UseStatusCodePagesWithRedirects("/Home/ErrorView/{0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
