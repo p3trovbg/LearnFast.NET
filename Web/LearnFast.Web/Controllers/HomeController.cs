@@ -86,5 +86,11 @@
             return this.View(
                 new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
         }
+
+        //[Route("/Home/ErrorView/{status:int}")]
+        //public IActionResult ErrorView(int status)
+        //{
+        //    return this.View("~/Views/Shared/Error404.cshtml");
+        //}
     }
 }

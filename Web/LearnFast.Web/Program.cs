@@ -1,6 +1,7 @@
 namespace LearnFast.Web
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
 
@@ -37,6 +38,7 @@ namespace LearnFast.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
 
     public class Program
     {
@@ -158,6 +160,8 @@ namespace LearnFast.Web
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            app.UseStatusCodePagesWithRedirects("/Home/Error"); // Attaches the status code after the error
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

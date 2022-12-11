@@ -1,6 +1,4 @@
-﻿@import url(https://fonts.googleapis.com/css?family=Open+Sans);
-
-body {
+﻿body {
     height: 100%;
     background-image: linear-gradient(to right top, #d3f1ffbf 0%, #e9ecef 100%);
     margin: 0 auto;
@@ -49,7 +47,7 @@ nav {
         height: 50px;
         width: 50px;
         border-radius: 50%;
-        box-shadow: 8px -8px rgb(13 110 253 / 11%);
+        box-shadow: 8px -8px rgba(13, 110, 253, 0.11);
     }
 
 @media only screen and (max-width: 600px) {
@@ -61,10 +59,10 @@ nav {
         text-align: center;
     }
 
-    nav ul {
-        width: 100%;
-        max-width: 300px;
-    }
+        nav ul {
+            width: 100%;
+            max-width: 300px;
+        }
 
     .chip {
         margin: 0 auto;

@@ -1,12 +1,25 @@
 {
   "dependencies": {
-    "mssql1": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:ApplicationUserConnection"
+    "secrets1": {
+      "type": "secrets",
+      "connectionId": "VaultUri"
     },
     "mssql2": {
+      "ignored": "True",
       "type": "mssql",
       "connectionId": "ConnectionStrings:DataConnection"
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:DefaultConnection"
+    },
+    "appInsights1": {
+      "type": "appInsights",
+      "connectionId": "APPLICATIONINSIGHTS_CONNECTION_STRING"
+    },
+    "mssql3": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:Default_Connection"
     }
   }
 }

@@ -25,11 +25,11 @@
 
             var seeders = new List<ISeeder>
                           {
-                              new RolesSeeder(),
-                              new SettingsSeeder(),
-                              new CountrySeeder(),
-                              new LanguageSeeder(),
-                              new CategorySeeder(),
+                              // new RolesSeeder(),
+                             // new SettingsSeeder(),
+                            //  new CountrySeeder(),
+                            //  new LanguageSeeder(),
+                             // new CategorySeeder(),
 
                               // new CourseSeeder(),
                           };

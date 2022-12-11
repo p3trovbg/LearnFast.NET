@@ -1,11 +1,13 @@
 {
   "dependencies": {
     "mssql1": {
-      "type": "mssql.local",
-      "connectionId": "ConnectionStrings:ApplicationUserConnection"
+      "ignored": "true",
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:DefaultConnection"
     },
     "mssql2": {
-      "type": "mssql.local",
+      "ignored": "True",
+      "type": "mssql",
       "connectionId": "ConnectionStrings:DataConnection"
     }
   }
