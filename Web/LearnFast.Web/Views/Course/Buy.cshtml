@@ -17,12 +17,12 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title">@Model.Title</h5>
+                        <h5 class="card-title"><a asp-controller="Course" asp-action="Details" asp-route-id="@Model.Id">@Model.Title</a></h5>
                         <p class="card-text">
                             @Model.Category.Name
                         </p>
                         <p class="card-text">
-                            <small class="text-muted">@Model.Owner.FullName</small>
+                            <small class="text-muted"><a href="/@Model.Owner.UserName">@Model.Owner.FullName</a></small>
                         </p>
                     </div>
                 </div>

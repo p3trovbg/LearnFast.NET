@@ -97,6 +97,10 @@ namespace LearnFast.Web
 
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddAntiforgery(options =>
+            {
+                options.HeaderName = "X-CSRF-TOKEN";
+            });
 
             services.AddSingleton(mapper);
             services.AddSingleton(configuration);

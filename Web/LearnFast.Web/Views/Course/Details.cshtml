@@ -31,7 +31,7 @@
             <div>
                 <span>@Model.Sells students</span>
             </div>
-            <div>Created by: @Model.Owner.FullName</div>
+            <div>Created by: <a href="/@Model.Owner.UserName">@Model.Owner.FullName</a></div>
             <div>Language: @Model.Language.Name</div>
             <div>Difficulty: @Model.Difficulty</div>
             @if (1 == 1)

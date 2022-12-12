@@ -6,7 +6,7 @@
 
         public const string SystemMobileNumber = "+359 88 333 1111";
 
-        public const string SystemEmail = "learnfast@gmail.com";
+        public const string SystemEmail = "learnfastx@gmail.com";
 
         public const string SystemGitHub = "https://github.com/p3trovbg";
 
@@ -14,9 +14,9 @@
 
         public const string SystemAddress = "\"Dimitar Dobrovich\", 8801 Sliven Center, Sliven";
 
-        public const string EmailSender = "p3trovsit@gmail.com";
+        public const string EmailSender = "learnfastx@gmail.com";
 
-        public const string EmailTaker = "p3trovsit@gmail.com";
+        public const string EmailTaker = "learnfastx@gmail.com";
 
         public const string BaseCourseImageUrl = "https://akm-img-a-in.tosshub.com/indiatoday/images/bodyeditor/202009/e-learning_digital_education-1200x1080.jpg?XjMNHsb4gLoU_cC7110HB7jVghJQROOj";
 

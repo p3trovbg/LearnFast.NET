@@ -19,6 +19,12 @@ h5, h3{
     text-decoration: none;
 }
 
+#cookieConsent {
+    position: absolute;
+    width: 100%;
+    height: fit-content;
+}
+
 span {
     font-family: "Open Sans";
     text-transform: uppercase;

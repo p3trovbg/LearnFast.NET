@@ -1,6 +1,8 @@
 ﻿namespace LearnFast.Data
 {
+    using LearnFast.Data.Models;
     using Microsoft.AspNetCore.Identity;
+    using System;
 
     public static class IdentityOptionsProvider
     {
