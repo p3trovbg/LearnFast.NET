@@ -82,7 +82,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
                 protocol: this.Request.Scheme);
             await this.emailSender.SendEmailAsync(
                   GlobalConstants.EmailSender,
-                  "p3trov",
+                  GlobalConstants.SystemName,
                   this.Input.Email,
                   "Confirm your email",
                   $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

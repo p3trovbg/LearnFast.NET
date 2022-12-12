@@ -161,11 +161,9 @@ namespace LearnFast.Web
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseStatusCodePagesWithRedirects("/Home/Error/");
                 app.UseHsts();
             }
-
-            app.UseStatusCodePagesWithRedirects("/Home/ErrorView/{0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -180,7 +178,7 @@ namespace LearnFast.Web
 
             app.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-            app.MapControllerRoute("users", "{username}", new { controller = "Profile", action = "Index", username=string.Empty });
+            app.MapControllerRoute("users", "{username}", new { controller = "Profile", action = "Index", username = string.Empty });
 
             app.MapRazorPages();
         }

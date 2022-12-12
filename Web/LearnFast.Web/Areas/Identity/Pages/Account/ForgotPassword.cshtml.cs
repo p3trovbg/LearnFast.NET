@@ -76,7 +76,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
 
                 await this.emailSender.SendEmailAsync(
                     GlobalConstants.EmailSender,
-                    "p3trov",
+                    GlobalConstants.SystemName,
                     this.Input.Email,
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
