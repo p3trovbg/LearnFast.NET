@@ -349,6 +349,11 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+appsettings.Production.json
+src/Web/LearnFast.Web/appsettings.Production.json
+src/Web/LearnFast.Web/Properties/ServiceDependencies
+src/Web/LearnFast.Web/Properties/serviceDependencies.json
+src/Web/LearnFast.Web/Properties/serviceDependencies.learnfastx - Web Deploy.json
 **/wwwroot/lib/
 *.min.css
 *.min.js
