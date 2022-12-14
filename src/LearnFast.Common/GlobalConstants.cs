@@ -8,7 +8,7 @@
 
         public const string SystemEmail = "learnfastx@gmail.com";
 
-        public const string SystemGitHub = "https://github.com/p3trovbg";
+        public const string SystemGitHub = "https://github.com/p3trovbg/LearnFast.NET";
 
         public const string SystemLinkedIn = "https://www.linkedin.com/in/p3trov/";
 

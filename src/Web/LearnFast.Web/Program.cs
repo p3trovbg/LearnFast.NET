@@ -125,7 +125,7 @@ namespace LearnFast.Web
                 configuration.GetValue<string>("BraintreeGateway:PublicKey"),
                 configuration.GetValue<string>("BraintreeGateway:PrivateKey")));
 
-            services.AddTransient<IEmailSender>(x => new SendGridEmailSender(configuration["EmailSender:ApiKey"]));
+            services.AddTransient<IEmailSender>(x => new SendGridEmailSender(configuration["SendGrid:ApiKey"]));
 
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICountryService, CountryService>();
