@@ -1,0 +1,29 @@
+﻿section div {
+    display: block;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+    color: rgb(13 110 253 / 25%);
+    font-size: 40px;
+    font-family: "Open Sans";
+}
+
+.category {
+    display: inline-block;
+    width: 300px;
+    border: 15px inset #7eb3c18c;
+    padding: 40px;
+    margin: 20px;
+    text-align: center;
+    box-shadow: 16px -16px rgb(13 110 253 / 11%);
+}
+
+    .category a {
+        color: inherit;
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 20px;
+        color: rgb(0 0 0 / 55%);
+    }

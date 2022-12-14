@@ -1,0 +1,56 @@
+﻿@model LearnFast.Web.ViewModels.Home.HomeViewModel
+
+@using LearnFast.Common
+@{
+    this.ViewData["Title"] = "Home Page";
+}
+
+<section>
+    <div class="head">
+        <h1>Learn everything and learn it fast with us!</h1>
+        <hr class="hr hr-blurry" />
+        <div class="intro">
+            <img class="img-fluid home-image" src="images/home.jpg">
+            <div class="intro-container">
+                <p>
+                    “Education is for improving the lives of others and for leaving your community and world better than you found it.” – Marian Wright Edelman
+                </p>
+            </div>
+        </div>
+    </div>
+    <hr class="hr hr-blurry" />
+    <h2>A broad selection of courses</h2>
+    <hr class="hr hr-blurry" />
+    <h3>Top 12 courses</h3>
+    <hr class="hr hr-blurry" />
+    <div class="row row-cols-1 row-cols-md-3 g-4 courses" style="text-decoration: none;">
+        @foreach (var course in Model.Courses)
+        {
+            <div class="col mb-5">
+                <div class="card p-4 h-100 course">
+                    <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id">
+                        <img src="@course.MainImageUrl" class="card-img-top" />
+                        <div class="card-body">
+                            <div class="card-title">@course.Title</div>
+                            <hr />
+                            <div>Difficulty: @course.Difficulty</div>
+                            <div>Category: @course.Category.Name</div>
+                        </div>
+                    </a>
+                </div>
+                @if (course.Price == 0)
+                {
+                    <div class="price">Free course</div>
+                }
+                else
+                {
+                    <div class="price">Price: @($"${course.Price:f2}")</div>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+@section Styles {
+    <link rel="stylesheet" href="/css/home.css" asp-append-version="true">
+}

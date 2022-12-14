@@ -1,0 +1,39 @@
+﻿@model LearnFast.Web.ViewModels.Content.EditVideoViewModel
+
+@{
+    this.ViewData["Title"] = "Edit video";
+}
+
+<section>
+    <h1>@this.ViewData["Title"] /  <a asp-controller="Course" asp-action="Details" asp-route-id="@Model.CourseId">Back to course</a></h1>
+    <form method="post" enctype="multipart/form-data" class="create-form col-6">
+        <div class="form-control">
+            <label asp-for="Title"></label>
+            <input asp-for="Title" class="form-control" aria-required="true" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-control">
+            <input id="upload" asp-for="VideoFile" multiple accept="video/*">
+            <span asp-validation-for="VideoFile" class="text-danger"></span>
+        </div>
+        <div class="form-control">
+            <label asp-for="Description"></label>
+            <textarea rows="10" cols="70" asp-for="Description"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <button class="button"
+                asp-action="EditVideo"
+                asp-route-Id="@Model.Id"
+                asp-route-CourseId="@Model.CourseId">Edit video
+        </button>
+    </form>
+    <div class="border-1">
+        <video class="col-10" src="@Model.UrlPath" id="uploadedVideo" controls></video>
+    </div>
+</section>
+
+
+
+@section Scripts {
+    <script type="module" src="/js/edit_video.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,83 @@
+﻿@model LearnFast.Web.ViewModels.Course.ImportCourseModel
+
+@{
+    this.ViewData["Title"] = "Edit course";
+    this.ViewData["Style"] = "create.css";
+}
+
+
+<section>
+    <h1>@this.ViewData["Title"] /  <a asp-controller="Course" asp-action="Details" asp-route-id="@Model.Id">Back to course</a></h1>
+    
+
+    <form method="post" enctype="multipart/form-data" class="create-form mx-auto">
+        <input asp-for="Id" type="hidden" />
+        <input asp-for="MainImageUrl" type="hidden" />
+        <div class="form-floating">
+            <input asp-for="Title" class="form-control" aria-required="true" />
+            <label asp-for="Title"></label>
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="form-floating">
+            <input asp-for="Price" class="form-control" aria-required="true" />
+            <label asp-for="Price"></label>
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div id="isfree">
+            <legend>The course is paid?</legend>
+            <label>Yes</label>
+            <input type="radio" asp-for="IsFree" value="true" />
+            <label>No</label>
+            <input type="radio" asp-for="IsFree" value="false" />
+        </div>
+        <div class="form-floating">
+            <select asp-for="Difficulty" asp-items="Model.Difficulties" class="form-select">
+                <option disabled selected></option>
+            </select>
+            <label asp-for="Difficulty"></label>
+            <span asp-validation-for="Difficulty" class="text-danger"></span>
+        </div>
+        <div class="form-floating">
+            <select asp-for="LanguageId" asp-items="Model.Languages" class="form-select">
+                <option disabled selected></option>
+            </select>
+            <label asp-for="LanguageId" class="form-label">Select language</label>
+            <span asp-validation-for="LanguageId" class="text-danger"></span>
+        </div>
+        <div class="form-floating">
+            <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select">
+                <option disabled selected></option>
+            </select>
+            <label asp-for="CategoryId" class="form-label">Select category</label>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <div class="form-floating">
+            <label asp-for="Requirments"></label>
+            <textarea rows="10" cols="120" asp-for="Requirments" class="form-textarea document" aria-required="true" oninput="auto_height(this)"></textarea>
+            <span asp-validation-for="Requirments" class="text-danger"></span>
+        </div>
+        <div class="form-floating">
+            <label asp-for="Description"></label>
+            <textarea rows="10" cols="120" asp-for="Description" class="form-textarea document" aria-required="true" oninput="auto_height(this)"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div id="upload-image" class="form-floating">
+            <label asp-for="MainImage"></label>
+            <input id="upload" asp-for="MainImage" multiple accept="image/gif, image/jpeg, image/png">
+            <span asp-validation-for="MainImage" class="text-danger"></span>
+        </div>
+        <div class="border-1">
+            <img src="@Model.MainImageUrl" id="uploadedImage" alt="Uploaded Image" accept="image/gif, image/jpeg, image/png">
+        </div>
+
+        <button class="button" asp-controller="Course" asp-action="Edit">Edit course</button>
+    </form>
+</section>
+
+@section Scripts {
+    <script type="module" src="/js/edit.js" asp-append-version="true"></script>
+}
+
+    @section Styles {
+    <link rel="stylesheet" href="/css/create.css" asp-append-version="true">
+}
