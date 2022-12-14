@@ -1,0 +1,25 @@
+﻿@*@model PagingViewModel
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link" 
+            asp-action="Search" 
+            asp-route-id="@Model.PreviousPage"
+            asp-route-categoryId="@Model.PreviousPage">Previous</a>
+        </li>
+        @for (int idx = Model.CurrentPageNumber - 3; idx < Model.CurrentPageNumber; idx++)
+        {
+            @if (idx > 0)
+            {
+                <li class="page-item"><a class="page-link" asp-action="Search" asp-route-id="@idx">@idx</a></li>
+            }
+        }
+        <li class="page-item">
+            @if (Model.NextPage < Model.PagesCount)
+            {
+                <a class="page-link" asp-action="Search" asp-route-id="@Model.NextPage">Next</a>
+            }
+        </li>
+    </ul>
+</nav>*@

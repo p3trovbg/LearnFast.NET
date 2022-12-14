@@ -1,0 +1,71 @@
+﻿@model LearnFast.Web.ViewModels.Home.InputContactViewModel
+@using LearnFast.Common;
+
+
+@{
+    this.ViewData["Title"] = "Contact us";
+}
+
+<h1>@this.ViewData["Title"]</h1>
+@if (Model.IsSuccessfully)
+{
+    <p class="alert-success">@GlobalConstants.SuccessfullySendMessage</p>
+}
+<div class="row">
+    <div class="col-md-6 align-middle">
+        <div class="col-md-8 mb-2">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-floating">
+                    <input asp-for="Name" class="form-control field" aria-required="true" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <label asp-for="Name"></label>
+                </div>
+                <div class="form-floating">
+                    <input asp-for="Email" class="form-control field" aria-required="true" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <label asp-for="Email"></label>
+                </div>
+                <div class="form-floating field">
+                    <textarea asp-for="Message" aria-required="true" oninput="auto_height(this)"></textarea>
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                    <label asp-for="Message"></label>
+                </div>
+                <div class="form-check-inline text-end col-12">
+                    <button type="submit" asp-area="" asp-controller="Home" asp-action="Contact" class="btn btn-success">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8296.61061913941!2d26.317804495666728!3d42.67629698902104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40a620c66ffa39c9%3A0x400a01269bf59e0!2sSliven!5e0!3m2!1sen!2sbg!4v1667922551350!5m2!1sen!2sbg" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <hr class="hr hr-blurry" />
+    <div class="col-md-12 col-12 text-center mt-5">
+        <span class="vr vr-blurry line" style="height: 50px;"></span>
+        <span class="info text-wrap">
+            <i class="bi bi-house-door"></i>
+           @GlobalConstants.SystemAddress
+        </span>
+        <span class="vr vr-blurry line" style="height: 50px;"></span>
+        <span class="info">
+            <i class="bi bi-envelope"></i>
+            @GlobalConstants.SystemEmail
+        </span>
+        <span class="vr vr-blurry line" style="height: 50px;"></span>
+        <span class="info">
+            <i class="bi bi-earbuds"></i>
+            @GlobalConstants.SystemMobileNumber
+        </span>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="/css/contact.css" asp-append-version="true">
+}
+
+    <script>
+        function auto_height(area) {
+            area.style.height = "100px";
+            area.style.height = (area.scrollHeight) + "px";
+        }
+    </script>

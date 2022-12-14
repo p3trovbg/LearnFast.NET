@@ -1,0 +1,39 @@
+﻿@model LearnFast.Web.ViewModels.Category.CategoryListViewModel
+
+@{
+    this.ViewData["Title"] = "Categories";
+    this.ViewData["Style"] = "category.css";
+}
+
+<section>
+    <h1>@this.ViewData["Title"]</h1>
+    <hr />
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item"><a>Categories</a></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div>
+        @foreach (var category in Model.Categories)
+        {
+            <div class="category">
+                <a asp-area=""
+                   asp-controller="Course"
+                   asp-action="Search"
+                   asp-route-categoryId="@category.Id"
+                   asp-route-categoryName="@category.Name">
+                    @category.Name
+                </a>
+            </div>
+        }
+    </div>
+</section>
+
+@section Styles {
+    <link rel="stylesheet" href="/css/category.css" asp-append-version="true">
+}
