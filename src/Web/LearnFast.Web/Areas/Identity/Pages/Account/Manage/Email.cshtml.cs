@@ -117,6 +117,13 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
                 return this.Page();
             }
 
+            var existedUser = await this.userManager.FindByEmailAsync(this.Input.NewEmail);
+            if (existedUser != null && existedUser.Email != this.Input.NewEmail)
+            {
+                this.StatusMessage = $"{this.Input.NewEmail} already have taken.";
+                return this.RedirectToPage();
+            }
+
             var email = await this.userManager.GetEmailAsync(user);
             if (this.Input.NewEmail != email)
             {
@@ -130,7 +137,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
                     protocol: this.Request.Scheme);
                 await this._emailSender.SendEmailAsync(
                     GlobalConstants.AppEmail,
-                    "P3trov",
+                    GlobalConstants.SystemName,
                     this.Input.NewEmail,
                     "Confirm your email",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
