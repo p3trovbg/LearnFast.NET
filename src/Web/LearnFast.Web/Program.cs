@@ -154,7 +154,7 @@ namespace LearnFast.Web
 
             AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
 
-            if (app.Environment.IsDevelopment())
+            if (!app.Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
@@ -165,6 +165,8 @@ namespace LearnFast.Web
                 app.UseHsts();
             }
 
+            app.UseStatusCodePagesWithRedirects("/");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -174,7 +176,7 @@ namespace LearnFast.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseMiddleware<RedirectMiddleware>();
+            // app.UseMiddleware<RedirectMiddleware>();
 
             app.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");

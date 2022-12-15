@@ -129,7 +129,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
                     values: new { area = "Identity", userId = userId, email = this.Input.NewEmail, code = code },
                     protocol: this.Request.Scheme);
                 await this._emailSender.SendEmailAsync(
-                    GlobalConstants.EmailSender,
+                    GlobalConstants.AppEmail,
                     "P3trov",
                     this.Input.NewEmail,
                     "Confirm your email",
@@ -167,7 +167,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account.Manage
                 values: new { area = "Identity", userId = userId, code = code },
                 protocol: this.Request.Scheme);
             await this._emailSender.SendEmailAsync(
-                    GlobalConstants.EmailSender,
+                    GlobalConstants.AppEmail,
                     "P3trov",
                     this.Input.NewEmail,
                     "Confirm your email",

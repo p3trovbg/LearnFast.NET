@@ -14,7 +14,7 @@
 
         public const string SystemAddress = "\"Dimitar Dobrovich\", 8801 Sliven Center, Sliven";
 
-        public const string EmailSender = "learnfastx@gmail.com";
+        public const string AppEmail = "learnfastx@gmail.com";
 
         public const string EmailTaker = "learnfastx@gmail.com";
 

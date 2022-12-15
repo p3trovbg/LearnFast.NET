@@ -75,7 +75,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
                     protocol: this.Request.Scheme);
 
                 await this.emailSender.SendEmailAsync(
-                    GlobalConstants.EmailSender,
+                    GlobalConstants.AppEmail,
                     GlobalConstants.SystemName,
                     this.Input.Email,
                     "Reset Password",

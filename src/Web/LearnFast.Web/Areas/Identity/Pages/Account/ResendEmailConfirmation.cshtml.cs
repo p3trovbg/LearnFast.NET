@@ -81,7 +81,7 @@ namespace LearnFast.Web.Areas.Identity.Pages.Account
                 values: new { userId = userId, code = code },
                 protocol: this.Request.Scheme);
             await this.emailSender.SendEmailAsync(
-                  GlobalConstants.EmailSender,
+                  GlobalConstants.AppEmail,
                   GlobalConstants.SystemName,
                   this.Input.Email,
                   "Confirm your email",

@@ -3,13 +3,12 @@
     using System;
     using System.Diagnostics;
     using System.Threading.Tasks;
+
     using LearnFast.Data.Models;
     using LearnFast.Services.Data.CategoryService;
     using LearnFast.Services.Data.ContactService;
     using LearnFast.Services.Data.CourseService;
-    using LearnFast.Services.Data.ImageService;
     using LearnFast.Web.ViewModels;
-    using LearnFast.Web.ViewModels.Category;
     using LearnFast.Web.ViewModels.Course;
     using LearnFast.Web.ViewModels.Home;
     using Microsoft.AspNetCore.Identity;
@@ -83,16 +82,14 @@
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(string message)
         {
-            Console.WriteLine();
-            ;
             return this.View(
                 new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
         }
 
-        [Route("/Home/ErrorView/{status:int}")]
+        [Route("/ErrorView/{status:int}")]
         public IActionResult ErrorView(int status)
         {
-            return this.View("~/Views/Shared/Error404.cshtml");
+            return this.View("~/Views/Shared/Error.cshtml");
         }
     }
 }
