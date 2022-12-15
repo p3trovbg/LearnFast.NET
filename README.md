@@ -134,3 +134,8 @@ sorter that sorts by price, desc price, newest, oldest and name.
   - Git
   - GitHub
 </pre>
+
+
+<h3>License</h3>
+<hr >
+<B>This project is licensed with the MIT license.</B>
