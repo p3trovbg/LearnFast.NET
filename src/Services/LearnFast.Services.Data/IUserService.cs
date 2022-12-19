@@ -1,8 +1,9 @@
-﻿using LearnFast.Data.Models;
-using System.Threading.Tasks;
-
-namespace LearnFast.Services.Data
+﻿namespace LearnFast.Services.Data
 {
+    using System.Threading.Tasks;
+
+    using LearnFast.Data.Models;
+
     public interface IUserService
     {
         string GetLoggedUserId();

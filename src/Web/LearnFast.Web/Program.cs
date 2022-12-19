@@ -176,7 +176,7 @@ namespace LearnFast.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // app.UseMiddleware<RedirectMiddleware>();
+            app.UseMiddleware<RedirectMiddleware>();
 
             app.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");

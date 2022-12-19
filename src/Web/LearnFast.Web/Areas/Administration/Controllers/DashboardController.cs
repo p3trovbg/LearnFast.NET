@@ -69,8 +69,7 @@
             return this.View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> DeleteUser(string userId)
+        public async Task<IActionResult> AddUserAsAdminstartor(string userId)
         {
             try
             {
@@ -80,7 +79,8 @@
                     throw new ArgumentException(GlobalExceptions.UserNotExists);
                 }
 
-                await this.userManager.DeleteAsync(user);
+                await this.userManager.AddToRoleAsync(user, GlobalConstants.AdministratorRoleName);
+                await this.userManager.UpdateAsync(user);
 
                 return this.RedirectToAction(nameof(this.Index));
             }
