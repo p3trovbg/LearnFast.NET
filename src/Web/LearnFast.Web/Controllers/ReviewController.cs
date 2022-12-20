@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-
+    using LearnFast.Services.Data;
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Services.Data.ReviewService;
     using LearnFast.Web.ViewModels.Review;
@@ -18,13 +18,16 @@
     {
         private readonly IReviewService reviewService;
         private readonly ICourseService courseService;
+        private readonly IUserService userService;
 
         public ReviewController(
             IReviewService reviewService,
-            ICourseService courseService)
+            ICourseService courseService,
+            IUserService userService)
         {
             this.reviewService = reviewService;
             this.courseService = courseService;
+            this.userService = userService;
         }
 
         public async Task<IActionResult> All(ReviewListViewModel model)
@@ -34,7 +37,7 @@
                 await this.reviewService.GetAllReviewsByCourse(model);
 
                 model.CourseOwnerId = await this.courseService.GetOwnerIdByCourse(model.CourseId);
-                model.CurrentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                model.CurrentUserId = await this.userService.GetLoggedUserIdAsync();
 
                 return this.View(model);
             }
@@ -63,7 +66,7 @@
 
             try
             {
-                model.UserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                model.UserId = await this.userService.GetLoggedUserIdAsync();
                 await this.reviewService.Add(model);
             }
             catch (Exception ex)
@@ -78,7 +81,7 @@
         {
             try
             {
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = await this.userService.GetLoggedUserIdAsync();
                 await this.reviewService.Delete(reviewId, userId);
             }
             catch (Exception ex)
@@ -91,7 +94,7 @@
 
         public async Task<IActionResult> Edit(int reviewId)
         {
-            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUserId = await this.userService.GetLoggedUserIdAsync();
 
             try
             {
@@ -118,7 +121,7 @@
                 return this.View(model);
             }
 
-            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUserId = await this.userService.GetLoggedUserIdAsync();
 
             if (currentUserId != model.UserId)
             {

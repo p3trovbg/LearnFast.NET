@@ -1,9 +1,9 @@
 ﻿namespace LearnFast.Web.Controllers
 {
     using System;
-    using System.Security.Claims;
     using System.Threading.Tasks;
 
+    using LearnFast.Services.Data;
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Services.Data.VideoService;
     using LearnFast.Web.ViewModels.Content;
@@ -15,18 +15,21 @@
     {
         private readonly IVideoService videoService;
         private readonly ICourseService courseService;
+        private readonly IUserService userService;
 
         public VideoController(
             IVideoService videoService,
-            ICourseService courseService)
+            ICourseService courseService,
+            IUserService userService)
         {
             this.videoService = videoService;
             this.courseService = courseService;
+            this.userService = userService;
         }
 
         public async Task<IActionResult> AddVideo(int courseId)
         {
-            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUserId = await this.userService.GetLoggedUserIdAsync();
             var ownerId = await this.courseService.GetOwnerIdByCourse(courseId);
 
             if (currentUserId != ownerId)
@@ -62,7 +65,7 @@
 
         public async Task<IActionResult> RemoveVideo(string videoId, int courseId)
         {
-            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUserId = await this.userService.GetLoggedUserIdAsync();
             var ownerId = await this.courseService.GetOwnerIdByCourse(courseId);
 
             if (currentUserId != ownerId)
@@ -91,7 +94,7 @@
                 this.View(nameof(this.Edit), model);
             }
 
-            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUserId = await this.userService.GetLoggedUserIdAsync();
             var ownerId = await this.courseService.GetOwnerIdByCourse(model.CourseId);
 
             if (currentUserId != ownerId)
@@ -114,7 +117,7 @@
 
         public async Task<IActionResult> Edit(EditVideoViewModel model)
         {
-            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUserId = await this.userService.GetLoggedUserIdAsync();
 
             var ownerId = await this.courseService.GetOwnerIdByCourse(model.CourseId);
 
