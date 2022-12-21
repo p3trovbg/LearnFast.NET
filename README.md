@@ -126,6 +126,9 @@ sorter that sorts by price, desc price, newest, oldest and name.
   - SendGrid
   - Braintree
   - Cloudinary
+  - Javascript
+  - Bootstrap
+  - HTML / CSS
   <hr/>
   - Mock
   - XUnit
