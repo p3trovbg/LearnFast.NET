@@ -45,6 +45,8 @@ namespace LearnFast.Data.Models
 
         public virtual Country Country { get; set; }
 
+        public virtual PaymentCustomer Customer { get; set; }
+
         public virtual ICollection<Review> Reviews { get; set; }
 
         public virtual ICollection<StudentCourse> BuyedCourses { get; set; }
