@@ -77,7 +77,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Views\Payment\" />
 		<Folder Include="wwwroot\images\" />
 	</ItemGroup>
 </Project>

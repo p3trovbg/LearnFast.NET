@@ -1,0 +1,46 @@
+﻿@using LearnFast.Web.ViewModels.Payment;
+@model PaymentViewModel
+
+<form id="payment-form">
+    <label>
+        Payment amount:
+        <input type="text" name="amount" value="@Model.Amount" data-stripe="amount">
+    </label>
+    <br>
+    <br>
+    <button type="submit">Pay</button>
+</form>
+
+<!-- Include the Stripe JavaScript library -->
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+    // Add a submit handler to the form
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+        // Prevent the form from submitting
+        event.preventDefault();
+
+        // Validate the form using Stripe's form validation library
+        var stripe = Stripe('pk_test_1234567890');
+        stripe.createPaymentMethod('card', stripe.elements.getElement(CardElement), {
+            billing_details: {
+                // Set the payer's and recipient's customer IDs
+                customer: form.payerCustomerId.value,
+                transfer_data: {
+                    destination: form.recipientCustomerId.value
+                }
+            }
+        })
+        .then(function(result) {
+            if (result.error) {
+                // There was an error processing the payment
+                console.error(result.error.message);
+            } else {
+                // The payment was successful, so make an AJAX call to the server
+                // to process the payment and handle any errors
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/payment/process', true);
+                xhr.setRequestHeader('Content-Type', '
+            }
+</script>
