@@ -4,9 +4,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production",
-        "VaultUri": "https://learnfastwebvault.vault.azure.net/",
-        "AZURE_USERNAME": "p3tovbg@students.softuni.bg"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "nativeDebugging": true
     },
@@ -14,9 +12,7 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production",
-        "VaultUri": "https://learnfastwebvault.vault.azure.net/",
-        "AZURE_USERNAME": "p3tovbg@students.softuni.bg"
+        "ASPNETCORE_ENVIRONMENT": "Development",
       },
       "applicationUrl": "https://localhost:5001;http://localhost:5000"
     },

@@ -1,63 +1,66 @@
 ﻿namespace LearnFast.Web.Controllers
 {
     using System.Threading.Tasks;
+    using LearnFast.Services.Data.CourseService;
+    using LearnFast.Services.Data.CustomerService;
+    using LearnFast.Web.ViewModels.Course;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Razor.TagHelpers;
     using Microsoft.Extensions.Configuration;
     using Stripe;
 
     public class PaymentController : BaseController
     {
         private readonly IConfiguration configuration;
+        private readonly IPaymentCustomerService paymentCustomerService;
+        private readonly IFilterCourse filterCourse;
 
-        public PaymentController(IConfiguration configuration)
+        public PaymentController(
+            IConfiguration configuration,
+            IPaymentCustomerService paymentCustomerService,
+            IFilterCourse filterCourse)
         {
             this.configuration = configuration;
+            this.paymentCustomerService = paymentCustomerService;
+            this.filterCourse = filterCourse;
+        }
+
+        [Route("/Payment")]
+        public IActionResult Payment()
+        {
+            var key = this.configuration.GetValue<string>("Stripe:PublishKey");
+            this.ViewBag.Key = key;
+            return this.View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> ProcessPayment(int amount, string payerCustomerId, string recipientCustomerId)
+        public async Task<IActionResult> Charge(decimal amount, string stripeEmail, string stripeToken)
         {
-            try
+            // Configure Stripe API keys
+            //StripeConfiguration.ApiKey = this.configuration.GetValue<string>("Stripe:PrivateKey");
+
+            StripeConfiguration.ApiKey = this.configuration.GetValue<string>("Stripe:TestPrivateKey");
+
+            // Create the charge on Stripe's servers - this will charge the user's card
+            var charge = await new ChargeService().CreateAsync(new ChargeCreateOptions
             {
-                // Set the API key for Stripe
-                StripeConfiguration.ApiKey = "sk_test_1234567890";
+                Amount = (long)(100 * 100), // Convert amount to cents
+                Currency = "usd",
+                Description = "MyApplication Payment",
+                Source = stripeToken,
+                ReceiptEmail = stripeEmail,
+            });
 
-                // Create a charge object to represent the payment
-                var chargeOptions = new ChargeCreateOptions
-                {
-                    Amount = amount,
-                    Currency = "usd",
-                    Customer = payerCustomerId,
-                    TransferData = new ChargeTransferDataOptions
-                    {
-                        Destination = recipientCustomerId,
-                    },
-                };
-
-                // Initiate the payment
-                var chargeService = new ChargeService();
-                Charge charge = await chargeService.CreateAsync(chargeOptions);
-
+            // Check if the charge was successful
+            if (charge.Status == "succeeded")
+            {
                 // Payment was successful
-                return RedirectToAction("PaymentSuccess");
+                return this.View("Success");
             }
-            catch (StripeException ex)
+            else
             {
-                // There was an error processing the payment
-                return RedirectToAction("PaymentError", new { error = ex.Message });
+                // Payment failed
+                return this.View("Error");
             }
-        }
-
-        public IActionResult PaymentSuccess()
-        {
-            return this.View();
-        }
-
-        public IActionResult PaymentError(string error)
-        {
-            this.ViewBag.Error = error;
-            return this.View();
         }
     }
 }
