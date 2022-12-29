@@ -21,6 +21,7 @@ namespace LearnFast.Web
     using LearnFast.Services.Data.ContactService;
     using LearnFast.Services.Data.CountryService;
     using LearnFast.Services.Data.CourseService;
+    using LearnFast.Services.Data.CustomerService;
     using LearnFast.Services.Data.DifficultyService;
     using LearnFast.Services.Data.ImageService;
     using LearnFast.Services.Data.LanguageService;
@@ -28,12 +29,14 @@ namespace LearnFast.Web
     using LearnFast.Services.Data.VideoService;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Messaging;
+    using LearnFast.Web.Configurations;
     using LearnFast.Web.Middlewares;
     using LearnFast.Web.ViewModels;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.CodeAnalysis.FlowAnalysis;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -127,6 +130,10 @@ namespace LearnFast.Web
 
             services.AddTransient<IEmailSender>(x => new SendGridEmailSender(configuration["SendGrid:ApiKey"]));
 
+            var aes256EncryptionConfig = new Aes256EncryptionConfig();
+            configuration.GetSection("Aes256Encryption").Bind(aes256EncryptionConfig);
+            services.AddSingleton(aes256EncryptionConfig);
+
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<IContactService, ContactService>();
@@ -140,6 +147,7 @@ namespace LearnFast.Web
             services.AddTransient<IReviewService, ReviewService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IPaymentCustomerService, PaymentCustomerService>();
         }
 
         private static void Configure(WebApplication app)
