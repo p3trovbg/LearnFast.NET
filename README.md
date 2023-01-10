@@ -128,6 +128,7 @@ sorter that sorts by price, desc price, newest, oldest and name.
   - Cloudinary
   - Javascript
   - Bootstrap
+  - TinyMCE
   - HTML / CSS
   <hr/>
   - Mock
