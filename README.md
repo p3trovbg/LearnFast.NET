@@ -98,8 +98,10 @@ Always you can send questions to our Gmail, there is contact section. </pre>
   If you are enrolled in the course, you can remove and edit your reviews.
   <img height="300em" src="https://cdn.discordapp.com/attachments/890289447260815372/1052984762656112650/image.png"></img>
   <br/>
+  Enrolled user's rights
   <img height="200em" src="https://media.discordapp.net/attachments/890289447260815372/1052984975361847296/image.png?width=1035&height=286"></img>
   
+  Owner's rights
   <img height="400em" src="https://cdn.discordapp.com/attachments/890289447260815372/1052993850676883546/image.png"></img>
   
   <img height="200em" src="https://media.discordapp.net/attachments/890289447260815372/1052984868444835840/image.png?width=647&height=219"></img>
