@@ -75,8 +75,12 @@ Always you can send questions to our Gmail, there is contact section. </pre>
   That is the profile page, where you can see your courses, enrolled courses,common information about you and your reviews.
   <img height="300em" src="https://media.discordapp.net/attachments/890289447260815372/1052983408927711372/image.png?width=1440&height=487"></img>
   
-  Example
+  Example with own courses, reviews, and enrolled courses.
   <img height="500em" src="https://media.discordapp.net/attachments/890289447260815372/1063101890235224104/image.png?width=921&height=671"></img>
+  
+  <br/>
+  Settings
+  <img height="400em" src="https://media.discordapp.net/attachments/890289447260815372/1063172414386733066/image.png?width=710&height=412"></img>
 </pre>
 <hr />
 <pre>
