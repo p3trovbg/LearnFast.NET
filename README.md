@@ -43,7 +43,7 @@ Always you can send questions to our Gmail, there is contact section. </pre>
     Required min length - 6
     The email must haven't used as well as username(nick name).
     </b>
-  <img height="300em" src="https://media.discordapp.net/attachments/890289447260815372/1052926717154578472/image.png?width=720&height=340"></img>
+  <img src="https://media.discordapp.net/attachments/890289447260815372/1052926717154578472/image.png?width=720&height=340"></img>
   <br />
   After your registration, the server will send an email to which you have to confirm your new account.
   <p>
@@ -62,67 +62,90 @@ Always you can send questions to our Gmail, there is contact section. </pre>
    - Resend email confirmation.
    - Create new account if you haven't.
   <br/>
-   <img height="300em" src="https://media.discordapp.net/attachments/890289447260815372/1052978296230510682/image.png?width=721&height=349"></img>
+   <img src="https://media.discordapp.net/attachments/890289447260815372/1052978296230510682/image.png?width=721&height=349"></img>
 </pre>
 <hr />
 <pre>
   When you have loged in. Already you will could see:
-  <img height="200em" src="https://cdn.discordapp.com/attachments/890289447260815372/1052983270045913159/image.png"></img>
+  <img src="https://cdn.discordapp.com/attachments/890289447260815372/1052983270045913159/image.png"></img>
   <b>The messages will be added in the future.</b>
-  <img height="100em" src="https://media.discordapp.net/attachments/890289447260815372/1052984392286478426/image.png?width=225&height=83"></img>
+  <img src="https://media.discordapp.net/attachments/890289447260815372/1052984392286478426/image.png?width=225&height=83"></img>
 </pre>
 <pre>
   That is the profile page, where you can see your courses, enrolled courses,common information about you and your reviews.
-  <img height="300em" src="https://media.discordapp.net/attachments/890289447260815372/1052983408927711372/image.png?width=1440&height=487"></img>
-  
+  <img src="https://media.discordapp.net/attachments/890289447260815372/1052983408927711372/image.png?width=1440&height=487"></img>
+  <br/>
   Example with own courses, reviews, and enrolled courses.
-  <img height="500em" src="https://media.discordapp.net/attachments/890289447260815372/1063101890235224104/image.png?width=921&height=671"></img>
+  <img src="https://media.discordapp.net/attachments/890289447260815372/1063101890235224104/image.png?width=921&height=671"></img>
   
   <br/>
   Settings
-  <img height="400em" src="https://media.discordapp.net/attachments/890289447260815372/1063172414386733066/image.png?width=710&height=412"></img>
+  <img src="https://media.discordapp.net/attachments/890289447260815372/1063172414386733066/image.png?width=710&height=412"></img>
 </pre>
 <hr />
 <pre>
   The page when you can create your course.
-  <img height="300em" src="https://media.discordapp.net/attachments/890289447260815372/1052983574317518858/image.png?width=1166&height=614"></img>
+  <img src="https://res.cloudinary.com/dmjtpjp3s/image/upload/v1673552906/Untitled_bfpehm.png"></img>
   <br/>
   The descriptions and requirments could be edit with <b>Tiny cloude</b> redactor
-  <img height="300em" src="https://media.discordapp.net/attachments/890289447260815372/1052983633352327209/image.png?width=936&height=670"></img>
+  <img src="https://media.discordapp.net/attachments/890289447260815372/1052983633352327209/image.png?width=936&height=670"></img>
   <br/>
-  <img height="200em" src="https://media.discordapp.net/attachments/890289447260815372/1052983994318340116/image.png?width=1067&height=211"></img>
+  <img src="https://media.discordapp.net/attachments/890289447260815372/1052983994318340116/image.png?width=1067&height=211"></img>
   <br/>
   When you upload image, you will see it. 
-  <img height="200em" src="https://media.discordapp.net/attachments/890289447260815372/1052985494289518642/image.png?width=1211&height=432"></img>
+  <img src="https://media.discordapp.net/attachments/890289447260815372/1052985494289518642/image.png?width=1211&height=432"></img>
   <hr />
   After you created course, the server would redirect right to it.
-  <img height="400em" src="https://media.discordapp.net/attachments/890289447260815372/1052984650202624060/image.png?width=930&height=671"></img>
+  <img src="https://res.cloudinary.com/dmjtpjp3s/image/upload/v1673552748/Untitled_rlvlui.png"></img>
   <b>Here you could see course's content (videos), only if you enrolled for it.</b>
-  <img height="400em" src="https://media.discordapp.net/attachments/890289447260815372/1052984717445713980/image.png?width=967&height=670"></img>
-  <img height="100em" src="https://media.discordapp.net/attachments/890289447260815372/1052991236706947103/image.png?width=939&height=162"></img>
+  <img src="https://media.discordapp.net/attachments/890289447260815372/1052984717445713980/image.png?width=967&height=670"></img>
+  <img src="https://media.discordapp.net/attachments/890289447260815372/1052991236706947103/image.png?width=939&height=162"></img>
   <br/>
   Of course, if you are owner of the course, you can select top 5 reviews and remove them. 
   If you are enrolled in the course, you can remove and edit your reviews.
-  <img height="300em" src="https://cdn.discordapp.com/attachments/890289447260815372/1052984762656112650/image.png"></img>
+  <img src="https://cdn.discordapp.com/attachments/890289447260815372/1052984762656112650/image.png"></img>
   <br/>
   Enrolled user's rights
-  <img height="200em" src="https://media.discordapp.net/attachments/890289447260815372/1052984975361847296/image.png?width=1035&height=286"></img>
-  
+  <img src="https://res.cloudinary.com/dmjtpjp3s/image/upload/v1673553713/Untitled_j4l77c.png"></img>
+  <br/>
   Owner's rights
-  <img height="400em" src="https://cdn.discordapp.com/attachments/890289447260815372/1052993850676883546/image.png"></img>
-  
-  <img height="200em" src="https://media.discordapp.net/attachments/890289447260815372/1052984868444835840/image.png?width=647&height=219"></img>
+  <img src="https://cdn.discordapp.com/attachments/890289447260815372/1052993850676883546/image.png"></img>
+  <br/>
+  <img width="850px" src="https://res.cloudinary.com/dmjtpjp3s/image/upload/v1673553920/Untitled_r48cjn.png"></img>
+  <br/>
+  <img src="https://res.cloudinary.com/dmjtpjp3s/image/upload/v1673553810/Untitled_uvxwrb.png"></img>
 </pre>
 <pre>
 By left, there is searcher for the courses in the application by course's title, category, price, difficulty, language and 
 sorter that sorts by price, desc price, newest, oldest and name.
 <br>
-  <img height="600em" src="https://media.discordapp.net/attachments/890289447260815372/1052984099452764210/image.png?width=831&height=670"></img>
+  <img src="https://res.cloudinary.com/dmjtpjp3s/image/upload/v1673552423/Untitled_gle9fc.png"></img>
+  <br/>
+  🔴🔴🔴<b>The payment has not yet been confirmed! It is in processing!</b>🔴🔴🔴
+  <br/>
+  <img src="https://res.cloudinary.com/dmjtpjp3s/image/upload/v1673555314/Untitled_pbfyde.png"></img>
+</pre>
+<pre>
+  Contact page
+  <br/>
+  <img src="https://res.cloudinary.com/dmjtpjp3s/image/upload/v1673553170/Untitled_zglmuc.png"></img>
+  <br/>
+  Categories
+  <br/>
+  <img src="https://res.cloudinary.com/dmjtpjp3s/image/upload/v1673553571/Untitled_qaocgr.png"></img>
+  <br/>
+  Edit video
+  <br/>
+  <img src="https://res.cloudinary.com/dmjtpjp3s/image/upload/v1673554567/Untitled_cnd2yt.png"></img>
+  <br/>
+  Owner's rights about the videos
+  <br/>
+  <img src="https://res.cloudinary.com/dmjtpjp3s/image/upload/v1673555147/Untitled_zslroq.png"></img>
 </pre>
 
 <h3>Application architecture</h3>
 <pre>
- <img height="600em" src="https://cdn.discordapp.com/attachments/1030426689085390890/1052999641949536306/Architecture.jpg"></img>
+ <img src="https://cdn.discordapp.com/attachments/1030426689085390890/1052999641949536306/Architecture.jpg"></img>
 </pre>
 
 <h3>Tools</h3>
