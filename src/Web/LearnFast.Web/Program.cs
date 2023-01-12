@@ -66,6 +66,10 @@ namespace LearnFast.Web
 
             services.AddSingleton(new Cloudinary(new Account(cloudName, apiKey, apiSecret)));
 
+            //var aes256EncryptionConfig = new Aes256EncryptionConfig();
+            configuration.GetSection("Aes256Encryption").Bind(aes256EncryptionConfig);
+            services.AddSingleton(aes256EncryptionConfig);
+
             services.AddDbContext<ApplicationDbContext>(
                 options => options
                 .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
@@ -140,6 +144,10 @@ namespace LearnFast.Web
             services.AddTransient<IReviewService, ReviewService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<IUserService, UserService>();
+<<<<<<< Updated upstream
+=======
+            services.AddTransient<IPaymentService, PaymentService>();
+>>>>>>> Stashed changes
         }
 
         private static void Configure(WebApplication app)
