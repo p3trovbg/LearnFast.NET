@@ -1,6 +1,7 @@
 # LearnFast Documentation
 <pre>
 <h3>Link</h3>
+The credits in Azure are over and the server is not hosted.
 <a href="https://learnfastx.azurewebsites.net/"><b>LearnFast</b></a>
 
 <h3>Project template</h3>
