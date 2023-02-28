@@ -4,9 +4,11 @@
 
     public class PaymentCustomer : BaseDeletableModel<int>
     {
-        public string CustomerIdentifier { get; set; }
-
         public string Email { get; set; }
+
+        public string AccountNumber { get; set; }
+
+        public string RoutingNumber { get; set; }
 
         public string UserId { get; set; }
 

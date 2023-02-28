@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "LearnFast.Data.Models": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:50064;http://localhost:50068"
+    }
+  }
+}

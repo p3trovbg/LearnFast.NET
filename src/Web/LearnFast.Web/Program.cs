@@ -21,7 +21,6 @@ namespace LearnFast.Web
     using LearnFast.Services.Data.ContactService;
     using LearnFast.Services.Data.CountryService;
     using LearnFast.Services.Data.CourseService;
-    using LearnFast.Services.Data.CustomerService;
     using LearnFast.Services.Data.DifficultyService;
     using LearnFast.Services.Data.ImageService;
     using LearnFast.Services.Data.LanguageService;
@@ -147,7 +146,7 @@ namespace LearnFast.Web
             services.AddTransient<IReviewService, ReviewService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IPaymentCustomerService, PaymentCustomerService>();
+            // services.AddTransient<IPaymentCustomerService, PaymentCustomerService>();
         }
 
         private static void Configure(WebApplication app)

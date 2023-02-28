@@ -5,6 +5,7 @@
     var token = this.ViewData["ClientToken"];
 }
 
+<h1 class="alert-danger">The payment has not yet been confirmed! It is in processing!</h1>
 <section>
     <form id="payment-form" method="post" asp-controller="Course" asp-action="Buy" asp-route-Price="@Model.Price" asp-route-Id="@Model.Id">
         @Html.HiddenFor(n => n.Id)
