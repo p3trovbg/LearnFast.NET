@@ -1,0 +1,41 @@
+﻿@using LearnFast.Web.ViewModels.Payment;
+@using Microsoft.Extensions.Configuration;
+@inject IConfiguration configuration
+
+@{
+    var key = this.configuration.GetValue<string>("Stripe:PublishKey");
+}
+
+<form>
+    <input type="text" placeholder="Cardholder Name" id="card-holder-name">
+    <input type="text" placeholder="Card Number" id="card-number">
+    <input type="text" placeholder="Expiration Date" id="card-expiry-date">
+    <input type="text" placeholder="CVC" id="card-cvc">
+    <input type="submit" value="Add Card" id="submit">
+</form>
+
+<script>
+    let stripe = Stripe(@key);
+
+    let elements = stripe.elements();
+    let card = elements.create("card", {
+        hidePostalCode: true,
+        style: {
+            base: {
+                fontSize: "16px",
+                color: "#32325d",
+            },
+        }
+    });
+    card.mount("#card-element");
+
+    let cardholderName = document.getElementById("card-holder-name");
+    let cardButton = document.getElementById("submit");
+    let clientSecret = "{{client_secret}}";
+
+    cardButton.addEventListener("click", function (ev) {
+        stripe.handleCardPayment(
+            clientSecret, card, {
+            payment_method_data: {
+                billing_details: { name: cardholderName.value }
+</script>

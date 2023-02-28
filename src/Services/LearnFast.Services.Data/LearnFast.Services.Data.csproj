@@ -31,4 +31,8 @@
     <ProjectReference Include="..\LearnFast.Services\LearnFast.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CustomerService\" />
+  </ItemGroup>
+
 </Project>
