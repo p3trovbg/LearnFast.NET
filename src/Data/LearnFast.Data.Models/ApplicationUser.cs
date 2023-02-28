@@ -33,6 +33,8 @@ namespace LearnFast.Data.Models
 
         public string Biography { get; set; }
 
+        public string? StripeId { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
@@ -44,8 +46,6 @@ namespace LearnFast.Data.Models
         public int CountryId { get; set; }
 
         public virtual Country Country { get; set; }
-
-        public virtual PaymentCustomer Customer { get; set; }
 
         public virtual ICollection<Review> Reviews { get; set; }
 
