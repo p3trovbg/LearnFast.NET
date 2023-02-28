@@ -8,132 +8,128 @@
 <h1>@($"{Model.CategoryName} {this.ViewData["Title"]}")</h1>
 <span>Category</span>
 <hr />
-<div class="row">
-    <div class="col">
-        <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
-            <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                <li class="breadcrumb-item"><a asp-area="" asp-controller="Category" asp-action="Index">Categories</a></li>
-                <li class="breadcrumb-item"><a>@Model.CategoryName</a></li>
-            </ol>
-        </nav>
+<div>
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-area="" asp-controller="Category" asp-action="Index">Categories</a></li>
+                    <li class="breadcrumb-item"><a>@Model.CategoryName</a></li>
+                </ol>
+            </nav>
+        </div>
     </div>
-</div>
-<div class="container">
-    <div class="filter-container">
-        <form asp-controller="Course" asp-action="Search" class="form-inline my-2 my-lg-0 search-form" method="get">
-            <div>
-                <h5>Sorter</h5>
-                <select asp-for="SorterArgument" asp-items="@Model.Sorter" class="form-select">
-                    <option disabled selected>Select sorter</option>
-                </select>
-                <span class="text-danger"></span>
-            </div>
-            <hr />
-            <input asp-for="SearchString" class="form-control mr-sm-2" type="search" placeholder="Search by title">
-            <div>
+    <div class="container">
+        <div class="filter-container">
+            <form asp-controller="Course" asp-action="Search" class="form-inline my-2 my-lg-0 search-form" method="get">
+                <div>
+                    <h5>Sorter</h5>
+                    <select asp-for="SorterArgument" asp-items="@Model.Sorter" class="form-select">
+                        <option disabled selected>Select sorter</option>
+                    </select>
+                    <span class="text-danger"></span>
+                </div>
+                <hr />
+                <input asp-for="SearchString" class="form-control mr-sm-2" type="search" placeholder="Search by title">
+                <div>
+                    <hr />
+                    <div>
+                        <h5>Price</h5>
+                        <span>From</span>
+                        <input asp-for="InitialPrice" class="price form-control" type="number" min="0">
+                        <br />
+                        <span>To</span>
+                        <input asp-for="FinalPrice" class="price form-control" type="number" min="0">
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="IsFree" class="form-check-input" type="checkbox" id="inlineCheckbox">
+                        <label asp-for="IsFree" class="form-check-label">Free courses</label>
+                    </div>
+                </div>
+                <a type="button" class="btn btn-danger btn-sm" asp-action="Search">Clear</a>
                 <hr />
                 <div>
-                    <h5>Price</h5>
-                    <span>From</span>
-                    <input asp-for="InitialPrice" class="price form-control" type="number" min="0">
-                    <br />
-                    <span>To</span>
-                    <input asp-for="FinalPrice" class="price form-control" type="number" min="0">
+                    <h5>Language</h5>
+                    <select asp-for="LanguageId" asp-items="@Model.Languages" class="form-select">
+                        <option disabled selected>Select language</option>
+                    </select>
+                    <span class="text-danger"></span>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input asp-for="IsFree" class="form-check-input" type="checkbox" id="inlineCheckbox">
-                    <label asp-for="IsFree" class="form-check-label">Free courses</label>
+                <hr />
+                <div>
+                    <h5>Category</h5>
+                    <select asp-for="CategoryId" asp-items="@Model.Categories" class="form-select">
+                        <option disabled selected>Select category</option>
+                    </select>
+                    <span class="text-danger"></span>
+                </div>
+                <hr />
+                <div>
+                    <h5>Difficulty</h5>
+                    <select asp-for="Difficulty" asp-items="@Model.Difficulties" class="form-select">
+                        <option disabled selected>Select difficulty</option>
+                    </select>
+                    <span class="text-danger"></span>
+                </div>
+                <hr />
+                <button class="btn btn-outline-success col-6" type="submit">Search</button>
+            </form>
+        </div>
+        @if (Model.Courses.Any())
+        {
+            <div>
+                <div class="row row-cols-1 row-cols-md-3 courses">
+                    @foreach (var course in Model.Courses)
+                    {
+                        <a class="course-element" asp-controller="Course" asp-action="Details" asp-route-id="@course.Id">
+                            <div class="col">
+                                <div class="">
+                                    <img class="p-3" src="@course.MainImageUrl" />
+                                    <div class="title">@course.Title</div>
+                                    <div class="difficulty">Difficulty: @course.Difficulty</div>
+                                    @if (course.Price == 0)
+                                    {
+                                        <p class="price">Free course</p>
+                                    }
+                                    else
+                                    {
+                                        <div class="price">Price: @($"${course.Price:f2}")</div>
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                    }
                 </div>
             </div>
-            <a type="button" class="btn btn-danger btn-sm" asp-action="Search">Clear</a>
-            <hr />
-            <div>
-                <h5>Language</h5>
-                <select asp-for="LanguageId" asp-items="@Model.Languages" class="form-select">
-                    <option disabled selected>Select language</option>
-                </select>
-                <span class="text-danger"></span>
-            </div>
-            <hr />
-            <div>
-                <h5>Category</h5>
-                <select asp-for="CategoryId" asp-items="@Model.Categories" class="form-select">
-                    <option disabled selected>Select category</option>
-                </select>
-                <span class="text-danger"></span>
-            </div>
-            <hr />
-            <div>
-                <h5>Difficulty</h5>
-                <select asp-for="Difficulty" asp-items="@Model.Difficulties" class="form-select">
-                    <option disabled selected>Select difficulty</option>
-                </select>
-                <span class="text-danger"></span>
-            </div>
-            <hr />
-            <button class="btn btn-outline-success col-6" type="submit">Search</button>
-        </form>
+        }
     </div>
-    @if (Model.Courses.Any())
+    @if (Model.PagesCount > 1)
     {
-        <div class="row row-cols-1 row-cols-md-3 courses">
-            @foreach (var course in Model.Courses)
+        <div class="pagination">
+            @if (Model.HasPreviousPage)
             {
-                <a class="course-element" asp-controller="Course" asp-action="Details" asp-route-id="@course.Id">
-                    <div class="col">
-                        <div class="">
-                            <img class="p-3" src="@course.MainImageUrl" />
-                            <div class="title">@course.Title</div>
-                            <div class="difficulty">Difficulty: @course.Difficulty</div>
-                            @if (course.Price == 0)
-                            {
-                                <p class="price">Free course</p>
-                            }
-                            else
-                            {
-                                <div class="price">Price: @($"${course.Price:f2}")</div>
-                            }
-                        </div>
-                    </div>
-                </a>
+                <a class="btn btn-secondary" asp-action="Search"
+           asp-all-route-data="@Model.Params"
+           asp-route-Page="@Model.PreviousPage">Previous</a>
             }
-            @if (Model.PagesCount > 1)
+            @if (Model.HasNextPage)
             {
-                <ul class="pagination p-3 col-12 mx-auto pages">
-                    @if (Model.HasPreviousPage)
-                    {
-                        <li class="page-item">
-                            <a class="btn btn-secondary" asp-action="Search"
-                   asp-all-route-data="@Model.Params"
-                   asp-route-Page="@Model.PreviousPage">Previous</a>
-                        </li>
-                    }
-                    @if (Model.HasNextPage)
-                    {
-                        <li class="page-item">
-                            <a class="btn btn-secondary" asp-action="Search"
-                   asp-all-route-data="@Model.Params"
-                   asp-route-Page="@Model.NextPage">Next</a>
-                        </li>
-                    }
-                    @if (!Model.HasNextPage)
-                    {
-                        <li class="page-item col-12">
-                            <a class="btn btn-secondary" asp-action="Search"
-                   asp-all-route-data="@Model.Params"
-                   asp-route-Page="1">First page</a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="page-item col-12">
-                            <a class="btn btn-secondary" asp-action="Search"
-                   asp-all-route-data="@Model.Params"
-                   asp-route-Page="@Model.PagesCount">Last page: @Model.PagesCount</a>
-                        </li>
-                    }
-                </ul>
+                <a class="btn btn-secondary" asp-action="Search"
+           asp-all-route-data="@Model.Params"
+           asp-route-Page="@Model.NextPage">Next</a>
+            }
+            @if (!Model.HasNextPage)
+            {
+                <a class="btn btn-secondary" asp-action="Search"
+           asp-all-route-data="@Model.Params"
+           asp-route-Page="1">First page</a>
+            }
+            else
+            {
+                <a class="btn btn-secondary" asp-action="Search"
+           asp-all-route-data="@Model.Params"
+           asp-route-Page="@Model.PagesCount">Last page: @Model.PagesCount</a>
             }
         </div>
     }
@@ -143,6 +139,6 @@
     <script type="module" src="/js/filter.js" asp-append-version="true"></script>
 }
 
-    @section Styles {
+@section Styles {
     <link rel="stylesheet" href="/css/courses.css" asp-append-version="true">
 }

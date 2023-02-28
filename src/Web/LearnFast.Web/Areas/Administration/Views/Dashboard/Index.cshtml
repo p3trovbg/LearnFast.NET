@@ -1,4 +1,5 @@
-﻿@model LearnFast.Web.ViewModels.Administration.Dashboard.IndexViewModel
+﻿@using LearnFast.Common;
+@model LearnFast.Web.ViewModels.Administration.Dashboard.IndexViewModel
 
 @{
     this.ViewData["Title"] = "Dashboard";
@@ -42,7 +43,11 @@
                                 <tr>
                                     <th scope="col">#@user.Id</th>
                                     <td><a href="/@user.UserName">@user.FullName</a></td>
-                                    <td><a asp-area="Administration" asp-action="DeleteUser" asp-route-userId="@user.Id">Delete user</a></td>
+                                    <td><a 
+                                        asp-area="Administration" 
+                                        asp-controller="Dashboard"
+                                        asp-action="AddUserAsAdminstartor" 
+                                        asp-route-userId="@user.Id">Make administrator</a></td>
                                 </tr>
                             }
                         </tbody>
@@ -50,7 +55,7 @@
                 </div>
             </div>
         </div>
-          <div class="accordion-item">
+        <div class="accordion-item">
             <h2 class="accordion-header" id="flush-heading2">
                 <button class="accordion-button collapsed"
                         type="button"
@@ -83,16 +88,19 @@
                         <tbody>
                             @foreach (var course in Model.Courses)
                             {
+                                if (course.Owner != null)
+                                {
                                     <tr>
-                                    <th scope="col">#@course.Id</th>
-                                    <td><a href="/@course.Owner.UserName">@course.Owner.FullName</a></td>
-                                    <td><a asp-area="" asp-controller="Course" asp-action="Details" asp-route-id="@course.Id">@course.Title</a></td>
-                                    <td>@course.Price</td>
-                                    <td>@course.Category.Name</td>
-                                    <td>@course.Difficulty</td>
-                                    <td>@course.Language.Name</td>
-                                    <td>@course.Sells</td>
-                                </tr>
+                                        <th scope="col">#@course.Id</th>
+                                        <td><a href="/@course.Owner.UserName">@course.Owner.FullName</a></td>
+                                        <td><a asp-area="" asp-controller="Course" asp-action="Details" asp-route-id="@course.Id">@course.Title</a></td>
+                                        <td>@course.Price</td>
+                                        <td>@course.Category.Name</td>
+                                        <td>@course.Difficulty</td>
+                                        <td>@course.Language.Name</td>
+                                        <td>@course.Sells</td>
+                                    </tr>
+                                }
                             }
                         </tbody>
                     </table>

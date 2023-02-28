@@ -1,0 +1,22 @@
+﻿@using LearnFast.Web.ViewModels.Payment;
+@model PaymentViewModel
+
+@{
+    var key = this.ViewBag.Key;
+}
+
+<section>
+<form asp-controller="Payment" asp-action="Charge">
+    <script
+        src="https://checkout.stripe.com/checkout.js"
+        class="stripe-button"
+        data-key="@key"
+        data-amount="10000"
+        data-name="Introduction in .NET"
+        data-description="Payment"
+        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+        data-zip-code="true"
+        data-currency="usd">
+    </script>
+</form>
+</section>

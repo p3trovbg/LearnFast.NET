@@ -1,10 +1,15 @@
 ﻿namespace LearnFast.Services.Data
 {
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using LearnFast.Data.Models;
+    using LearnFast.Services.Mapping;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.EntityFrameworkCore;
 
     public class UserService : IUserService
     {
@@ -24,9 +29,29 @@
             return await this.userManager.GetUserAsync(this.httpContext.HttpContext.User);
         }
 
-        public string GetLoggedUserId()
+        public async Task<string> GetLoggedUserIdAsync()
         {
-            return this.userManager.GetUserId(this.httpContext.HttpContext.User);
+            var user = await this.userManager.GetUserAsync(this.httpContext.HttpContext.User);
+            return user.Id;
+        }
+
+        public async Task<IEnumerable<T>> GetAllUsersAsync<T>()
+        {
+           return await this.userManager.Users
+                .AsNoTrackingWithIdentityResolution()
+                .To<T>()
+                .ToListAsync();
+        }
+
+        public IQueryable<ApplicationUser> GetAllUsersAsQueryable()
+        {
+            return this.userManager.Users
+                 .AsNoTrackingWithIdentityResolution();
+        }
+
+        public async Task UpdateAsync(ApplicationUser user)
+        {
+            await this.userManager.UpdateAsync(user);
         }
     }
 }

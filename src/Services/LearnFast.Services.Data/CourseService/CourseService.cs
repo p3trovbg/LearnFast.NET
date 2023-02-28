@@ -11,15 +11,11 @@
     using LearnFast.Data.Models;
     using LearnFast.Data.Models.Enums;
     using LearnFast.Services.Data.CategoryService;
-    using LearnFast.Services.Data.DifficultyService;
     using LearnFast.Services.Data.ImageService;
-    using LearnFast.Services.Data.LanguageService;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Mapping.PropertyMatcher;
     using LearnFast.Web.ViewModels.Course;
     using LearnFast.Web.ViewModels.Filter;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.EntityFrameworkCore;
 

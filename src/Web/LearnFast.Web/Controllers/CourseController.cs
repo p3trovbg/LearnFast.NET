@@ -8,6 +8,7 @@
     using Ganss.Xss;
     using LearnFast.Data.Models;
     using LearnFast.Services;
+    using LearnFast.Services.Data;
     using LearnFast.Services.Data.CategoryService;
     using LearnFast.Services.Data.CourseService;
     using LearnFast.Services.Data.DifficultyService;
@@ -32,25 +33,24 @@
         private readonly ICategoryService categoryService;
         private readonly IDifficultyService difficultyService;
         private readonly IBraintreeService braintreeService;
-
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IUserService userService;
 
         public CourseController(
             ICourseService courseService,
-            UserManager<ApplicationUser> userManager,
             IFilterCourse filterCourse,
             ILanguageService languageService,
             ICategoryService categoryService,
             IDifficultyService difficultyService,
-            IBraintreeService braintreeService)
+            IBraintreeService braintreeService,
+            IUserService userService)
         {
             this.courseService = courseService;
-            this.userManager = userManager;
             this.filterCourse = filterCourse;
             this.languageService = languageService;
             this.categoryService = categoryService;
             this.difficultyService = difficultyService;
             this.braintreeService = braintreeService;
+            this.userService = userService;
         }
 
         public static string CourseNameController => nameof(CourseController).Replace("Controller", string.Empty);
@@ -90,7 +90,7 @@
 
         public async Task<IActionResult> Delete(int id)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = await this.userService.GetLoggedUserIdAsync();
             try
             {
                 await this.courseService.DeleteCourseByIdAsync(id, userId);
@@ -104,7 +104,7 @@
 
         public async Task<IActionResult> Edit(int id)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = await this.userService.GetLoggedUserIdAsync();
 
             try
             {
@@ -137,7 +137,7 @@
 
             try
             {
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = await this.userService.GetLoggedUserIdAsync();
                 await this.courseService.UpdateAsync(model, userId);
                 return this.RedirectToAction(nameof(this.Details), new { id = model.Id });
             }
@@ -151,7 +151,7 @@
         {
             try
             {
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = await this.userService.GetLoggedUserIdAsync();
                 await this.courseService.EnrollCourse(courseId, userId);
 
                 return this.RedirectToAction(nameof(this.Details), new { id = courseId });
@@ -201,7 +201,7 @@
             {
                 try
                 {
-                    var userId = this.userManager.GetUserId(this.User);
+                    var userId = await this.userService.GetLoggedUserIdAsync();
                     await this.courseService.EnrollCourse(model.Id, userId);
 
                     return this.RedirectToAction(nameof(this.Details), new { id = model.Id });
@@ -220,7 +220,7 @@
             try
             {
                 var model = await this.filterCourse.GetCourseByIdAsync<CourseViewModel>(id);
-                var user = await this.userManager.GetUserAsync(this.User);
+                var user = await this.userService.GetLoggedUserAsync();
 
                 model.IsUserEnrolled = this.filterCourse.IsUserEnrolledCourse(user.Id, id);
                 model.CurrentUserId = user.Id;

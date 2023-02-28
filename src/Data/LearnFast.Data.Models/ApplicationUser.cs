@@ -33,6 +33,8 @@ namespace LearnFast.Data.Models
 
         public string Biography { get; set; }
 
+        public string? StripeId { get; set; }
+
         public DateTime CreatedOn { get; set; }
 
         public DateTime? ModifiedOn { get; set; }

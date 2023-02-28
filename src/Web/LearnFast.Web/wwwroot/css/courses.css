@@ -90,3 +90,14 @@ a {
 .pages li a{
     font-size: 18px;
 }
+
+.pagination {
+    width: inherit;
+    float: right;
+    margin-top: 10px;
+
+}
+
+    .pagination a {
+        font-size: 16px;
+    }

@@ -28,12 +28,14 @@ namespace LearnFast.Web
     using LearnFast.Services.Data.VideoService;
     using LearnFast.Services.Mapping;
     using LearnFast.Services.Messaging;
+    using LearnFast.Web.Configurations;
     using LearnFast.Web.Middlewares;
     using LearnFast.Web.ViewModels;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.CodeAnalysis.FlowAnalysis;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -65,10 +67,6 @@ namespace LearnFast.Web
             }
 
             services.AddSingleton(new Cloudinary(new Account(cloudName, apiKey, apiSecret)));
-
-            //var aes256EncryptionConfig = new Aes256EncryptionConfig();
-            configuration.GetSection("Aes256Encryption").Bind(aes256EncryptionConfig);
-            services.AddSingleton(aes256EncryptionConfig);
 
             services.AddDbContext<ApplicationDbContext>(
                 options => options
@@ -131,6 +129,10 @@ namespace LearnFast.Web
 
             services.AddTransient<IEmailSender>(x => new SendGridEmailSender(configuration["SendGrid:ApiKey"]));
 
+            var aes256EncryptionConfig = new Aes256EncryptionConfig();
+            configuration.GetSection("Aes256Encryption").Bind(aes256EncryptionConfig);
+            services.AddSingleton(aes256EncryptionConfig);
+
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<IContactService, ContactService>();
@@ -144,10 +146,7 @@ namespace LearnFast.Web
             services.AddTransient<IReviewService, ReviewService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<IUserService, UserService>();
-<<<<<<< Updated upstream
-=======
-            services.AddTransient<IPaymentService, PaymentService>();
->>>>>>> Stashed changes
+            // services.AddTransient<IPaymentCustomerService, PaymentCustomerService>();
         }
 
         private static void Configure(WebApplication app)
@@ -184,7 +183,7 @@ namespace LearnFast.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // app.UseMiddleware<RedirectMiddleware>();
+            app.UseMiddleware<RedirectMiddleware>();
 
             app.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");

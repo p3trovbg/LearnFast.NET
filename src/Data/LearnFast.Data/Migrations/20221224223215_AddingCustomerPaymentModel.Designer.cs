@@ -4,6 +4,7 @@ using LearnFast.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnFast.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221224223215_AddingCustomerPaymentModel")]
+    partial class AddingCustomerPaymentModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,9 +138,6 @@ namespace LearnFast.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StripeId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -361,8 +360,6 @@ namespace LearnFast.Data.Migrations
                     b.ToTable("Languages");
                 });
 
-<<<<<<< Updated upstream
-=======
             modelBuilder.Entity("LearnFast.Data.Models.PaymentCustomer", b =>
                 {
                     b.Property<int>("Id")
@@ -371,11 +368,11 @@ namespace LearnFast.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AccountNumber")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerIdentifier")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
@@ -388,9 +385,6 @@ namespace LearnFast.Data.Migrations
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("RoutingNumber")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -406,7 +400,6 @@ namespace LearnFast.Data.Migrations
                     b.ToTable("PaymentCustomers");
                 });
 
->>>>>>> Stashed changes
             modelBuilder.Entity("LearnFast.Data.Models.Review", b =>
                 {
                     b.Property<int>("Id")
@@ -724,6 +717,15 @@ namespace LearnFast.Data.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("LearnFast.Data.Models.PaymentCustomer", b =>
+                {
+                    b.HasOne("LearnFast.Data.Models.ApplicationUser", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("LearnFast.Data.Models.PaymentCustomer", "UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("LearnFast.Data.Models.Review", b =>
                 {
                     b.HasOne("LearnFast.Data.Models.Course", "Course")
@@ -825,6 +827,8 @@ namespace LearnFast.Data.Migrations
                     b.Navigation("BuyedCourses");
 
                     b.Navigation("Claims");
+
+                    b.Navigation("Customer");
 
                     b.Navigation("Logins");
 
