@@ -8,6 +8,12 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="CustomerService\**" />
+    <EmbeddedResource Remove="CustomerService\**" />
+    <None Remove="CustomerService\**" />
+  </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
@@ -29,10 +35,6 @@
     <ProjectReference Include="..\LearnFast.Services.Mapping\LearnFast.Services.Mapping.csproj" />
     <ProjectReference Include="..\LearnFast.Services.Messaging\LearnFast.Services.Messaging.csproj" />
     <ProjectReference Include="..\LearnFast.Services\LearnFast.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="CustomerService\" />
   </ItemGroup>
 
 </Project>
