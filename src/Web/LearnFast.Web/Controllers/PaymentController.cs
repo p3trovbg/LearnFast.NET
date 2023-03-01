@@ -145,6 +145,9 @@
             Session session = service.Create(options);
 
             return this.Redirect(session.Url);
+        public IActionResult InvalidPaid()
+        {
+            return this.View();
         }
     }
 }
