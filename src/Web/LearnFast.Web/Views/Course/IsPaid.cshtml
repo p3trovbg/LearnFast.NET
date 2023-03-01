@@ -1,0 +1,16 @@
+﻿@{
+    this.ViewData["Title"] = "Payment";
+}
+
+<section class="field">
+    <span>Are course will be paid?</span>
+    <div>
+        <a class="btn btn" asp-area="" asp-controller="Payment" asp-action="CreateAccount">Yes</a>
+        <a class="btn btn-danger" asp-area="" asp-controller="Course" asp-action="Create">No</a>
+    </div>
+</section>
+
+
+@section Styles {
+    <link rel="stylesheet" href="/css/isPaid.css" asp-append-version="true">
+}
