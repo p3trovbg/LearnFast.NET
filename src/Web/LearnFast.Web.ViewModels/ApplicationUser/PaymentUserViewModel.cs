@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using LearnFast.Data.Models;
+using LearnFast.Services.Mapping;
 
 namespace LearnFast.Web.ViewModels.ApplicationUser
 {
-    public class PaymentUserViewModel
+    public class PaymentUserViewModel : IMapFrom<LearnFast.Data.Models.ApplicationUser>
     {
         public string Id { get; set; }
 
-        public string FullName { get; set; }
-
-        public string Email { get; set; }
-
-        public string Country { get; set; }
+        public string StripeId { get; set; }
     }
 }
