@@ -64,7 +64,7 @@
                 }
                 else
                 {
-                    <div class="price">@($"${Model.Price:F2}")<a asp-controller="Course" asp-action="Buy" asp-route-id="@Model.Id"><i class="bi bi-bag-fill"></i></a></div>
+                    <div class="price">@($"${Model.Price:F2}")<a asp-controller="Payment" asp-action="Buy" asp-route-courseId="@Model.Id"><i class="bi bi-bag-fill"></i></a></div>
                 }
             }
 
