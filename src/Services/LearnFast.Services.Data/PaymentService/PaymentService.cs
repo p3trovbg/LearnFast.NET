@@ -1,33 +1,33 @@
 ﻿namespace LearnFast.Services.Data.CustomerService
 {
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
-
-    using LearnFast.Data.Common.Repositories;
     using LearnFast.Data.Models;
-    using Microsoft.EntityFrameworkCore;
+    using LearnFast.Services.Data.CourseService;
+    using LearnFast.Web.ViewModels.Course;
+    using Microsoft.AspNetCore.Http;
+
     using Microsoft.Extensions.Configuration;
     using Stripe;
+    using Stripe.Checkout;
 
     public class PaymentService : IPaymentService
     {
-
         private readonly IConfiguration configuration;
-        private readonly IDeletableEntityRepository<PaymentCustomer> repository;
         private readonly IUserService userService;
+        private readonly IFilterCourse filterCourseService;
 
         public PaymentService(
             IConfiguration configuration,
-            IDeletableEntityRepository<PaymentCustomer> repository,
-            IUserService userService)
+            IUserService userService,
+            IFilterCourse filterCourseService)
         {
             this.configuration = configuration;
-            this.repository = repository;
             this.userService = userService;
+            this.filterCourseService = filterCourseService;
         }
 
-        public Task<string> CreateCustomerAsync()
         public async Task<string> CreateAccountAsync(string refreshUrl, string returnUrl)
         {
             // TODO: should replace with original private key
@@ -71,9 +71,63 @@
             return linkResponse.Url;
         }
 
-        public Task<string> GetCustomerIdentifierByEmailAsync(string email)
+        public async Task<string> BuyProductAsync(int courseId, string successUrl, string cancelUrl)
         {
-            throw new NotImplementedException();
+            StripeConfiguration.ApiKey = this.configuration.GetValue<string>("Stripe:TestPrivateKey");
+            var course = await this.filterCourseService.GetCourseByIdAsync<PaymentCourseModel>(courseId);
+
+            var images = new List<string>();
+            images.Add(course.MainImageUrl);
+
+            var productOptions = new ProductCreateOptions
+            {
+                Name = course.Title,
+                Images = images,
+            };
+
+            var productService = new ProductService();
+            var product = productService.Create(productOptions);
+
+            var priceOptions = new PriceCreateOptions
+            {
+                UnitAmountDecimal = course.Price,
+                Currency = "usd",
+                Product = product.Id,
+            };
+
+            var priceService = new PriceService();
+            var priceResponse = priceService.Create(priceOptions);
+
+            var accountService = new AccountService();
+            var seller = accountService.Get(course.Owner.StripeId);
+
+            var options = new SessionCreateOptions
+            {
+                LineItems = new List<SessionLineItemOptions>
+                 {
+                   new SessionLineItemOptions
+                   {
+                     Price = priceResponse.Id,
+                     Quantity = 1,
+                   },
+                 },
+                Mode = "payment",
+                SuccessUrl = successUrl,
+                CancelUrl = cancelUrl,
+                PaymentIntentData = new SessionPaymentIntentDataOptions
+                {
+                    ApplicationFeeAmount = 123,
+                    TransferData = new SessionPaymentIntentDataTransferDataOptions
+                    {
+                        Destination = seller.Id,
+                    },
+                },
+            };
+
+            var service = new SessionService();
+            Session session = await service.CreateAsync(options);
+
+            return session.Url;
         }
     }
 }
