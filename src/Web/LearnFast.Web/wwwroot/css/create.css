@@ -1,13 +1,13 @@
 ﻿h1 {
-    text-align: center;
     font-family: "Open Sans";
     text-transform: uppercase;
     color: rgba(0, 35, 122, 0.9);
     font-size: 30px;
     text-decoration: none;
 }
+
 .create-form div {
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 #isfree {
@@ -17,18 +17,27 @@
     margin-bottom: 0px;
 }
 
-#upload-image label {
-    font-size: 18px !Important;
+
+#upload-image {
+    max-width: max-content;
+    box-shadow: 
+        rgba(0, 0, 0, 0.25) 0px 54px 55px,
+        rgba(0, 0, 0, 0.12) 0px -12px 30px,
+        rgba(0, 0, 0, 0.12) 0px 4px 6px,
+        rgba(0, 0, 0, 0.17) 0px 12px 13px,
+        rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
-#upload-image input {
-    position: relative;
-    opacity: 0;
-}
+    #upload-image label {
+        font-size: 18px !Important;
+    }
+
+    #upload-image input {
+        display: none;
+    }
 
 .textarea-document {
     max-width: 1000px;
-    width: 100%;
     margin-top: 0px;
     margin-left: 0px;
 }
@@ -58,7 +67,7 @@ label, legend, #upload-image input {
 
     .button::after {
         content: "";
-        background-color: #ffcccc;
+        background-color: rgb(0 0 0 / 15%);
         width: 100%;
         z-index: -1;
         position: absolute;
