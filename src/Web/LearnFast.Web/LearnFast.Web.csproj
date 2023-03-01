@@ -15,11 +15,13 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
+		<Content Remove="Views\Course\InvalidPaid.cshtml" />
 		<Content Remove="Views\Course\PurchaseResult.cshtml" />
 		<Content Remove="wwwroot\json\languages.json" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<_ContentIncludedByDefault Remove="Views\Course\InvalidPaid.cshtml" />
 		<_ContentIncludedByDefault Remove="wwwroot\css\site.min.css" />
 	</ItemGroup>
 	<ItemGroup>
@@ -71,6 +73,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Include="Views\Payment\InvalidPaid.cshtml" />
 		<None Include="wwwroot\json\languages.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -78,5 +81,9 @@
 
 	<ItemGroup>
 		<Folder Include="wwwroot\images\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Views\Course\InvalidPaid.cshtml" />
 	</ItemGroup>
 </Project>

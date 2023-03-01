@@ -57,9 +57,22 @@
 
         public static string DetailsActionName => nameof(Details);
 
-        public async Task<IActionResult> Create()
+        public IActionResult IsPaid()
         {
+            return this.View();
+        }
+
+        public async Task<IActionResult> Create(bool isPaid = false)
+        {
+            var user = await this.userService.GetLoggedUserAsync();
+
+            if (user.StripeId == null && isPaid == true)
+            {
+                return this.RedirectToAction(nameof(this.IsPaid), CourseNameController);
+            }
+
             var model = new ImportCourseModel();
+            model.IsFree = isPaid;
             await this.LoadingBaseParameters(model);
 
             return this.View(model);

@@ -9,38 +9,34 @@
     <h1>@this.ViewData["Title"]</h1>
     <hr />
     <form method="post" enctype="multipart/form-data" class="create-form mx-auto">
-        <div class="form-floating">
+        <div class="form-floating col-sm-6">
             <input asp-for="Title" class="form-control" aria-required="true" />
             <label asp-for="Title"></label>
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
-        <div class="form-floating">
-            <input asp-for="Price" class="form-control" aria-required="true" />
-            <label asp-for="Price"></label>
-            <span asp-validation-for="Price" class="text-danger"></span>
-        </div>
-        <div id="isfree">
-            <legend>The course is paid?</legend>
-            <label>Yes</label>
-            <input type="radio" asp-for="IsFree" value="true" />
-            <label>No</label>
-            <input type="radio" asp-for="IsFree" value="false" />
-        </div>
-        <div class="form-floating">
+        @if (this.Model.IsFree)
+        {
+            <div class="form-floating col-sm-6">
+                <input asp-for="Price" class="form-control" aria-required="true" />
+                <label asp-for="Price"></label>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+        }
+        <div class="form-floating col-sm-6">
             <select asp-for="Difficulty" asp-items="Model.Difficulties" class="form-select">
                 <option disabled selected></option>
             </select>
             <label asp-for="Difficulty"></label>
             <span asp-validation-for="Difficulty" class="text-danger"></span>
         </div>
-        <div class="form-floating">
+        <div class="form-floating col-sm-6">
             <select asp-for="LanguageId" asp-items="Model.Languages" class="form-select">
                 <option disabled selected></option>
             </select>
             <label asp-for="LanguageId" class="form-label">Select language</label>
             <span asp-validation-for="LanguageId" class="text-danger"></span>
         </div>
-        <div class="form-floating">
+        <div class="form-floating col-sm-6">
             <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select">
                 <option disabled selected></option>
             </select>
@@ -52,16 +48,18 @@
             <textarea asp-for="Description" class="document" aria-required="true" oninput="auto_height(this)"></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
-        <div class="message">
+        <div class="textarea-document">
             <label asp-for="Requirments"></label>
             <textarea asp-for="Requirments" class="document" aria-required="true" oninput="auto_height(this)"></textarea>
             <span asp-validation-for="Requirments" class="text-danger"></span>
         </div>
-        <div id="upload-image" class="form-floating">
-            <label asp-for="MainImage">Upload image</label>
-            <input id="upload" asp-for="MainImage" multiple accept="image/gif, image/jpeg, image/png">
+        <div id="upload-image">
+            <label for="upload" asp-for="MainImage">Upload image
+            </label>
+            <input name="upload" id="upload" asp-for="MainImage" multiple accept="image/gif, image/jpeg, image/png">
             <span asp-validation-for="MainImage" class="text-danger"></span>
         </div>
+        <br />
         <div class="border-1">
             <img id="uploadedImage" alt="Uploaded Image" accept="image/gif, image/jpeg, image/png" style="display:none;">
         </div>
@@ -75,6 +73,6 @@
     <script type="module" src="/js/create.js" asp-append-version="true"></script>
 }
 
-    @section Styles {
+@section Styles {
     <link rel="stylesheet" href="/css/create.css" asp-append-version="true">
 }
