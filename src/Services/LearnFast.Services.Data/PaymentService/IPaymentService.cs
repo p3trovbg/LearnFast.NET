@@ -4,8 +4,8 @@
 
     public interface IPaymentService
     {
-        public Task<string> CreateCustomerAsync();
+        public Task<string> CreateAccountAsync(string refreshUrl, string returnUrl);
 
-        public Task<string> GetCustomerIdentifierByEmailAsync(string email);
+        public Task<string> BuyProductAsync(int courseId, string successUrl, string cancelUrl);
     }
 }

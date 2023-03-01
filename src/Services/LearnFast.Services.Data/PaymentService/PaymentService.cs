@@ -28,8 +28,47 @@
         }
 
         public Task<string> CreateCustomerAsync()
+        public async Task<string> CreateAccountAsync(string refreshUrl, string returnUrl)
         {
-            throw new NotImplementedException();
+            // TODO: should replace with original private key
+            StripeConfiguration.ApiKey = this.configuration.GetValue<string>("Stripe:TestPrivateKey");
+
+            var user = await this.userService.GetLoggedUserAsync();
+
+            var service = new AccountService();
+
+            if (user.StripeId != null)
+            {
+                var account = await service.GetAsync(user.StripeId);
+                if (account.PayoutsEnabled)
+                {
+                    return string.Empty;
+                }
+            }
+
+            var options = new AccountCreateOptions
+            {
+                Type = "express",
+                Email = user.Email,
+            };
+
+            var response = await service.CreateAsync(options);
+
+            user.StripeId = response.Id;
+            await this.userService.UpdateAsync(user);
+
+            var linkOptions = new AccountLinkCreateOptions
+            {
+                Account = response.Id,
+                RefreshUrl = refreshUrl,
+                ReturnUrl = returnUrl,
+                Type = "account_onboarding",
+            };
+
+            var linkService = new AccountLinkService();
+            var linkResponse = await linkService.CreateAsync(linkOptions);
+
+            return linkResponse.Url;
         }
 
         public Task<string> GetCustomerIdentifierByEmailAsync(string email)
