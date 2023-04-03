@@ -151,13 +151,12 @@ sorter that sorts by price, desc price, newest, oldest and name.
 
 <h3>Tools</h3>
 <pre>
-  - ASP.Net Core 6.0
-  - Microsoft.AspNetCore.Identity
+  - ASP.NET Core 6.0
   - MS SQL
-  - EntityFramework Core 6.0
+  - EF Core 6.0
   - AutoMapper
   - SendGrid
-  - Braintree
+  - Stripe
   - Cloudinary
   - Javascript
   - Bootstrap
